@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_company_form_speed_pro_inv" model="ir.ui.view">
+        <field name="name">res.company.form.speed.pro.inv</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="street2" position="after">
+                <field name="building_no" placeholder="Building No."/>
+                <field name="district" placeholder="District"/>
+                <field name="additional_no" placeholder="Additional No."/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

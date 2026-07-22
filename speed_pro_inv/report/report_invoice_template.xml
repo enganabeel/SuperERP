@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_invoice_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="company" t-value="o.company_id"/>
+                <t t-set="partner" t-value="o.partner_id"/>
+                <div class="spi_page">
+
+                    <!-- Header: logo + bilingual title -->
+                    <table class="spi_header_table">
+                        <tr>
+                            <td class="spi_header_logo_cell">
+                                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" class="spi_logo"/>
+                            </td>
+                            <td class="spi_header_company_cell">
+                                <div class="spi_company_name" t-esc="company.name"/>
+                                <div class="spi_company_meta" t-esc="company.phone"/>
+                                <div class="spi_company_meta" t-esc="company.vat"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="spi_title_table">
+                        <tr>
+                            <td class="spi_title_en">Sales Tax Invoice</td>
+                            <td class="spi_title_ar">فاتورة مبيعات ضريبية</td>
+                        </tr>
+                    </table>
+
+                    <!-- Invoice meta -->
+                    <table class="spi_info_table">
+                        <tr>
+                            <td class="spi_label_en">Invoice ID</td>
+                            <td class="spi_value" t-esc="o.name"/>
+                            <td class="spi_label_ar">رقم الفاتورة</td>
+                        </tr>
+                        <tr>
+                            <td class="spi_label_en">Issue Date</td>
+                            <td class="spi_value" t-esc="o.invoice_date and o.invoice_date.strftime('%d/%m/%Y') or ''"/>
+                            <td class="spi_label_ar">تاريخ الإصدار</td>
+                        </tr>
+                    </table>
+
+                    <!-- Seller / Buyer -->
+                    <table class="spi_parties_table">
+                        <tr>
+                            <td class="spi_party_col">
+                                <table class="spi_party_header_table">
+                                    <tr>
+                                        <td class="spi_label_en">Seller</td>
+                                        <td class="spi_label_ar">المورد</td>
+                                    </tr>
+                                </table>
+                                <table class="spi_party_details">
+                                    <tr>
+                                        <td class="spi_label_en">Seller Name</td>
+                                        <td class="spi_value" t-esc="company.name"/>
+                                        <td class="spi_label_ar">اسم البائع</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Building No.</td>
+                                        <td class="spi_value" t-esc="company.building_no"/>
+                                        <td class="spi_label_ar">رقم المبنى</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Street Name</td>
+                                        <td class="spi_value" t-esc="company.street"/>
+                                        <td class="spi_label_ar">اسم الشارع</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">District</td>
+                                        <td class="spi_value" t-esc="company.district"/>
+                                        <td class="spi_label_ar">الحي</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">City</td>
+                                        <td class="spi_value" t-esc="company.city"/>
+                                        <td class="spi_label_ar">المدينة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Country</td>
+                                        <td class="spi_value" t-esc="company.country_id.name"/>
+                                        <td class="spi_label_ar">الدولة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Postal Code</td>
+                                        <td class="spi_value" t-esc="company.zip"/>
+                                        <td class="spi_label_ar">الرمز البريدي</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Other Address</td>
+                                        <td class="spi_value" t-esc="company.additional_no"/>
+                                        <td class="spi_label_ar">رقم عنوان إضافي</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">VAT No.</td>
+                                        <td class="spi_value" t-esc="company.vat"/>
+                                        <td class="spi_label_ar">رقم تسجيل ضريبة القيمة المضافة</td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td class="spi_party_col">
+                                <table class="spi_party_header_table">
+                                    <tr>
+                                        <td class="spi_label_en">Buyer</td>
+                                        <td class="spi_label_ar">العميل</td>
+                                    </tr>
+                                </table>
+                                <table class="spi_party_details">
+                                    <tr>
+                                        <td class="spi_label_en">Customer Name</td>
+                                        <td class="spi_value" t-esc="partner.name"/>
+                                        <td class="spi_label_ar">اسم العميل</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Building No.</td>
+                                        <td class="spi_value" t-esc="partner.building_no"/>
+                                        <td class="spi_label_ar">رقم المبنى</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Street Name</td>
+                                        <td class="spi_value" t-esc="partner.street"/>
+                                        <td class="spi_label_ar">اسم الشارع</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">District</td>
+                                        <td class="spi_value" t-esc="partner.district"/>
+                                        <td class="spi_label_ar">الحي</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">City</td>
+                                        <td class="spi_value" t-esc="partner.city"/>
+                                        <td class="spi_label_ar">المدينة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Country</td>
+                                        <td class="spi_value" t-esc="partner.country_id.name"/>
+                                        <td class="spi_label_ar">الدولة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Postal Code</td>
+                                        <td class="spi_value" t-esc="partner.zip"/>
+                                        <td class="spi_label_ar">الرمز البريدي</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Other Address</td>
+                                        <td class="spi_value" t-esc="partner.additional_no"/>
+                                        <td class="spi_label_ar">رقم عنوان إضافي</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">VAT No.</td>
+                                        <td class="spi_value" t-esc="partner.vat"/>
+                                        <td class="spi_label_ar">رقم تسجيل ضريبة القيمة المضافة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Additional Info.</td>
+                                        <td class="spi_value" t-esc="partner.ref"/>
+                                        <td class="spi_label_ar">معرف آخر</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Line items -->
+                    <table class="spi_lines_table">
+                        <thead>
+                            <tr>
+                                <th><div>Item Code</div><div class="spi_th_ar">كود الصنف</div></th>
+                                <th><div>Item Description</div><div class="spi_th_ar">وصف الصنف</div></th>
+                                <th><div>Unit Price</div><div class="spi_th_ar">سعر الوحدة</div></th>
+                                <th><div>Qty.</div><div class="spi_th_ar">الكمية</div></th>
+                                <th><div>Total</div><div class="spi_th_ar">الإجمالي</div></th>
+                                <th><div>Discount</div><div class="spi_th_ar">الخصم</div></th>
+                                <th><div>VAT %</div><div class="spi_th_ar">نسبة الضريبة</div></th>
+                                <th><div>VAT Amount</div><div class="spi_th_ar">قيمة الضريبة</div></th>
+                                <th><div>Net</div><div class="spi_th_ar">الصافي</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.invoice_line_ids.filtered(lambda l: not l.display_type)" t-as="line">
+                                <t t-set="line_gross" t-value="line.price_unit * line.quantity"/>
+                                <t t-set="line_discount_amount" t-value="line_gross * (line.discount or 0.0) / 100.0"/>
+                                <t t-set="line_vat_rate" t-value="line.tax_ids[:1].amount if line.tax_ids else 0.0"/>
+                                <t t-set="line_vat_amount" t-value="line.price_total - line.price_subtotal"/>
+                                <tr>
+                                    <td t-esc="line.product_id.default_code or ''"/>
+                                    <td t-esc="line.name"/>
+                                    <td class="spi_num" t-esc="'%.2f' % line.price_unit"/>
+                                    <td class="spi_num" t-esc="'%.2f' % line.quantity"/>
+                                    <td class="spi_num" t-esc="'%.2f' % line_gross"/>
+                                    <td class="spi_num" t-esc="'%.2f' % line_discount_amount"/>
+                                    <td class="spi_num" t-esc="'%.2f' % line_vat_rate"/>
+                                    <td class="spi_num" t-esc="'%.2f' % line_vat_amount"/>
+                                    <td class="spi_num" t-esc="'%.2f' % line.price_total"/>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <!-- QR + Totals -->
+                    <table class="spi_summary_table">
+                        <tr>
+                            <td class="spi_qr_cell">
+                                <img t-if="o.speed_pro_qr_code_url" t-att-src="o.speed_pro_qr_code_url" class="spi_qr"/>
+                            </td>
+                            <td class="spi_totals_cell">
+                                <table class="spi_totals_table">
+                                    <tr>
+                                        <td class="spi_label_en">Total - Excluding VAT</td>
+                                        <td class="spi_value" t-esc="'%.2f' % (o.amount_untaxed + o.amount_discount_total)"/>
+                                        <td class="spi_label_ar">الإجمالي - غير شامل ضريبة القيمة المضافة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Discounts</td>
+                                        <td class="spi_value" t-esc="'%.2f' % o.amount_discount_total"/>
+                                        <td class="spi_label_ar">مجموع الخصومات</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Total Taxable Amount - Excluding VAT</td>
+                                        <td class="spi_value" t-esc="'%.2f' % o.amount_untaxed"/>
+                                        <td class="spi_label_ar">الإجمالي الخاضع للضريبة - غير شامل ضريبة القيمة المضافة</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="spi_label_en">Total VAT</td>
+                                        <td class="spi_value" t-esc="'%.2f' % o.amount_tax"/>
+                                        <td class="spi_label_ar">مجموع ضريبة القيمة المضافة</td>
+                                    </tr>
+                                    <tr class="spi_total_due">
+                                        <td class="spi_label_en">Total Amount Due</td>
+                                        <td class="spi_value" t-esc="'%.2f' % o.amount_total"/>
+                                        <td class="spi_label_ar">إجمالي المبلغ المستحق</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Amount in words -->
+                    <table class="spi_words_table">
+                        <tr>
+                            <td>
+                                <div class="spi_words_ar" t-esc="o.amount_total_words_ar"/>
+                                <div class="spi_words_en" t-esc="o.amount_total_words_en"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Bank details -->
+                    <table class="spi_bank_table" t-if="company.partner_id.bank_ids">
+                        <t t-set="bank" t-value="company.partner_id.bank_ids[0]"/>
+                        <tr>
+                            <td class="spi_bank_header" colspan="2">Bank Details</td>
+                            <td class="spi_bank_header spi_bank_header_ar">البيانات البنكية</td>
+                        </tr>
+                        <tr>
+                            <td class="spi_label_en">Bank Name</td>
+                            <td class="spi_value" t-esc="bank.bank_id.name"/>
+                            <td class="spi_label_ar">اسم البنك</td>
+                        </tr>
+                        <tr>
+                            <td class="spi_label_en">Account No.</td>
+                            <td class="spi_value" t-esc="bank.acc_number"/>
+                            <td class="spi_label_ar">رقم الحساب</td>
+                        </tr>
+                        <tr>
+                            <td class="spi_label_en">IBAN</td>
+                            <td class="spi_value" t-esc="bank.acc_number"/>
+                            <td class="spi_label_ar">الأيبان</td>
+                        </tr>
+                    </table>
+
+                    <!-- Footer -->
+                    <table class="spi_footer_table">
+                        <tr>
+                            <td class="spi_footer_en">This is a system generated invoice, no signature required</td>
+                            <td class="spi_footer_ar">هذه الفاتورة صادرة من النظام ولا تحتاج إلى توقيع</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>
