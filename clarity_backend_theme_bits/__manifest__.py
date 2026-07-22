@@ -27,10 +27,12 @@ Odoo backend theme, Odoo theme, responsive sidebar, dark mode, multi tab interfa
     ],
     "assets": {
         "web.assets_frontend": [
+            'https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap',
             'clarity_backend_theme_bits/static/src/scss/fonts.scss',
             'clarity_backend_theme_bits/static/src/scss/login.scss'
         ],
         "web.assets_backend": [
+            'https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap',
             'clarity_backend_theme_bits/static/src/xml/WebClient.xml',
             'clarity_backend_theme_bits/static/src/xml/navbar/sidebar.xml',
             'clarity_backend_theme_bits/static/src/xml/systray_items/user_menu.xml',
