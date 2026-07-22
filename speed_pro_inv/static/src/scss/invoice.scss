@@ -1,0 +1,286 @@
+$spi-navy: #1b3a6b;
+$spi-blue: #2f5fa8;
+$spi-light-blue: #eaf1fb;
+$spi-border: #c9d4e3;
+$spi-text: #2a2a2a;
+
+.spi_page {
+  font-size: 10px;
+  color: $spi-text;
+  line-height: 1.4;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  // Header
+  .spi_header_table {
+    margin-bottom: 6px;
+    td {
+      vertical-align: middle;
+      padding: 0;
+    }
+    .spi_header_logo_cell {
+      width: 90px;
+      img.spi_logo {
+        max-height: 60px;
+        max-width: 90px;
+      }
+    }
+    .spi_header_company_cell {
+      text-align: right;
+      direction: rtl;
+    }
+    .spi_company_name {
+      font-size: 18px;
+      font-weight: 700;
+      color: $spi-navy;
+    }
+    .spi_company_meta {
+      font-size: 10px;
+      color: $spi-text;
+    }
+  }
+
+  // Title bar
+  .spi_title_table {
+    border-top: 1px solid $spi-border;
+    border-bottom: 1px solid $spi-border;
+    margin-bottom: 6px;
+    td {
+      padding: 6px 2px;
+      font-size: 13px;
+      font-weight: 700;
+      color: $spi-blue;
+    }
+    .spi_title_en {
+      text-align: left;
+    }
+    .spi_title_ar {
+      text-align: right;
+      direction: rtl;
+    }
+  }
+
+  // Generic bilingual label/value rows
+  .spi_label_en {
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .spi_label_ar {
+    text-align: right;
+    direction: rtl;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .spi_value {
+    text-align: center;
+  }
+
+  .spi_info_table {
+    margin-bottom: 8px;
+    td {
+      padding: 2px 4px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .spi_label_en, .spi_label_ar {
+      width: 25%;
+    }
+  }
+
+  // Parties
+  .spi_parties_table {
+    margin-bottom: 8px;
+    > tr > td.spi_party_col {
+      width: 50%;
+      vertical-align: top;
+      padding: 0 4px;
+    }
+  }
+  .spi_party_header_table {
+    background: $spi-navy;
+    color: #fff;
+    margin-bottom: 2px;
+    td {
+      padding: 3px 6px;
+      font-weight: 700;
+      font-size: 10px;
+    }
+    .spi_label_en {
+      color: #fff;
+    }
+    .spi_label_ar {
+      color: #fff;
+    }
+  }
+  .spi_party_details {
+    border: 1px solid $spi-border;
+    tr:nth-child(even) {
+      background: #f7f9fc;
+    }
+    td {
+      padding: 3px 5px;
+      border-bottom: 1px solid $spi-border;
+      font-size: 9px;
+    }
+    .spi_label_en, .spi_label_ar {
+      width: 30%;
+    }
+    .spi_value {
+      width: 40%;
+      text-align: center;
+      word-break: break-word;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  // Line items
+  .spi_lines_table {
+    margin-bottom: 8px;
+    thead th {
+      background: $spi-navy;
+      color: #fff;
+      padding: 4px 3px;
+      text-align: center;
+      font-size: 8.5px;
+      border: 1px solid darken($spi-navy, 5%);
+      div {
+        line-height: 1.3;
+      }
+      .spi_th_ar {
+        direction: rtl;
+        font-weight: 400;
+      }
+    }
+    tbody td {
+      border: 1px solid $spi-border;
+      padding: 4px 3px;
+      font-size: 9px;
+      text-align: center;
+    }
+    tbody tr:nth-child(even) {
+      background: #f7f9fc;
+    }
+    .spi_num {
+      text-align: right;
+      direction: ltr;
+    }
+  }
+
+  // Summary: QR + totals
+  .spi_summary_table {
+    margin-bottom: 8px;
+    td {
+      vertical-align: top;
+    }
+    .spi_qr_cell {
+      width: 110px;
+    }
+    img.spi_qr {
+      width: 90px;
+      height: 90px;
+    }
+    .spi_totals_cell {
+      padding-left: 8px;
+    }
+  }
+  .spi_totals_table {
+    border: 1px solid $spi-border;
+    td {
+      padding: 4px 6px;
+      border-bottom: 1px solid $spi-border;
+      font-size: 9.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .spi_label_en, .spi_label_ar {
+      width: 30%;
+      font-weight: 600;
+    }
+    .spi_value {
+      width: 40%;
+      text-align: center;
+      font-weight: 600;
+    }
+    .spi_total_due {
+      background: $spi-light-blue;
+      td {
+        color: $spi-navy;
+        font-weight: 700;
+        font-size: 10.5px;
+      }
+    }
+  }
+
+  // Amount in words
+  .spi_words_table {
+    background: #f7f9fc;
+    border: 1px solid $spi-border;
+    margin-bottom: 8px;
+    td {
+      padding: 5px 8px;
+      text-align: center;
+    }
+    .spi_words_ar {
+      direction: rtl;
+      font-weight: 700;
+      font-size: 10px;
+    }
+    .spi_words_en {
+      font-weight: 700;
+      font-size: 9px;
+    }
+  }
+
+  // Bank details
+  .spi_bank_table {
+    margin-bottom: 8px;
+    border: 1px solid $spi-border;
+    td {
+      padding: 3px 6px;
+      border-bottom: 1px solid $spi-border;
+      font-size: 9px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .spi_bank_header {
+      background: $spi-navy;
+      color: #fff;
+      font-weight: 700;
+    }
+    .spi_bank_header_ar {
+      direction: rtl;
+      text-align: right;
+    }
+    .spi_label_en, .spi_label_ar {
+      width: 30%;
+    }
+    .spi_value {
+      width: 40%;
+      text-align: center;
+    }
+  }
+
+  // Footer
+  .spi_footer_table {
+    border-top: 1px solid $spi-border;
+    td {
+      padding-top: 4px;
+      font-size: 8px;
+      color: #666;
+    }
+    .spi_footer_en {
+      text-align: left;
+    }
+    .spi_footer_ar {
+      text-align: right;
+      direction: rtl;
+    }
+  }
+}
