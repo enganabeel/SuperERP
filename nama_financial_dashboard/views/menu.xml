@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_nama_financial_dashboard" model="ir.actions.act_url">
+        <field name="name">نماء - النظام المالي</field>
+        <field name="url">/nama/dashboard</field>
+        <field name="target">self</field>
+    </record>
+
+    <menuitem id="menu_nama_financial_dashboard_root"
+              name="نماء"
+              action="action_nama_financial_dashboard"
+              sequence="5"/>
+
+</odoo>
