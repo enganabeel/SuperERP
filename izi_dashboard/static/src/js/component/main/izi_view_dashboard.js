@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import Widget from "@web/legacy/js/core/widget";
+import Widget from "@izi_dashboard/legacy_core/widget";
 import { jsonrpc } from "@web/core/network/rpc_service";
 import { _t } from "@web/core/l10n/translation";
 import IZIViewDashboardBlock from "@izi_dashboard/js/component/main/izi_view_dashboard_block";
