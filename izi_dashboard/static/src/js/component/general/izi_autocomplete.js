@@ -105,7 +105,7 @@ class IZIAutocomplete {
             query: function (query) {
                 var data = {results: []};
                 loadingRPC = true;
-                rpc('/odoo/dataset/call_kw/izi.analysis/ui_get_fields_dynamic', {
+                rpc('/web/dataset/call_kw/izi.analysis/ui_get_fields_dynamic', {
                     model: 'izi.analysis',
                     method: 'ui_get_fields_dynamic',
                     args: [self.analysisId,self.params,query.term],

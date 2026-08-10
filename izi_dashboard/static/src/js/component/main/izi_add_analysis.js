@@ -130,7 +130,7 @@ var IZIAddAnalysis = IZIDialog.extend({
             'keyword': self.keyword || '',
         }
         self.$analysisContainer.empty();
-        rpc('/odoo/dataset/call_kw/izi.analysis/ui_get_all', {
+        rpc('/web/dataset/call_kw/izi.analysis/ui_get_all', {
             model: 'izi.analysis',
             method: 'ui_get_all',
             args: [args],
@@ -233,7 +233,7 @@ var IZIAddAnalysis = IZIDialog.extend({
         if (self.selectedTable) {
             self.$fieldMetricContainer.empty();
             self.$fieldDimensionContainer.empty();
-            rpc('/odoo/dataset/call_kw/izi.table.field/search_read', {
+            rpc('/web/dataset/call_kw/izi.table.field/search_read', {
                 model: 'izi.table.field',
                 method: 'search_read',
                 args: [[['table_id', '=', self.selectedTable]], ['id', 'name', 'field_type']],
