@@ -1,0 +1,75 @@
+body.o_web_client {
+  .content-wrapper-bits {
+    .o_control_panel {
+      background: rgba(243, 246, 248, .9) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--nama-line) !important;
+
+      .o_control_panel_main {
+        .o_control_panel_main_buttons {
+          .btn-primary {
+            background: var(--nama-mint) !important;
+            color: var(--nama-navy) !important;
+            border-color: var(--nama-mint) !important;
+            font-weight: 700;
+            border-radius: 10px !important;
+
+            &:hover, &:focus, &:active {
+              background: var(--nama-navy) !important;
+              color: #fff !important;
+              border-color: var(--nama-navy) !important;
+            }
+          }
+
+          .btn-outline-primary {
+            color: var(--nama-navy) !important;
+            border-color: var(--nama-line) !important;
+            border-radius: 10px !important;
+
+            &:hover, &:focus, &:active {
+              background: var(--nama-navy) !important;
+              color: #fff !important;
+              border-color: var(--nama-navy) !important;
+            }
+          }
+        }
+
+        .breadcrumb .breadcrumb-item a {
+          color: var(--nama-navy) !important;
+          font-weight: 700;
+        }
+      }
+
+      .o_control_panel_actions {
+        .btn-outline-secondary {
+          border-color: var(--nama-line) !important;
+          border-radius: 10px !important;
+
+          i, span {
+            color: var(--nama-text) !important;
+          }
+        }
+
+        .o_cp_searchview .o_searchview {
+          border-radius: 12px 0 0 12px !important;
+          border-color: var(--nama-line) !important;
+        }
+
+        .o_searchview_dropdown_toggler {
+          border-radius: 0 12px 12px 0 !important;
+        }
+      }
+
+      .o_control_panel_navigation button {
+        border-radius: 8px !important;
+        border-color: var(--nama-line) !important;
+        color: var(--nama-text) !important;
+
+        &.active {
+          background: var(--nama-mint2) !important;
+          color: var(--nama-navy) !important;
+        }
+      }
+    }
+  }
+}

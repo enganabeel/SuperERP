@@ -1,0 +1,28 @@
+#wrapwrap .login-view-bits {
+  font-family: 'Tajawal', Arial, sans-serif;
+
+  .card-body {
+    border-radius: 22px !important;
+    box-shadow: 0 10px 28px rgba(22, 43, 55, .07) !important;
+  }
+
+  input, .form-control {
+    border-radius: 10px !important;
+    border-color: #e5ebee !important;
+  }
+
+  .oe_login_buttons {
+    .btn-primary[type=submit] {
+      background: #34c7a1 !important;
+      color: #132b3c !important;
+      border-radius: 12px !important;
+      font-weight: 700;
+
+      &:hover, &:active, &:focus {
+        background: #132b3c !important;
+        color: #fff !important;
+        border: 1px solid #132b3c !important;
+      }
+    }
+  }
+}
