@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { WebClient } from "@odoo/webclient/webclient";
-import { ControlPanel } from "@odoo/search/control_panel/control_panel";
-import { patch } from "@odoo/core/utils/patch";
+import { WebClient } from "@web/webclient/webclient";
+import { ControlPanel } from "@web/search/control_panel/control_panel";
+import { patch } from "@web/core/utils/patch";
 
 patch(WebClient.prototype, {
     setup() {
