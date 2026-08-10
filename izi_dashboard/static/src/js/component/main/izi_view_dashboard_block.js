@@ -2,7 +2,7 @@
 
 import Widget from "@izi_dashboard/legacy_core/widget";
 import { _t } from "@web/core/l10n/translation";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import { useService } from "@web/core/utils/hooks";
 
 import IZIViewVisual from "@izi_dashboard/js/component/main/izi_view_visual";
@@ -168,7 +168,7 @@ var IZIViewDashboardBlock = Widget.extend({
                     spinner.appendTo(btnSpeechAI);
                     btnSpeechAI.addClass('generated-speech');
 
-                    jsonrpc('/web/dataset/call_kw/izi.analysis/action_get_lab_speech_ai', {
+                    rpc('/web/dataset/call_kw/izi.analysis/action_get_lab_speech_ai', {
                         model: 'izi.analysis',
                         method: 'action_get_lab_speech_ai',
                         args: [self.analysis_id],
@@ -274,7 +274,7 @@ var IZIViewDashboardBlock = Widget.extend({
                 heightAuto : false,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    jsonrpc('/web/dataset/call_kw/izi.dashboard.block/action_copy', {
+                    rpc('/web/dataset/call_kw/izi.dashboard.block/action_copy', {
                         model: 'izi.dashboard.block',
                         method: 'action_copy',
                         args: [[id]],
@@ -290,7 +290,7 @@ var IZIViewDashboardBlock = Widget.extend({
     _onClickExportConfig: function (ev) {
         var self = this;
         var block_id = $(ev.currentTarget).data('id');
-        jsonrpc('/web/dataset/call_kw/izi.analysis/export_config', {
+        rpc('/web/dataset/call_kw/izi.analysis/export_config', {
             model: 'izi.analysis',
             method: 'export_config',
             args: [[self.analysis_id], block_id],
@@ -314,7 +314,7 @@ var IZIViewDashboardBlock = Widget.extend({
                 heightAuto : false,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    jsonrpc('/web/dataset/call_kw/izi.dashboard.block/unlink', {
+                    rpc('/web/dataset/call_kw/izi.dashboard.block/unlink', {
                         model: 'izi.dashboard.block',
                         method: 'unlink',
                         args: [[id]],
@@ -396,7 +396,7 @@ var IZIViewDashboardBlock = Widget.extend({
         var args = self.args
         args['filters'] = self.$visual.filters
         if (self.analysis_id && self.mode != 'ai_analysis') {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_view_parameters', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_get_view_parameters', {
                 model: 'izi.analysis',
                 method: 'ui_get_view_parameters',
                 args: [[self.analysis_id], self.args],

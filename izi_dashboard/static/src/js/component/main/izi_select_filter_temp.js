@@ -3,7 +3,7 @@
 import Widget from "@izi_dashboard/legacy_core/widget";
 import { _t } from "@web/core/l10n/translation";
 // var datepicker = require('web.datepicker');
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import IZIAutocomplete from "@izi_dashboard/js/component/general/izi_autocomplete";
 
 import IZITags from "@izi_dashboard/js/component/general/izi_tags";
@@ -245,7 +245,7 @@ var IZISelectFilterTemp = Widget.extend({
     _loadFilters: function(callback) {
         var self = this;
         if (self.analysis_id) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_filter_info', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_get_filter_info', {
                 model: 'izi.analysis',
                 method: 'ui_get_filter_info',
                 args: [self.analysis_id],
@@ -466,7 +466,7 @@ var IZISelectFilterTemp = Widget.extend({
         var field_id = $(ev.currentTarget).data('id');
         var name = $(ev.currentTarget).text();
         if (self.analysis_id && field_id && type) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_add_filter_temp_by_field', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_add_filter_temp_by_field', {
                 model: 'izi.analysis',
                 method: 'ui_add_filter_temp_by_field',
                 args: [self.analysis_id, field_id, type],

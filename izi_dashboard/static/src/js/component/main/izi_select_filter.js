@@ -2,7 +2,7 @@
 
 import Widget from "@izi_dashboard/legacy_core/widget";
 import { renderToElement } from "@web/core/utils/render";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 
 var IZISelectFilter = Widget.extend({
     template: 'IZISelectFilter',
@@ -37,7 +37,7 @@ var IZISelectFilter = Widget.extend({
         this._super.apply(this, arguments);
         // Add Content
         if (self.parent.selectedAnalysis) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_analysis_info', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_get_analysis_info', {
                 model: 'izi.analysis',
                 method: 'ui_get_analysis_info',
                 args: [self.parent.selectedAnalysis],
@@ -75,7 +75,7 @@ var IZISelectFilter = Widget.extend({
                 'condition': logical_operator,
                 'value': value,
             }
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_add_filter_by_field', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_add_filter_by_field', {
                 model: 'izi.analysis',
                 method: 'ui_add_filter_by_field',
                 args: [self.parent.selectedAnalysis, data],

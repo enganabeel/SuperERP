@@ -3,7 +3,7 @@
 import Widget from "@izi_dashboard/legacy_core/widget";
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 
 import IZISelectDashboard from "@izi_dashboard/js/component/main/izi_select_dashboard";
 import IZIAddAnalysis from "@izi_dashboard/js/component/main/izi_add_analysis";
@@ -225,7 +225,7 @@ var IZIConfigDashboard = Widget.extend({
     _loadThemes: function (ev) {
         var self = this;
         self.$themeContainer.empty();
-        jsonrpc('/web/dataset/call_kw/izi.dashboard.theme/search_read', {
+        rpc('/web/dataset/call_kw/izi.dashboard.theme/search_read', {
             model: 'izi.dashboard.theme',
             method: 'search_read',
             args: [[], ['id', 'name'],],
@@ -254,7 +254,7 @@ var IZIConfigDashboard = Widget.extend({
         if (self.selectedDashboard) {
             domain = [['id', '=', self.selectedDashboard]]
         }
-        jsonrpc('/web/dataset/call_kw/izi.dashboard/search_read', {
+        rpc('/web/dataset/call_kw/izi.dashboard/search_read', {
             model: 'izi.dashboard',
             method: 'search_read',
             args: [domain, ['id', 'name', 'write_date', 'theme_name', 'date_format', 'start_date', 'end_date', 'izi_lab_url', 'izi_dashboard_access_token', 'base_url', 'table_name', 'use_sidebar']],
@@ -283,7 +283,7 @@ var IZIConfigDashboard = Widget.extend({
                 self.$selectDashboard.find('.izi_subtitle').text('Click to select or create a dashboard');
             }
         })
-        jsonrpc('/web/dataset/call_kw/izi.dashboard/get_user_groups', {
+        rpc('/web/dataset/call_kw/izi.dashboard/get_user_groups', {
             model: 'izi.dashboard',
             method: 'get_user_groups',
             args: [],
@@ -511,7 +511,7 @@ var IZIConfigDashboard = Widget.extend({
 
         // Initiate Dynamic Filter
         self.$dynamicFiltersContainer.empty();
-        jsonrpc('/web/dataset/call_kw/izi.dashboard.filter/fetch_by_dashboard', {
+        rpc('/web/dataset/call_kw/izi.dashboard.filter/fetch_by_dashboard', {
             model: 'izi.dashboard.filter',
             method: 'fetch_by_dashboard',
             args: [[], [self.selectedDashboard]],
@@ -688,7 +688,7 @@ var IZIConfigDashboard = Widget.extend({
         var self = this;
         var body = {};
         $('.spinner-container').addClass('d-flex');
-        jsonrpc('/web/dataset/call_kw/izi.dashboard/action_get_lab_analysis_config', {
+        rpc('/web/dataset/call_kw/izi.dashboard/action_get_lab_analysis_config', {
             model: 'izi.dashboard',
             method: 'action_get_lab_analysis_config',
             args: [self.selectedDashboard, id, name],
@@ -708,7 +708,7 @@ var IZIConfigDashboard = Widget.extend({
                     if (self.$viewDashboard && self.$viewDashboard.$grid) {
                         var layout = self.$viewDashboard.$grid.save(false)
                         if (layout) {
-                            jsonrpc('/web/dataset/call_kw/izi.dashboard.block/ui_save_layout', {
+                            rpc('/web/dataset/call_kw/izi.dashboard.block/ui_save_layout', {
                                 model: 'izi.dashboard.block',
                                 method: 'ui_save_layout',
                                 args: [layout],
@@ -751,7 +751,7 @@ var IZIConfigDashboard = Widget.extend({
             clearTimeout(self.typingTimer);
             self.typingTimer = setTimeout(function () {
                 console.log('AI is generating...');
-                jsonrpc('/web/dataset/call_kw/izi.dashboard/action_ai_search', {
+                rpc('/web/dataset/call_kw/izi.dashboard/action_ai_search', {
                     model: 'izi.dashboard',
                     method: 'action_ai_search',
                     args: [self.selectedDashboard, keyword, deletePreviousAnalysis],
@@ -766,7 +766,7 @@ var IZIConfigDashboard = Widget.extend({
                             if (self.$viewDashboard && self.$viewDashboard.$grid) {
                                 var layout = self.$viewDashboard.$grid.save(false)
                                 if (layout) {
-                                    jsonrpc('/web/dataset/call_kw/izi.dashboard.block/ui_save_layout', {
+                                    rpc('/web/dataset/call_kw/izi.dashboard.block/ui_save_layout', {
                                         model: 'izi.dashboard.block',
                                         method: 'ui_save_layout',
                                         args: [layout],
@@ -899,7 +899,7 @@ var IZIConfigDashboard = Widget.extend({
                     var data = {
                         'theme_id': theme_id,
                     }
-                    jsonrpc('/web/dataset/call_kw/izi.dashboard/write', {
+                    rpc('/web/dataset/call_kw/izi.dashboard/write', {
                         model: 'izi.dashboard',
                         method: 'write',
                         args: [self.selectedDashboard, data],
@@ -930,7 +930,7 @@ var IZIConfigDashboard = Widget.extend({
     },
     _onClickEmbedDashboard: function(ev) {
         var self = this;
-        jsonrpc('/web/dataset/call_kw/izi.dashboard/generate_access_token', {
+        rpc('/web/dataset/call_kw/izi.dashboard/generate_access_token', {
             model: 'izi.dashboard',
             method: 'generate_access_token',
             args: [self.selectedDashboard, self.props.context || {}],
@@ -963,7 +963,7 @@ var IZIConfigDashboard = Widget.extend({
 
     _onClickShareDashboard: function(ev) {
         var self = this;
-        jsonrpc('/web/dataset/call_kw/izi.dashboard/generate_access_token', {
+        rpc('/web/dataset/call_kw/izi.dashboard/generate_access_token', {
             model: 'izi.dashboard',
             method: 'generate_access_token',
             args: [self.selectedDashboard,self.props.context || {}],
@@ -1005,7 +1005,7 @@ var IZIConfigDashboard = Widget.extend({
         if (self.$viewDashboard && self.$viewDashboard.$grid) {
             var layout = self.$viewDashboard.$grid.save(false)
             if (layout) {
-                jsonrpc('/web/dataset/call_kw/izi.dashboard.block/ui_save_layout', {
+                rpc('/web/dataset/call_kw/izi.dashboard.block/ui_save_layout', {
                     model: 'izi.dashboard.block',
                     method: 'ui_save_layout',
                     args: [layout],
@@ -1179,7 +1179,7 @@ var IZIConfigDashboard = Widget.extend({
                     var data = {
                         'name': name,
                     }
-                    jsonrpc('/web/dataset/call_kw/izi.dashboard/write', {
+                    rpc('/web/dataset/call_kw/izi.dashboard/write', {
                         model: 'izi.dashboard',
                         method: 'write',
                         args: [self.selectedDashboard, data],
@@ -1215,7 +1215,7 @@ var IZIConfigDashboard = Widget.extend({
                     var data = {
                         'name': name,
                     }
-                    jsonrpc('/web/dataset/call_kw/izi.dashboard/unlink', {
+                    rpc('/web/dataset/call_kw/izi.dashboard/unlink', {
                         model: 'izi.dashboard',
                         method: 'unlink',
                         args: [self.selectedDashboard],
@@ -1306,7 +1306,7 @@ var IZIConfigDashboard = Widget.extend({
         self._hideAIGenerate();
         if (self.selectedDashboard) {
             var self = this;
-            jsonrpc('/web/dataset/call_kw/izi.dashboard/action_check_key', {
+            rpc('/web/dataset/call_kw/izi.dashboard/action_check_key', {
                 model: 'izi.dashboard',
                 method: 'action_check_key',
                 args: [],
@@ -1366,7 +1366,7 @@ var IZIConfigDashboard = Widget.extend({
         self._hideAIGenerate();
         var dashboard_id = self.selectedDashboard
          
-        jsonrpc('/web/dataset/call_kw/izi.dashboard/export_all_config', {
+        rpc('/web/dataset/call_kw/izi.dashboard/export_all_config', {
             model: 'izi.dashboard',
             method: 'export_all_config',
             args: [dashboard_id],

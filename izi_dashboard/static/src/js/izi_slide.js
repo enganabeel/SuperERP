@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import IZIViewVisual from "@izi_dashboard/js/component/main/izi_view_visual";
 
 $(document).ready(function () {
@@ -51,7 +51,7 @@ $(document).ready(function () {
         var dashboardId = $('#dashboard_id').text();
         if (dashboardId) {
             dashboardId = parseInt(dashboardId);
-            jsonrpc('/web/dataset/call_kw/izi.dashboard/search_read', {
+            rpc('/web/dataset/call_kw/izi.dashboard/search_read', {
                 model: 'izi.dashboard',
                 method: 'search_read',
                 args: [[['id', '=', dashboardId]], ['id', 'name', 'theme_id', 'animation']],
@@ -83,7 +83,7 @@ $(document).ready(function () {
                         let analysisId = $(analysis).attr("id")
                         if(analysisId > 0){
                             var visual = new IZIViewVisual()
-                            jsonrpc('/web/dataset/call_kw/izi.analysis/try_get_analysis_data_dashboard', {
+                            rpc('/web/dataset/call_kw/izi.analysis/try_get_analysis_data_dashboard', {
                                 model: 'izi.analysis',
                                 method: 'try_get_analysis_data_dashboard',
                                 args: [parseInt(analysisId)],

@@ -2,7 +2,7 @@
 
 import Widget from "@izi_dashboard/legacy_core/widget";
 import { _t } from "@web/core/l10n/translation";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 
 class IZIAutocomplete {
     constructor(parent, args) {
@@ -105,7 +105,7 @@ class IZIAutocomplete {
             query: function (query) {
                 var data = {results: []};
                 loadingRPC = true;
-                jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_fields_dynamic', {
+                rpc('/web/dataset/call_kw/izi.analysis/ui_get_fields_dynamic', {
                     model: 'izi.analysis',
                     method: 'ui_get_fields_dynamic',
                     args: [self.analysisId,self.params,query.term],
@@ -170,7 +170,7 @@ class IZIAutocomplete {
                     typingTimer = setTimeout(function() {
                         //do something
                         loadingRPC = true;
-                        jsonrpc('/web/dataset/call_kw/izi.dashboard.filter/fetch_values', {
+                        rpc('/web/dataset/call_kw/izi.dashboard.filter/fetch_values', {
                             model: 'izi.dashboard.filter',
                             method: 'fetch_values',
                             args: [self.params, query.term, parent_filter_value],

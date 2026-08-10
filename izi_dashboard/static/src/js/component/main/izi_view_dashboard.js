@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import Widget from "@izi_dashboard/legacy_core/widget";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import { _t } from "@web/core/l10n/translation";
 import IZIViewDashboardBlock from "@izi_dashboard/js/component/main/izi_view_dashboard_block";
 import IZIViewVisual from "@izi_dashboard/js/component/main/izi_view_visual";
@@ -112,7 +112,7 @@ var IZIViewDashboard = Widget.extend({
     },
     _updateDashboardTable: function(table_id) {
         var self = this
-        jsonrpc('/web/dataset/call_kw/izi.dashboard/update_dashboard_table', {
+        rpc('/web/dataset/call_kw/izi.dashboard/update_dashboard_table', {
             model: 'izi.dashboard',
             method: 'update_dashboard_table',
             args: [self.selectedDashboard,table_id],
@@ -133,7 +133,7 @@ var IZIViewDashboard = Widget.extend({
         }).then((result) => {
             if (result.isConfirmed) {
                 if (self.selectedDashboard) {
-                    jsonrpc('/web/dataset/call_kw/izi.dashboard/action_add_to_dashboard', {
+                    rpc('/web/dataset/call_kw/izi.dashboard/action_add_to_dashboard', {
                         model: 'izi.dashboard',
                         method: 'action_add_to_dashboard',
                         args: [self.selectedDashboard],
@@ -282,7 +282,7 @@ var IZIViewDashboard = Widget.extend({
             var query = $(ev.currentTarget).closest('.code_content_sql').text();
             query = query.replaceAll('play_arrow', '');
             if (query && self.selectedDashboard) {
-                jsonrpc('/web/dataset/call_kw/izi.dashboard/action_execute_code', {
+                rpc('/web/dataset/call_kw/izi.dashboard/action_execute_code', {
                     model: 'izi.dashboard',
                     method: 'action_execute_code',
                     args: [self.selectedDashboard, query],
@@ -429,7 +429,7 @@ var IZIViewDashboard = Widget.extend({
         if (self.selectedDashboard && self.raw_messages) {
             let spinner = $(`<span class="spinner-border spinner-border-small" style="margin-top: 20px;"/>`);
             spinner.appendTo(self.$viewDashboardAsk);
-            jsonrpc('/web/dataset/call_kw/izi.dashboard/action_get_lab_ask', {
+            rpc('/web/dataset/call_kw/izi.dashboard/action_get_lab_ask', {
                 model: 'izi.dashboard',
                 method: 'action_get_lab_ask',
                 args: [self.selectedDashboard, self.raw_messages],
@@ -559,7 +559,7 @@ var IZIViewDashboard = Widget.extend({
             var fileContent = fileReader.result;
             // console.log(files, filename, filetype, fileContent);
             if (filetype == 'application/json') {
-                jsonrpc('/web/dataset/call_kw/izi.dashboard.config.wizard/process_wizard_model', {
+                rpc('/web/dataset/call_kw/izi.dashboard.config.wizard/process_wizard_model', {
                     model: 'izi.dashboard.config.wizard',
                     method: 'process_wizard_model',
                     args: [self.selectedDashboard, fileContent],
@@ -585,7 +585,7 @@ var IZIViewDashboard = Widget.extend({
                 } else if (filetype == 'text/csv') {
                     
                 }
-                jsonrpc('/web/dataset/call_kw/izi.data.source.item/process_data_file', {
+                rpc('/web/dataset/call_kw/izi.data.source.item/process_data_file', {
                     model: 'izi.data.source.item',
                     method: 'process_data_file',
                     args: [self.selectedDashboard, filename, filetype, fileContent],
@@ -626,7 +626,7 @@ var IZIViewDashboard = Widget.extend({
         self._clear();
         if (self.selectedDashboard) {
             $('#global_dashboard_id').val(self.selectedDashboard)
-            jsonrpc('/web/dataset/call_kw/izi.dashboard.block/search_read', {
+            rpc('/web/dataset/call_kw/izi.dashboard.block/search_read', {
                 model: 'izi.dashboard.block',
                 method: 'search_read',
                 args: [[['dashboard_id', '=', self.selectedDashboard]], ['id', 'gs_x', 'gs_y', 'gs_w', 'gs_h', 'min_gs_w', 'min_gs_h', 'analysis_id', 'animation', 'refresh_interval', 'visual_type_name', 'rtl']],
