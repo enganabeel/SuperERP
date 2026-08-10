@@ -7,10 +7,10 @@
             <field name="name">izi.data.source.tree</field>
             <field name="model">izi.data.source</field>
             <field name="arch" type="xml">
-                <tree>
+                <list>
                     <field name="name"/>
                     <field name="type"/>
-                </tree>
+                </list>
             </field>
         </record>
 
@@ -44,20 +44,20 @@
                         <notebook>
                             <page string="Tables">
                                 <field name="table_ids">
-                                    <tree editable="top">
+                                    <list editable="top">
                                         <field name="name"/>
                                         <field name="table_name"/>
                                         <field name="active" widget="boolean_toggle"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Sources">
                                 <field name="item_ids">
-                                    <tree>
+                                    <list>
                                         <field name="name"/>
                                         <field name="table_id"/>
                                         <field name="type"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                         </notebook>

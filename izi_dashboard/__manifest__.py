@@ -10,7 +10,7 @@
         You can explore data with AI too!
     """,
     "category": "Reporting",
-    "version": "17.0.5.2.6",
+    "version": "18.0.5.2.6",
     "development_status": "Production",  # Options: Alpha|Beta|Production/Stable|Mature
     "auto_install": False,
     "installable": True,

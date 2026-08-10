@@ -8,7 +8,7 @@
         "Web Data Library API Connector" facilitates data retrieval from various web sources,
         enhancing integration capabilities in Odoo.""",
     "category": "Reporting",
-    "version": "17.0.0.1.0",
+    "version": "18.0.0.1.0",
     "development_status": "Alpha",  # Options: Alpha|Beta|Production/Stable|Mature
     "auto_install": False,
     "installable": True,

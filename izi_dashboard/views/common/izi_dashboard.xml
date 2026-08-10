@@ -47,13 +47,13 @@
                         <notebook>
                             <page string="Filters">
                                 <field name="filter_ids">
-                                    <tree>
+                                    <list>
                                         <field name="sequence" widget="handle"/>
                                         <field name="name"/>
                                         <field name="source_type"/>
                                         <field name="parent_filter_id"/>
                                         <field name="selection_type"/>
-                                    </tree>
+                                    </list>
                                     <form>
                                         <sheet>
                                             <group>
@@ -85,14 +85,14 @@
                                             <notebook>
                                                 <page string="Applied To">
                                                     <field name="filter_analysis_ids">
-                                                    <tree editable="bottom">
+                                                    <list editable="bottom">
                                                         <field name="table_id" create="0"/>
                                                         <field name="allowed_analysis_ids" optional="hide"/>
                                                         <field name="analysis_id" create="0"/> <!-- domain="[('id', 'in', allowed_analysis_ids)]" -->
                                                         <field name="allowed_field_ids" optional="hide"/>
                                                         <field name="field_id" domain="[('id', 'in', allowed_field_ids)]" create="0"/>
                                                         <field name="operator"/>
-                                                    </tree>
+                                                    </list>
                                                     </field>
                                                 </page>
                                             </notebook>
@@ -102,19 +102,19 @@
                             </page>
                             <page string="Analysis Blocks" invisible="1">
                                 <field name="block_ids">
-                                    <tree>
+                                    <list>
                                         <field name="name"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Presentation">
                                 <field name="slide_ids">
-                                    <tree>
+                                    <list>
                                         <field name="sequence" widget="handle"/>
                                         <field name="slide_title" />
                                         <field name="analysis_id" />
                                         <field name="layout" />
-                                    </tree> 
+                                    </list> 
                                 </field>
                                 <group>
                                     <field name="transition" />
@@ -127,24 +127,24 @@
                             </page>
                             <page string="Number Format">
                                 <field name="dashboard_number_formats">
-                                    <tree editable="bottom">
+                                    <list editable="bottom">
                                         <field name="digit" widget="integer"/>
                                         <field name="label"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Access Control">
                                 <field name="group_ids">
-                                    <tree>
+                                    <list>
                                         <field name="display_name"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="Menu Shortcut">
                                 <field name="menu_ids">
-                                    <tree>
+                                    <list>
                                         <field name="display_name"/>
-                                    </tree>
+                                    </list>
                                 </field>
                             </page>
                             <page string="AI Settings">

@@ -43,10 +43,10 @@
                 <xpath expr="//notebook/page[3]" position="after">
                     <page string="Number Format">
                         <field name="analysis_number_formats">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="digit" widget="integer"/>
                                 <field name="label"/>
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </xpath>
