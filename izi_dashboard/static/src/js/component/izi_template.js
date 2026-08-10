@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import Widget from "@web/legacy/js/core/widget";
+import Widget from "@izi_dashboard/legacy_core/widget";
 
 var IZITemplate = Widget.extend({
     template: 'IZITemplate',

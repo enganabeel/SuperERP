@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import Widget from "@web/legacy/js/core/widget";
+import Widget from "@izi_dashboard/legacy_core/widget";
 
 import IZIViewVisual from "@izi_dashboard/js/component/main/izi_view_visual";
 import IZISelectFilterTemp from "@izi_dashboard/js/component/main/izi_select_filter_temp";

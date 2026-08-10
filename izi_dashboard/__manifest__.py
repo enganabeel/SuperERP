@@ -117,15 +117,12 @@
 
     'assets': {
         'web.assets_backend': [
-            # Odoo
-            'web/static/src/legacy/js/core/class.js',
-            'web/static/src/legacy/js/core/dialog.js',
-            'web/static/src/legacy/xml/dialog.xml',
-            'web/static/src/legacy/js/core/minimal_dom.js',
-            'web/static/src/legacy/js/core/dom.js',
-            'web/static/src/legacy/js/core/mixins.js',
-            'web/static/src/legacy/js/core/service_mixins.js',
-            'web/static/src/legacy/js/core/widget.js',
+            # Odoo legacy Widget framework (removed from Odoo core in 18.0,
+            # vendored here since izi_dashboard's UI components still use it)
+            'izi_dashboard/static/src/legacy_core/class.js',
+            'izi_dashboard/static/src/legacy_core/mixins.js',
+            'izi_dashboard/static/src/legacy_core/service_mixins.js',
+            'izi_dashboard/static/src/legacy_core/widget.js',
             # QWeb
             # Generic
             'izi_dashboard/static/src/xml/component/izi_dialog.xml',
