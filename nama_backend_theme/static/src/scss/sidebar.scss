@@ -1,0 +1,84 @@
+body.o_web_client {
+  .nav-wrapper-bits.toggle-show {
+    background: linear-gradient(180deg, var(--nama-navy2), var(--nama-navy)) !important;
+    box-shadow: -14px 0 45px rgba(10, 38, 51, .18);
+
+    header.o_navbar {
+      .o_company_logo {
+        background: #ffffff12 !important;
+        border-radius: 14px !important;
+      }
+    }
+
+    .primary-nav {
+      ul#menu-dropdown {
+        li {
+          a.main_link {
+            border-radius: 10px;
+            margin: 2px 8px;
+            color: #dce8ec;
+            font-weight: 600;
+            transition: .2s;
+
+            &:hover {
+              background: #ffffff0c;
+            }
+          }
+        }
+
+        ul.header-sub-menus.main {
+          background-color: var(--nama-navy) !important;
+
+          .back_main_menu h3 {
+            color: #fff !important;
+          }
+
+          li {
+            background: var(--nama-navy) !important;
+
+            .sub-main-menu {
+              background: var(--nama-navy) !important;
+              color: #a9bec6;
+              border-radius: 10px;
+
+              &[aria-expanded="true"] {
+                background: #ffffff0c !important;
+                color: #fff;
+              }
+            }
+          }
+
+          &.show li .sub-main-menu {
+            background: #ffffff0c;
+          }
+
+          a.child_menus {
+            color: #a9bec6;
+            border-radius: 8px;
+
+            &:hover {
+              color: #fff;
+              background: #ffffff0b;
+            }
+          }
+        }
+      }
+    }
+
+    .systray-container-bits {
+      .user-avtar-bits {
+        background: var(--nama-mint) !important;
+
+        .oe_topbar_name {
+          color: var(--nama-navy) !important;
+          font-weight: 700;
+        }
+
+        mark {
+          background: #fff !important;
+          color: var(--nama-navy) !important;
+        }
+      }
+    }
+  }
+}

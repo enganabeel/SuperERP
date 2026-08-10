@@ -1,0 +1,21 @@
+:root {
+  --nama-navy: #132b3c;
+  --nama-navy2: #0d2130;
+  --nama-mint: #34c7a1;
+  --nama-mint2: #ddf8f0;
+  --nama-bg: #f3f6f8;
+  --nama-card: #fff;
+  --nama-text: #182b37;
+  --nama-muted: #75858f;
+  --nama-line: #e5ebee;
+  --nama-gold: #eab65e;
+  --nama-red: #ef6b6b;
+  --nama-blue: #5586e8;
+  --nama-shadow: 0 10px 28px rgba(22, 43, 55, .07);
+}
+
+body.o_web_client {
+  font-family: 'Tajawal', Arial, sans-serif;
+  background: radial-gradient(circle at 74% -8%, #dff7f0 0, transparent 25%), var(--nama-bg);
+  color: var(--nama-text);
+}
