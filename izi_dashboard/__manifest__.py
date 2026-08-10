@@ -117,6 +117,13 @@
 
     'assets': {
         'web.assets_backend': [
+            # jQuery: loaded explicitly and first, since izi_dashboard's own
+            # bundled jQuery plugins (select2, jquery.ui, bootstrap-datepicker,
+            # jscolor, tempusdominus...) expect a global jQuery/$ to already
+            # exist when they run, and that can no longer be assumed to come
+            # from Odoo core's own asset ordering.
+            'web/static/lib/jquery/jquery.js',
+            'web/static/src/legacy/js/libs/jquery.js',
             # Odoo legacy Widget framework (removed from Odoo core in 18.0,
             # vendored here since izi_dashboard's UI components still use it)
             'izi_dashboard/static/src/legacy_core/class.js',
