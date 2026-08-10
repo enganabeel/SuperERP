@@ -105,7 +105,7 @@ class IZIAutocomplete {
             query: function (query) {
                 var data = {results: []};
                 loadingRPC = true;
-                rpc('/web/dataset/call_kw/izi.analysis/ui_get_fields_dynamic', {
+                rpc('/odoo/dataset/call_kw/izi.analysis/ui_get_fields_dynamic', {
                     model: 'izi.analysis',
                     method: 'ui_get_fields_dynamic',
                     args: [self.analysisId,self.params,query.term],
@@ -170,7 +170,7 @@ class IZIAutocomplete {
                     typingTimer = setTimeout(function() {
                         //do something
                         loadingRPC = true;
-                        rpc('/web/dataset/call_kw/izi.dashboard.filter/fetch_values', {
+                        rpc('/odoo/dataset/call_kw/izi.dashboard.filter/fetch_values', {
                             model: 'izi.dashboard.filter',
                             method: 'fetch_values',
                             args: [self.params, query.term, parent_filter_value],

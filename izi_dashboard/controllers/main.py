@@ -18,7 +18,7 @@ from odoo.addons.web.controllers.home import Home
 
 
 class IZIHomeController(Home):
-    @http.route('/web', type='http', auth="none")
+    @http.route('/odoo', type='http', auth="none")
     def web_client(self, s_action=None, **kw):
 
         # Ensure we have both a database and a user
@@ -250,11 +250,11 @@ class DashboardWebsiteController(http.Controller):
         vals = []
         default_bg_attachment_url = ''
         if dashboard.general_bg_file:
-            default_bg_attachment_url = '/web/image/izi.dashboard/%s/general_bg_file' % (dashboard.id)
+            default_bg_attachment_url = '/odoo/image/izi.dashboard/%s/general_bg_file' % (dashboard.id)
 
         for slide in slides:
             if slide.bg_file:
-                bg_attachment_url = '/web/image/izi.dashboard.slide/%s/bg_file' % (slide.id)
+                bg_attachment_url = '/odoo/image/izi.dashboard.slide/%s/bg_file' % (slide.id)
             else:
                 bg_attachment_url = default_bg_attachment_url
 
