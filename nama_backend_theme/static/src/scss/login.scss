@@ -1,5 +1,11 @@
+$nama-icon-exclusions: '.fa, .fab, .fas, .far, .fal, .oi, .material-icons, [class*="fa-"], [class*="oi-"]';
+
 #wrapwrap .login-view-bits {
-  font-family: 'Tajawal', Arial, sans-serif;
+  font-family: 'Tajawal', Arial, sans-serif !important;
+
+  *:not(#{$nama-icon-exclusions}) {
+    font-family: 'Tajawal', Arial, sans-serif !important;
+  }
 
   .card-body {
     border-radius: 22px !important;
