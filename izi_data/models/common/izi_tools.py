@@ -36,7 +36,7 @@ class IZITools(models.TransientModel):
         return lib[key]
 
     def check_su(self):
-        if not (self.user_has_groups('base.group_system') or self.env.su):
+        if not (self.env.user.has_group('base.group_system') or self.env.su):
             raise UserError('Access Restricted Only For Odoo Administrator!')
     
     def get_db_cursor(self, dbtype, kwargs):

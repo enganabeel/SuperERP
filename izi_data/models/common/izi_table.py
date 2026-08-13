@@ -323,7 +323,7 @@ class IZITable(models.Model):
                         'code': False,
                         'interval_number': 1,
                         'interval_type': 'days',
-                        'numbercall': -1,
+                        # 'numbercall': -1,
                         'active': False,
                         'code': DEFAULT_PYTHON_CODE,
                         'analytic': True,
@@ -362,7 +362,7 @@ class IZITable(models.Model):
                     'code': False,
                     'interval_number': 1,
                     'interval_type': 'days',
-                    'numbercall': -1,
+                    # 'numbercall': -1,
                     'active': False,
                     'analytic': True,
                 })
@@ -674,16 +674,18 @@ class IZITable(models.Model):
                 for izi_field in izi_table.field_ids:
                     list_fields.append("%s %s" % (izi_field.field_name, izi_field.field_type_origin.upper()))
                 fields_query = ", ".join(list_fields)
-                create_table_query = "CREATE TABLE IF NOT EXISTS %s (%s);" % (
-                    table_name, fields_query)
-                self.env.cr.execute(create_table_query)
+                if table_name:
+                    create_table_query = "CREATE TABLE IF NOT EXISTS %s (%s);" % (
+                        table_name, fields_query)
+                    self.env.cr.execute(create_table_query)
 
     def destroy_schema_store_table(self):
         for izi_table in self:
             if izi_table.is_stored and izi_table.user_defined and izi_table.field_ids:
                 table_name = izi_table.store_table_name
-                drop_table_query = "DROP TABLE IF EXISTS %s" % table_name
-                self.env.cr.execute(drop_table_query)
+                if table_name:
+                    drop_table_query = "DROP TABLE IF EXISTS %s" % table_name
+                    self.env.cr.execute(drop_table_query)
 
     def update_schema_store_table(self):
         for izi_table in self:

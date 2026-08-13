@@ -66,6 +66,7 @@
                                         <field name="locale_code"/>
                                         <field name="decimal_places"/>
                                         <field name="name_alias"/>
+                                        <field name="custom_query"/>
                                     </list>
                                 </field>
 
@@ -101,6 +102,7 @@
                             <page string="Domain">
                                 <group>
                                     <field name="limit"/>
+                                    <field name="date_field_type" />
                                     <field name="date_field_id" domain="[('field_type', '=', ['date', 'datetime']), ('table_id', '=', table_id)]" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
                                     <field name="identifier_field_id" domain="[('field_type', '=', ['number']), ('table_id', '=', table_id)]" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" invisible="method not in  ('model')"/>
                                     <field name="model_id" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}" invisible="method not in  ('model')"/>

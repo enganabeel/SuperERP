@@ -38,7 +38,7 @@ class ReportController(http.Controller):
         # sheet.write(0, 0, '%s REPORT %s TO %s' % (name.upper(), date_from, date_to), title_style)
         
         data = []
-        data_kwargs = {}
+        data_kwargs = {'is_excel_export': True}
         if kwargs.get('filters'):
             filters = json.loads(kwargs.get('filters'))
             data_kwargs['filters'] = filters

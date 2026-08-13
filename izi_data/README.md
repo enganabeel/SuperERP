@@ -1,6 +1,6 @@
 ## IZI Data
 - **Technical Name**: izi_data
-- **Version**: 17.0.5.0.1
+- **Version**: 18.0.5.0.2
 - **Author**: IZI PT Solusi Usaha Mudah
 - **License**: OPL-1
 - **Application**: True
