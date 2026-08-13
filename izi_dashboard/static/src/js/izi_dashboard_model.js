@@ -1,11 +1,12 @@
-odoo.define('izi_dashboard.IZIDashboardModel', function (require) {
-    "use strict";
+/** @odoo-module */
+// NOTE: see izi_dashboard_controller_legacy.js - web.AbstractModel has no
+// Odoo 18 equivalent. Reference-only, not registered in the manifest.
+import AbstractModel from "@web/legacy/js/views/abstract_model";
 
-    var AbstractModel = require('web.AbstractModel');
-    return AbstractModel.extend({
-        init: function () {
-            this._super.apply(this, arguments);
-        },
-    });
-
+export const IZIDashboardModel = AbstractModel.extend({
+    init: function () {
+        this._super.apply(this, arguments);
+    },
 });
+
+export default IZIDashboardModel;
