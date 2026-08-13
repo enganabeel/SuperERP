@@ -15,15 +15,15 @@ class ActWindow(models.Model):
 
     izi_default_action = fields.Boolean('IZI Default Action', default=False)
     
-# class ActWindowView(models.Model):
-#     _inherit = 'ir.actions.act_window.view'
-#     view_mode = fields.Selection(
-#         selection_add=[
-#             ('izianalysis', 'IZI Analysis'),
-#             ('izidashboard', 'IZI Dashboard'),
-#         ],
-#         ondelete={
-#             'izianalysis': 'cascade',
-#             'izidashboard': 'cascade',
-#         }
-#     )
+class ActWindowView(models.Model):
+    _inherit = 'ir.actions.act_window.view'
+    view_mode = fields.Selection(
+        selection_add=[
+            ('izianalysis', 'IZI Analysis'),
+            ('izidashboard', 'IZI Dashboard'),
+        ],
+        ondelete={
+            'izianalysis': 'cascade',
+            'izidashboard': 'cascade',
+        }
+    )
