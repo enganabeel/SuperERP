@@ -2,7 +2,7 @@ import io
 import json
 import operator
 
-from odoo.addons.web.controllers.main import ExportFormat,serialize_exception
+from .ks_export_utils import serialize_exception
 
 from odoo import http
 from odoo.http import request
