@@ -28,7 +28,6 @@
 
 .eh_board_app {
     /* ---- light (default) tokens ---- */
-    position:fixed !important;
     --eh-board-bg: #f3f5f6;
     --eh-board-surface: #ffffff;
     --eh-board-surface-2: #f7f9fa;
@@ -47,7 +46,7 @@
     --eh-board-series-7: #a33f73;
     --eh-board-series-8: #b84a1b;
 
-    position: absolute;
+    position: inherit;
     inset: 0;
     display: flex;
     flex-direction: column;
