@@ -28,6 +28,7 @@
 
 .eh_board_app {
     /* ---- light (default) tokens ---- */
+    position:fixed !important;
     --eh-board-bg: #f3f5f6;
     --eh-board-surface: #ffffff;
     --eh-board-surface-2: #f7f9fa;
