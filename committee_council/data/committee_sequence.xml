@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="seq_committee_committee" model="ir.sequence">
+        <field name="name">Committee Reference</field>
+        <field name="code">committee.committee</field>
+        <field name="prefix">COM/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_committee_meeting" model="ir.sequence">
+        <field name="name">Committee Meeting</field>
+        <field name="code">committee.meeting</field>
+        <field name="prefix">MTG/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="seq_committee_minutes" model="ir.sequence">
+        <field name="name">Committee Minutes</field>
+        <field name="code">committee.minutes</field>
+        <field name="prefix">MIN/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
+
+</odoo>

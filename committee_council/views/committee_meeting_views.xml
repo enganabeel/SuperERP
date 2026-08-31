@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_committee_meeting_list" model="ir.ui.view">
+        <field name="name">committee.meeting.list</field>
+        <field name="model">committee.meeting</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="committee_id"/>
+                <field name="meeting_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'scheduled'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_committee_meeting_form" model="ir.ui.view">
+        <field name="name">committee.meeting.form</field>
+        <field name="model">committee.meeting</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_close_attendance" string="Close Attendance" type="object" invisible="attendance_closed" class="btn-secondary"/>
+                    <button name="action_reopen_attendance" string="Reopen Attendance" type="object" invisible="not attendance_closed" class="btn-secondary"/>
+                    <button name="action_mark_done" string="Mark Done" type="object" class="btn-primary" invisible="state == 'done'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,scheduled,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Meeting subject..."/></h1>
+                        <h3><field name="code" readonly="1"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="committee_id"/>
+                            <field name="topic_ids" widget="many2many_tags"/>
+                            <field name="location_type_id"/>
+                            <field name="location"/>
+                        </group>
+                        <group>
+                            <field name="meeting_date"/>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="allow_attendance_closing"/>
+                            <field name="attendance_closed"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Attendance">
+                            <field name="attendee_ids">
+                                <list editable="bottom">
+                                    <field name="user_id"/>
+                                    <field name="attended"/>
+                                    <field name="signed"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_committee_meeting" model="ir.actions.act_window">
+        <field name="name">Meetings</field>
+        <field name="res_model">committee.meeting</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

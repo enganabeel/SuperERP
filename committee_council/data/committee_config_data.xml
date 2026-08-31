@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Status classification -->
+    <record id="state_class_new" model="committee.state.classification">
+        <field name="name">New</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="state_class_active" model="committee.state.classification">
+        <field name="name">Active</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="state_class_inactive" model="committee.state.classification">
+        <field name="name">Inactive</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="state_class_suspended" model="committee.state.classification">
+        <field name="name">Suspended</field>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="state_subclass_new_intake" model="committee.state.subclassification">
+        <field name="name">New - Intake</field>
+        <field name="state_classification_id" ref="state_class_new"/>
+        <field name="sequence">10</field>
+    </record>
+    <record id="state_subclass_new_incomplete" model="committee.state.subclassification">
+        <field name="name">New - Incomplete</field>
+        <field name="state_classification_id" ref="state_class_new"/>
+        <field name="sequence">20</field>
+    </record>
+    <record id="state_subclass_pending" model="committee.state.subclassification">
+        <field name="name">Pending</field>
+        <field name="state_classification_id" ref="state_class_inactive"/>
+        <field name="sequence">30</field>
+    </record>
+    <record id="state_subclass_recommendations_closed" model="committee.state.subclassification">
+        <field name="name">Closed - Recommendations Concluded</field>
+        <field name="state_classification_id" ref="state_class_inactive"/>
+        <field name="sequence">40</field>
+    </record>
+    <record id="state_subclass_referral_closed" model="committee.state.subclassification">
+        <field name="name">Closed - Referral Closure</field>
+        <field name="state_classification_id" ref="state_class_inactive"/>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- Membership classification -->
+    <record id="membership_class_internal" model="committee.membership.classification">
+        <field name="name">Internal Administration</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="membership_class_bodies" model="committee.membership.classification">
+        <field name="name">Bodies Administration</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="membership_class_delegated" model="committee.membership.classification">
+        <field name="name">Delegated by Memo</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <!-- Importance -->
+    <record id="importance_ministry" model="committee.importance">
+        <field name="name">Ministry</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="importance_expert" model="committee.importance">
+        <field name="name">Expert</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="importance_management" model="committee.importance">
+        <field name="name">Management</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="importance_operation" model="committee.importance">
+        <field name="name">Operational</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="importance_initiative" model="committee.importance">
+        <field name="name">Initiative</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="importance_partnership" model="committee.importance">
+        <field name="name">Partnerships</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="importance_internal" model="committee.importance">
+        <field name="name">Internal</field>
+        <field name="sequence">70</field>
+    </record>
+    <record id="importance_other" model="committee.importance">
+        <field name="name">Other</field>
+        <field name="sequence">80</field>
+    </record>
+
+    <!-- Reference / relation classification -->
+    <record id="reference_class_royal" model="committee.reference.classification">
+        <field name="name">Royal</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="reference_class_state" model="committee.reference.classification">
+        <field name="name">State</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="reference_class_ministry" model="committee.reference.classification">
+        <field name="name">Ministry</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="reference_class_management" model="committee.reference.classification">
+        <field name="name">Management</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="reference_class_internal" model="committee.reference.classification">
+        <field name="name">Internal</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="reference_class_external" model="committee.reference.classification">
+        <field name="name">External</field>
+        <field name="sequence">60</field>
+    </record>
+
+    <!-- Member roles -->
+    <record id="member_role_member" model="committee.member.role">
+        <field name="name">Member</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="member_role_agency_rep" model="committee.member.role">
+        <field name="name">Agency Representative</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="member_role_agency_official" model="committee.member.role">
+        <field name="name">Agency Official</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="member_role_secretary" model="committee.member.role">
+        <field name="name">Committee Secretary</field>
+        <field name="sequence">40</field>
+        <field name="is_secretary">True</field>
+    </record>
+    <record id="member_role_chairman" model="committee.member.role">
+        <field name="name">Committee Chairman</field>
+        <field name="sequence">50</field>
+        <field name="is_chairman">True</field>
+    </record>
+
+    <!-- Topic classification -->
+    <record id="topic_class_strategy" model="committee.topic.classification">
+        <field name="name">Institution Strategy</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="topic_class_procedures" model="committee.topic.classification">
+        <field name="name">Work Procedures</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="topic_class_budget" model="committee.topic.classification">
+        <field name="name">Annual Budget</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="topic_class_contracts" model="committee.topic.classification">
+        <field name="name">Supply Contracts</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="topic_class_financial" model="committee.topic.classification">
+        <field name="name">Financial Matters</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="topic_class_admin" model="committee.topic.classification">
+        <field name="name">Administrative Matters</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="topic_class_it" model="committee.topic.classification">
+        <field name="name">IT &amp; Digital Projects</field>
+        <field name="sequence">70</field>
+    </record>
+    <record id="topic_class_tenders" model="committee.topic.classification">
+        <field name="name">Contracts &amp; Tenders</field>
+        <field name="sequence">80</field>
+    </record>
+    <record id="topic_class_grievances" model="committee.topic.classification">
+        <field name="name">Grievances &amp; Complaints</field>
+        <field name="sequence">90</field>
+    </record>
+    <record id="topic_class_reports" model="committee.topic.classification">
+        <field name="name">Reports &amp; Recommendations</field>
+        <field name="sequence">100</field>
+    </record>
+
+    <!-- Vote answers -->
+    <record id="vote_answer_approved" model="committee.vote.answer">
+        <field name="name">Approved</field>
+        <field name="sequence">10</field>
+        <field name="show_as_votes">True</field>
+    </record>
+    <record id="vote_answer_rejected" model="committee.vote.answer">
+        <field name="name">Not Approved</field>
+        <field name="sequence">20</field>
+        <field name="requires_reason">True</field>
+        <field name="show_as_votes">True</field>
+    </record>
+    <record id="vote_answer_abstain" model="committee.vote.answer">
+        <field name="name">Abstain</field>
+        <field name="sequence">30</field>
+        <field name="requires_reason">True</field>
+        <field name="show_as_votes">True</field>
+    </record>
+
+    <!-- Secrecy -->
+    <record id="secrecy_public" model="committee.secrecy">
+        <field name="name">Public</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="secrecy_confidential" model="committee.secrecy">
+        <field name="name">Confidential</field>
+        <field name="sequence">20</field>
+        <field name="is_secret">True</field>
+    </record>
+
+    <!-- Specialty -->
+    <record id="specialty_general" model="committee.specialty">
+        <field name="name">General</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="specialty_specialists" model="committee.specialty">
+        <field name="name">Specialists Only</field>
+        <field name="sequence">20</field>
+        <field name="is_specialist">True</field>
+    </record>
+
+    <!-- Periodicity -->
+    <record id="periodicity_on_request" model="committee.periodicity">
+        <field name="name">On Request</field>
+        <field name="code">on_request</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="periodicity_daily" model="committee.periodicity">
+        <field name="name">Daily</field>
+        <field name="code">daily</field>
+        <field name="days">1</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="periodicity_weekly" model="committee.periodicity">
+        <field name="name">Weekly</field>
+        <field name="code">weekly</field>
+        <field name="days">7</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="periodicity_monthly" model="committee.periodicity">
+        <field name="name">Monthly</field>
+        <field name="code">monthly</field>
+        <field name="days">30</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="periodicity_yearly" model="committee.periodicity">
+        <field name="name">Yearly</field>
+        <field name="code">yearly</field>
+        <field name="days">365</field>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- Meeting location type -->
+    <record id="location_type_in_person" model="committee.meeting.location.type">
+        <field name="name">In Person</field>
+        <field name="is_attendance">True</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="location_type_remote" model="committee.meeting.location.type">
+        <field name="name">Remote</field>
+        <field name="is_remote">True</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="location_type_hybrid" model="committee.meeting.location.type">
+        <field name="name">Hybrid</field>
+        <field name="is_attendance">True</field>
+        <field name="is_remote">True</field>
+        <field name="sequence">30</field>
+    </record>
+
+</odoo>
