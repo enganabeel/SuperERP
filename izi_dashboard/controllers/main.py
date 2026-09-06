@@ -18,7 +18,7 @@ from odoo.addons.web.controllers.home import Home
 
 
 class IZIHomeController(Home):
-    @http.route('/web', type='http', auth="none")
+    @http.route('/odoo', type='http', auth="none")
     def web_client(self, s_action=None, **kw):
 
         # Ensure we have both a database and a user

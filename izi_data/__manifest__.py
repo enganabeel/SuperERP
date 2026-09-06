@@ -6,7 +6,7 @@
     "name": """Analytic Data Query""",
     "summary": """IZI Module to Handle Data Query. Dependency For IZI Dashboard by IZI""",
     "category": "Reporting",
-    "version": "18.0.5.0.1",
+    "version": "18.0.5.0.2",
     "development_status": "Alpha",  # Options: Alpha|Beta|Production/Stable|Mature
     "auto_install": False,
     "installable": True,

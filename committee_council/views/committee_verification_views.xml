@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_committee_verification_list" model="ir.ui.view">
+        <field name="name">committee.verification.list</field>
+        <field name="model">committee.verification</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="committee_id"/>
+                <field name="name"/>
+                <field name="verified"/>
+                <field name="verification_date"/>
+                <field name="notes"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_committee_verification" model="ir.actions.act_window">
+        <field name="name">Verification Checklist</field>
+        <field name="res_model">committee.verification</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -55,6 +55,15 @@ body.o_web_client {
           border-color: var(--nama-line) !important;
         }
 
+        .o_searchview .o_searchview_autocomplete {
+            position: inherit;
+            top: calc(100% + 3px);
+            right: auto;
+            bottom: auto;
+            left: 0;
+            width: 100%;
+          }
+
         .o_searchview_dropdown_toggler {
           border-radius: 0 12px 12px 0 !important;
         }

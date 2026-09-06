@@ -4,7 +4,7 @@ import Widget from "@izi_dashboard/legacy_core/widget";
 
 import IZIViewVisual from "@izi_dashboard/js/component/main/izi_view_visual";
 import IZISelectFilterTemp from "@izi_dashboard/js/component/main/izi_select_filter_temp";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import { useService } from "@web/core/utils/hooks";
 var IZIViewAnalysis = Widget.extend({
     template: 'IZIViewAnalysis',
@@ -148,7 +148,7 @@ var IZIViewAnalysis = Widget.extend({
         }).then((result) => {
             if (result.isConfirmed) {
                 // console.log(self.selectedAnalysisExplores);
-                jsonrpc('/web/dataset/call_kw/izi.analysis/save_lab_analysis_explore', {
+                rpc('/web/dataset/call_kw/izi.analysis/save_lab_analysis_explore', {
                     model: 'izi.analysis',
                     method: 'save_lab_analysis_explore',
                     args: [self.selectedAnalysisExplores, self.selectedDashboardExplore],
@@ -447,7 +447,7 @@ var IZIViewAnalysis = Widget.extend({
 
             if (origin_code) {
                 $('.spinner-container').addClass('d-flex');
-                jsonrpc('/web/dataset/call_kw/izi.analysis/action_get_lab_script', {
+                rpc('/web/dataset/call_kw/izi.analysis/action_get_lab_script', {
                     model: 'izi.analysis',
                     method: 'action_get_lab_script',
                     args: [self.analysis_id, self.scriptEditorType, origin_code, origin_after_code, cur_pos.column, last_generated_code, last_error_message],
@@ -578,7 +578,7 @@ var IZIViewAnalysis = Widget.extend({
             }
             // Instruction to AI
             var instruction = `${comment_string}`
-            jsonrpc('/web/dataset/call_kw/izi.analysis/action_get_lab_script', {
+            rpc('/web/dataset/call_kw/izi.analysis/action_get_lab_script', {
                 model: 'izi.analysis',
                 method: 'action_get_lab_script',
                 args: [self.analysis_id, instruction],
@@ -668,7 +668,7 @@ var IZIViewAnalysis = Widget.extend({
         }).then((result) => {
             if (result.isConfirmed && script_type) {
                 if (script_type == 'visual') {
-                    jsonrpc('/web/dataset/call_kw/izi.analysis/write', {
+                    rpc('/web/dataset/call_kw/izi.analysis/write', {
                         model: 'izi.analysis',
                         method: 'write',
                         args: [[analysis_id], {render_visual_script: script,render_visual_script_css: script_css, use_render_visual_script: true}],
@@ -688,7 +688,7 @@ var IZIViewAnalysis = Widget.extend({
                     });
                 } else if (script_type == 'data') {
                     $('.spinner-container').addClass('d-flex');
-                    jsonrpc('/web/dataset/call_kw/izi.analysis/try_write_data_script', {
+                    rpc('/web/dataset/call_kw/izi.analysis/try_write_data_script', {
                         model: 'izi.analysis',
                         method: 'try_write_data_script',
                         args: [[analysis_id], script, to_execute, self.context],

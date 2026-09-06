@@ -2,7 +2,7 @@
 
 import { renderToElement } from "@web/core/utils/render";
 import { _t } from "@web/core/l10n/translation";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import IZIDialog from "@izi_dashboard/js/component/general/izi_dialog";
 import { useService } from "@web/core/utils/hooks";
 
@@ -68,7 +68,7 @@ var IZISelectDashboard = IZIDialog.extend({
             args = [];
         }
         self.$dashboardContainer.empty();
-        jsonrpc('/web/dataset/call_kw/izi.dashboard/search_read', {
+        rpc('/web/dataset/call_kw/izi.dashboard/search_read', {
             model: 'izi.dashboard',
             method: 'search_read',
             args: [args, ['id', 'name', 'write_date', 'theme_name', 'date_format', 'start_date', 'end_date', 'table_name', 'category_id', 'use_sidebar']],
@@ -115,7 +115,7 @@ var IZISelectDashboard = IZIDialog.extend({
                 All Groups
             </a>
         `)
-        jsonrpc('/web/dataset/call_kw/izi.dashboard.category/search_read', {
+        rpc('/web/dataset/call_kw/izi.dashboard.category/search_read', {
             model: 'izi.dashboard.category',
             method: 'search_read',
             args: [[], ['id', 'name']],
@@ -224,7 +224,7 @@ var IZISelectDashboard = IZIDialog.extend({
         }).then((result) => {
             if (result.isConfirmed) {
                 var name = 'Untitled Dashboard';
-                jsonrpc('/web/dataset/call_kw/izi.dashboard/create', {
+                rpc('/web/dataset/call_kw/izi.dashboard/create', {
                     model: 'izi.dashboard',
                     method: 'create',
                     args: [{

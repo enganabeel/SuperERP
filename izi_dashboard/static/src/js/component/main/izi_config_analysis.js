@@ -2,7 +2,7 @@
 
 import Widget from "@izi_dashboard/legacy_core/widget";
 import { _t } from "@web/core/l10n/translation";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import { renderToElement } from "@web/core/utils/render";
 import { useService } from "@web/core/utils/hooks";
 
@@ -154,7 +154,7 @@ var IZIConfigAnalysis = Widget.extend({
      */
     _loadLanguange: function () {
         var self = this;
-        jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_languanges', {
+        rpc('/web/dataset/call_kw/izi.analysis/ui_get_languanges', {
             model: 'izi.analysis',
             method: 'ui_get_languanges',
             args: [[]],
@@ -220,7 +220,7 @@ var IZIConfigAnalysis = Widget.extend({
         var self = this;
         if (self.$viewAnalysis.$visual && self.$viewAnalysis.$visual.temp_analysis_data && self.selectedAnalysis) {
             self.$('.spinner-border').show();
-            jsonrpc('/web/dataset/call_kw/izi.analysis/action_get_lab_insight', {
+            rpc('/web/dataset/call_kw/izi.analysis/action_get_lab_insight', {
                 model: 'izi.analysis',
                 method: 'action_get_lab_insight',
                 args: [
@@ -334,7 +334,7 @@ var IZIConfigAnalysis = Widget.extend({
     _loadAnalysisInfo: function () {
         var self = this;
         if (self.selectedAnalysis) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_analysis_info', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_get_analysis_info', {
                 model: 'izi.analysis',
                 method: 'ui_get_analysis_info',
                 args: [self.selectedAnalysis],
@@ -417,7 +417,7 @@ var IZIConfigAnalysis = Widget.extend({
 
     _renderVisualTypes: function () {
         var self = this;
-        jsonrpc('/web/dataset/call_kw/izi.visual.type/search_read', {
+        rpc('/web/dataset/call_kw/izi.visual.type/search_read', {
             model: 'izi.visual.type',
             method: 'search_read',
             args: [[], ['id', 'name', 'icon', 'title']],
@@ -437,7 +437,7 @@ var IZIConfigAnalysis = Widget.extend({
 
     _renderVisualConfigs: function () {
         var self = this;
-        jsonrpc('/web/dataset/call_kw/izi.visual.type/get_visual_config', {
+        rpc('/web/dataset/call_kw/izi.visual.type/get_visual_config', {
             model: 'izi.visual.type',
             method: 'get_visual_config',
             args: [[], self.selectedVisualType, self.selectedAnalysis],
@@ -619,7 +619,7 @@ var IZIConfigAnalysis = Widget.extend({
         var metric_id = $(ev.target).data('metric');
         // console.log('Remove Metric', metric_id);
         if (self.selectedAnalysis) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_remove_metric', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_remove_metric', {
                 model: 'izi.analysis',
                 method: 'ui_remove_metric',
                 args: [self.selectedAnalysis, metric_id],
@@ -637,7 +637,7 @@ var IZIConfigAnalysis = Widget.extend({
         var dimension_id = $(ev.target).data('dimension');
         // console.log('Remove Dimension', dimension_id);
         if (self.selectedAnalysis) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_remove_dimension', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_remove_dimension', {
                 model: 'izi.analysis',
                 method: 'ui_remove_dimension',
                 args: [self.selectedAnalysis, dimension_id],
@@ -654,7 +654,7 @@ var IZIConfigAnalysis = Widget.extend({
         var self = this;
         var sort_id = $(ev.target).data('sort_id');
         if (self.selectedAnalysis) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_remove_sort', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_remove_sort', {
                 model: 'izi.analysis',
                 method: 'ui_remove_sort',
                 args: [self.selectedAnalysis, sort_id],
@@ -671,7 +671,7 @@ var IZIConfigAnalysis = Widget.extend({
         var self = this;
         var filter_id = $(ev.target).data('filter_id');
         if (self.selectedAnalysis) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_remove_filter', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_remove_filter', {
                 model: 'izi.analysis',
                 method: 'ui_remove_filter',
                 args: [self.selectedAnalysis, filter_id],
@@ -699,7 +699,7 @@ var IZIConfigAnalysis = Widget.extend({
                 'condition': logical_operator,
                 'value': value,
             }
-            jsonrpc('/web/dataset/call_kw/izi.analysis/ui_update_filter_by_field', {
+            rpc('/web/dataset/call_kw/izi.analysis/ui_update_filter_by_field', {
                 model: 'izi.analysis',
                 method: 'ui_update_filter_by_field',
                 args: [self.selectedAnalysis, data],
@@ -720,7 +720,7 @@ var IZIConfigAnalysis = Widget.extend({
             var data = {
                 'calculation': calculation,
             }
-            jsonrpc('/web/dataset/call_kw/izi.analysis.metric/write', {
+            rpc('/web/dataset/call_kw/izi.analysis.metric/write', {
                 model: 'izi.analysis.metric',
                 method: 'write',
                 args: [[parseInt(metric_id)], data],
@@ -740,7 +740,7 @@ var IZIConfigAnalysis = Widget.extend({
             var data = {
                 'field_format': format,
             }
-            jsonrpc('/web/dataset/call_kw/izi.analysis.dimension/write', {
+            rpc('/web/dataset/call_kw/izi.analysis.dimension/write', {
                 model: 'izi.analysis.dimension',
                 method: 'write',
                 args: [[parseInt(dimension_id)], data],
@@ -761,7 +761,7 @@ var IZIConfigAnalysis = Widget.extend({
             var data = {
                 'sort': sort != 'none' ? sort : false,
             }
-            jsonrpc('/web/dataset/call_kw/izi.analysis.sort/write', {
+            rpc('/web/dataset/call_kw/izi.analysis.sort/write', {
                 model: 'izi.analysis.sort',
                 method: 'write',
                 args: [[parseInt(sort_id)], data],
@@ -819,7 +819,7 @@ var IZIConfigAnalysis = Widget.extend({
         var self = this;
         if (self.selectedAnalysis) {
             self.selectedVisualType = $(ev.currentTarget).data('visual-type');
-            jsonrpc('/web/dataset/call_kw/izi.analysis/save_analysis_visual_type', {
+            rpc('/web/dataset/call_kw/izi.analysis/save_analysis_visual_type', {
                 model: 'izi.analysis',
                 method: 'save_analysis_visual_type',
                 args: [[self.selectedAnalysis], self.selectedVisualType],
@@ -858,7 +858,7 @@ var IZIConfigAnalysis = Widget.extend({
                 })
             })
 
-            jsonrpc('/web/dataset/call_kw/izi.analysis/save_analysis_visual_config', {
+            rpc('/web/dataset/call_kw/izi.analysis/save_analysis_visual_config', {
                 model: 'izi.analysis',
                 method: 'save_analysis_visual_config',
                 args: [[self.selectedAnalysis], self.selectedVisualType, config_values],
@@ -874,7 +874,7 @@ var IZIConfigAnalysis = Widget.extend({
     _onClickAddDashboardBlock: function () {
         var self = this;
         if (self.selectedAnalysis && self.selectedDashboard) {
-            jsonrpc('/web/dataset/call_kw/izi.dashboard.block/create', {
+            rpc('/web/dataset/call_kw/izi.dashboard.block/create', {
                 model: 'izi.dashboard.block',
                 method: 'create',
                 args: [{
@@ -957,7 +957,7 @@ var IZIConfigAnalysis = Widget.extend({
                 }
             })
 
-            jsonrpc('/web/dataset/call_kw/izi.analysis/save_analysis_visual_config', {
+            rpc('/web/dataset/call_kw/izi.analysis/save_analysis_visual_config', {
                 model: 'izi.analysis',
                 method: 'save_analysis_visual_config',
                 args: [[self.selectedAnalysis], config_values],
@@ -976,7 +976,7 @@ var IZIConfigAnalysis = Widget.extend({
             var data = {
                 'limit': self.changeLimit,
             }
-            jsonrpc('/web/dataset/call_kw/izi.analysis/write', {
+            rpc('/web/dataset/call_kw/izi.analysis/write', {
                 model: 'izi.analysis',
                 method: 'write',
                 args: [self.selectedAnalysis, data],
@@ -1039,7 +1039,7 @@ var IZIConfigAnalysis = Widget.extend({
         if (self.props) {
             if (self.props && self.props.context && self.props.context.analysis_id) {
                 self.selectedAnalysis = self.props.context.analysis_id;
-                jsonrpc('/web/dataset/call_kw/izi.analysis/search_read', {
+                rpc('/web/dataset/call_kw/izi.analysis/search_read', {
                     model: 'izi.analysis',
                     method: 'search_read',
                     args: [[['id', '=', self.selectedAnalysis]], ['id', 'name', 'table_id', 'visual_type_id']],
@@ -1086,7 +1086,7 @@ var IZIConfigAnalysis = Widget.extend({
         self.$viewAnalysis.$viewAnalysisExplore.closest('.izi_dialog').show();
         self.$viewAnalysis.$viewAnalysisExplore.empty();
         self.$viewAnalysis.selectedAnalysisExplores = [];
-        jsonrpc('/web/dataset/call_kw/izi.analysis/start_lab_analysis_explore', {
+        rpc('/web/dataset/call_kw/izi.analysis/start_lab_analysis_explore', {
             model: 'izi.analysis',
             method: 'start_lab_analysis_explore',
             args: [self.selectedAnalysis],
@@ -1228,7 +1228,7 @@ var IZIConfigAnalysis = Widget.extend({
         ev.stopPropagation();
         if (self.selectedAnalysis) {
             domain = [['id', '=', self.selectedAnalysis]];
-            jsonrpc('/web/dataset/call_kw/izi.analysis/get_data_script', {
+            rpc('/web/dataset/call_kw/izi.analysis/get_data_script', {
                 model: 'izi.analysis',
                 method: 'get_data_script',
                 args: [self.selectedAnalysis],
@@ -1266,7 +1266,7 @@ var IZIConfigAnalysis = Widget.extend({
         ev.stopPropagation();
         if (self.selectedAnalysis) {
             domain = [['id', '=', self.selectedAnalysis]];
-            jsonrpc('/web/dataset/call_kw/izi.analysis/search_read', {
+            rpc('/web/dataset/call_kw/izi.analysis/search_read', {
                 model: 'izi.analysis',
                 method: 'search_read',
                 args: [domain, ['name', 'render_visual_script','render_visual_script_css']],

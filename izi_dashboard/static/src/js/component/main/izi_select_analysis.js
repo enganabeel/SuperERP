@@ -3,7 +3,7 @@
 import { renderToElement } from "@web/core/utils/render";
 import IZIDialog from "@izi_dashboard/js/component/general/izi_dialog";
 import { _t } from "@web/core/l10n/translation";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import { useService } from "@web/core/utils/hooks";
 
 import IZIAutocomplete from "@izi_dashboard/js/component/general/izi_autocomplete";
@@ -128,7 +128,7 @@ var IZISelectAnalysis = IZIDialog.extend({
             'keyword': self.keyword || '',
         }
         self.$analysisContainer.empty();
-        jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_all', {
+        rpc('/web/dataset/call_kw/izi.analysis/ui_get_all', {
             model: 'izi.analysis',
             method: 'ui_get_all',
             args: [args],
@@ -235,7 +235,7 @@ var IZISelectAnalysis = IZIDialog.extend({
         if (self.selectedTable) {
             self.$fieldMetricContainer.empty();
             self.$fieldDimensionContainer.empty();
-            jsonrpc('/web/dataset/call_kw/izi.table.field/search_read', {
+            rpc('/web/dataset/call_kw/izi.table.field/search_read', {
                 model: 'izi.table.field',
                 method: 'search_read',
                 args: [[['table_id', '=', self.selectedTable]], ['id', 'name', 'field_type']],
@@ -264,7 +264,7 @@ var IZISelectAnalysis = IZIDialog.extend({
         var self = this;
         if (self.selectedTable) {
             self.$editor.setValue('');
-            jsonrpc('/web/dataset/call_kw/izi.table/read', {
+            rpc('/web/dataset/call_kw/izi.table/read', {
                 model: 'izi.table',
                 method: 'read',
                 args: [self.selectedTable, ['id', 'name', 'db_query']],
@@ -292,7 +292,7 @@ var IZISelectAnalysis = IZIDialog.extend({
                 All Types
             </a>
         `)
-        jsonrpc('/web/dataset/call_kw/izi.visual.type/search_read', {
+        rpc('/web/dataset/call_kw/izi.visual.type/search_read', {
             model: 'izi.visual.type',
             method: 'search_read',
             args: [[], ['id', 'name', 'title', 'icon']],
@@ -317,7 +317,7 @@ var IZISelectAnalysis = IZIDialog.extend({
                 All Categories
             </a>
         `)
-        jsonrpc('/web/dataset/call_kw/izi.analysis.category/search_read', {
+        rpc('/web/dataset/call_kw/izi.analysis.category/search_read', {
             model: 'izi.analysis.category',
             method: 'search_read',
             args: [[], ['id', 'name']],
@@ -338,7 +338,7 @@ var IZISelectAnalysis = IZIDialog.extend({
         var self = this;
         var query = self.$editor.getValue();
         if (self.selectedTable) {
-            jsonrpc('/web/dataset/call_kw/izi.table/ui_test_query', {
+            rpc('/web/dataset/call_kw/izi.table/ui_test_query', {
                 model: 'izi.table',
                 method: 'ui_test_query',
                 args: [self.selectedTable, query],
@@ -385,7 +385,7 @@ var IZISelectAnalysis = IZIDialog.extend({
             }).then((result) => {
                 if (result.isConfirmed) {
                     if (self.selectAnalysis) {
-                        jsonrpc('/web/dataset/call_kw/izi.analysis/ui_execute_query', {
+                        rpc('/web/dataset/call_kw/izi.analysis/ui_execute_query', {
                             model: 'izi.analysis',
                             method: 'ui_execute_query',
                             args: [self.selectedAnalysis, self.selectedTable, query],
@@ -400,7 +400,7 @@ var IZISelectAnalysis = IZIDialog.extend({
                             }
                         });
                     } else {
-                        jsonrpc('/web/dataset/call_kw/izi.table/ui_execute_query', {
+                        rpc('/web/dataset/call_kw/izi.table/ui_execute_query', {
                             model: 'izi.table',
                             method: 'ui_execute_query',
                             args: [self.selectedTable, query],
@@ -628,7 +628,7 @@ var IZISelectAnalysis = IZIDialog.extend({
                 heightAuto : false,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    jsonrpc('/web/dataset/call_kw/izi.analysis/unlink', {
+                    rpc('/web/dataset/call_kw/izi.analysis/unlink', {
                         model: 'izi.analysis',
                         method: 'unlink',
                         args: [self.selectedAnalysis],
@@ -708,7 +708,7 @@ var IZISelectAnalysis = IZIDialog.extend({
                 'source_id': self.selectedSource,
                 'db_query': self.$editor.getValue(),
             }
-            jsonrpc('/web/dataset/call_kw/izi.table/create', {
+            rpc('/web/dataset/call_kw/izi.table/create', {
                 model: 'izi.table',
                 method: 'create',
                 args: [data],
@@ -736,7 +736,7 @@ var IZISelectAnalysis = IZIDialog.extend({
     },
     _writeAnalysis: function (id, data) {
         var self = this;
-        jsonrpc('/web/dataset/call_kw/izi.analysis/write', {
+        rpc('/web/dataset/call_kw/izi.analysis/write', {
             model: 'izi.analysis',
             method: 'write',
             args: [id, data],
@@ -749,7 +749,7 @@ var IZISelectAnalysis = IZIDialog.extend({
     },
     _createAnalysis: function (data) {
         var self = this;
-        jsonrpc('/web/dataset/call_kw/izi.analysis/create', {
+        rpc('/web/dataset/call_kw/izi.analysis/create', {
             model: 'izi.analysis',
             method: 'create',
             args: [data],
@@ -784,7 +784,7 @@ var IZISelectAnalysis = IZIDialog.extend({
     _checkSelectedTable: function () {
         var self = this;
         if (self.selectedTable) {
-            jsonrpc('/web/dataset/call_kw/izi.table/read', {
+            rpc('/web/dataset/call_kw/izi.table/read', {
                 model: 'izi.table',
                 method: 'read',
                 args: [self.selectedTable, ['table_name']],

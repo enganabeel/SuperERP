@@ -6,12 +6,13 @@ from odoo import models, fields, api, _
 from odoo.tools.safe_eval import safe_eval
 from odoo.exceptions import ValidationError, UserError
 from itertools import accumulate
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from random import randint
 import pandas
 import json
 import re
+from collections import defaultdict
 
 DEFAULT_DATA_SCRIPT = """
 response = {
@@ -70,6 +71,10 @@ class IZIAnalysis(models.Model):
     sort_ids = fields.One2many(comodel_name='izi.analysis.sort', inverse_name='analysis_id', string="Sorts")
     field_ids = fields.Many2many(comodel_name='izi.table.field', compute='_get_analysis_fields')
     group_ids = fields.Many2many(comodel_name='res.groups', string='Groups')
+    date_field_type = fields.Selection([
+        ('date_range', 'Date Range'),
+        ('date_until', 'Date Until'),
+    ], default='date_range', string='Date Type')
     date_field_id = fields.Many2one('izi.table.field', string='Date Field')
     identifier_field_id = fields.Many2one('izi.table.field', string='Identifier Field')
     model_id = fields.Many2one('ir.model', string='Model')
@@ -348,15 +353,16 @@ class IZIAnalysis(models.Model):
         analysis = super(IZIAnalysis, self.with_context(copy=True)).copy(default)
         if self._context.get('action_copy'):
             if self.method in ('table_view', 'query') and self.table_id:
-                tables = self.env['izi.table'].search([('name', 'like', self.table_id.name)])
-                new_identifier = str(len(tables) + 1)
-                new_table = self.table_id.copy({
-                    'name': '%s %s' % (self.table_id.name, new_identifier),
-                    'db_query': self.table_id.db_query,
-                })
-                new_table.get_table_fields()
-                analysis.table_id = new_table.id
-                analysis.table_view_id = new_table.id
+                if self._context.get('duplicate_table'):
+                    tables = self.env['izi.table'].search([('name', 'like', self.table_id.name)])
+                    new_identifier = str(len(tables) + 1)
+                    new_table = self.table_id.copy({
+                        'name': '%s %s' % (self.table_id.name, new_identifier),
+                        'db_query': self.table_id.db_query,
+                    })
+                    new_table.get_table_fields()
+                    analysis.table_id = new_table.id
+                    analysis.table_view_id = new_table.id
             elif self.method == 'data_script' and self.server_action_id:
                 new_code = self.server_action_id.code
                 new_action = self.env['ir.actions.server'].create({
@@ -368,23 +374,24 @@ class IZIAnalysis(models.Model):
                 analysis.server_action_id = new_action.id
             elif self.method == 'table' and self.table_id and self.table_id.is_stored:
                 if not self._context.get('action_copy_from_conversation', False):
-                    tables = self.env['izi.table'].search([('name', 'like', self.table_id.name), ('is_stored', '=', True)])
-                    new_identifier = str(len(tables) + 1)
-                    new_code = ''
-                    if self.table_id.cron_id and self.table_id.cron_id.ir_actions_server_id:
-                        new_code = self.table_id.cron_id.ir_actions_server_id.code or ''
-                        new_code = new_code.replace(self.table_id.store_table_name, '%s_%s' % (self.table_id.store_table_name, new_identifier))
-                    new_table = self.table_id.copy({
-                        'name': '%s %s' % (self.table_id.name, new_identifier),
-                        'is_stored': True,
-                        'cron_code': new_code,
-                    })
-                    for field in self.table_id.field_ids:
-                        new_field = field.copy({
-                            'table_id': new_table.id,
+                    if self._context.get('duplicate_table'):
+                        tables = self.env['izi.table'].search([('name', 'like', self.table_id.name), ('is_stored', '=', True)])
+                        new_identifier = str(len(tables) + 1)
+                        new_code = ''
+                        if self.table_id.cron_id and self.table_id.cron_id.ir_actions_server_id:
+                            new_code = self.table_id.cron_id.ir_actions_server_id.code or ''
+                            new_code = new_code.replace(self.table_id.store_table_name, '%s_%s' % (self.table_id.store_table_name, new_identifier))
+                        new_table = self.table_id.copy({
+                            'name': '%s %s' % (self.table_id.name, new_identifier),
+                            'is_stored': True,
+                            'cron_code': new_code,
                         })
-                    new_table.update_schema_store_table()
-                    analysis.table_id = new_table.id
+                        for field in self.table_id.field_ids:
+                            new_field = field.copy({
+                                'table_id': new_table.id,
+                            })
+                        new_table.update_schema_store_table()
+                        analysis.table_id = new_table.id
             
             # Metric & Dimensions
             new_metric_ids = []
@@ -701,6 +708,15 @@ class IZIAnalysis(models.Model):
             if res and type(res) == dict and 'dataframe' in res and isinstance(res.get('dataframe'), pandas.DataFrame):
                 df = res.get('dataframe')
                 df = df.fillna('')
+
+                for col in df.columns:
+                    if df[col].dtype == 'object':
+                        sample_val = df[col].dropna().astype(str).head(1).tolist()
+                        if sample_val and re.match(r'^\d{4}-\d{2}-\d{2}', sample_val[0]):
+                            try:
+                                df[col] = pandas.to_datetime(df[col], errors='coerce').dt.date
+                            except Exception:
+                                pass
                 
                 # To Apply Filters
                 domain = []
@@ -743,8 +759,10 @@ class IZIAnalysis(models.Model):
                         # Create Domain
                         if self.date_field_id.field_type == 'date':
                             if start_date:
+                                start_date = datetime.strptime(start_date, "%Y-%m-%d").date()
                                 domain.append((self.date_field_id.field_name, '>=', start_date))
                             if end_date:
+                                end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
                                 domain.append((self.date_field_id.field_name, '<=', end_date))
                         if self.date_field_id.field_type == 'datetime':
                             if start_datetime:
@@ -806,22 +824,37 @@ class IZIAnalysis(models.Model):
                         if temp_domain:
                             domain += temp_domain
                 
-                # Transform Domain To Pandas Filter
-                # df.query('Value1 > 20 and Value2 < 7')
                 pd_queries = []
-                for dm in domain:
+                local_vars = {}  # simpan variabel Python yang akan dipakai di query
+
+                for i, dm in enumerate(domain):
                     if len(dm) == 3:
                         dm_key = dm[0]
                         dm_op = dm[1]
                         if dm_op == '=':
                             dm_op = '=='
                         dm_val = dm[2]
-                        if type(dm_val) == str:
-                            dm_val = "'%s'" % dm_val
-                        pd_queries.append('%s %s %s' % (dm_key, dm_op, dm_val))
+
+                        # siapkan nama variabel unik untuk query
+                        var_name = f"val_{i}"
+
+                        if isinstance(dm_val, str):
+                            # string langsung bungkus quote
+                            dm_val_str = f"'{dm_val}'"
+                        elif isinstance(dm_val, (date, datetime)):
+                            # simpan ke variabel Python agar bisa dipakai @
+                            local_vars[var_name] = dm_val
+                            dm_val_str = f"@{var_name}"
+                        else:
+                            # number atau tipe lain
+                            dm_val_str = str(dm_val)
+
+                        # backtick untuk nama kolom supaya aman dari keyword
+                        pd_queries.append(f"`{dm_key}` {dm_op} {dm_val_str}")
+
                 if pd_queries:
-                    pd_query = ' and '.join(pd_queries)
-                    df = df.query(pd_query)
+                    pd_query = " and ".join(pd_queries)
+                    df = df.query(pd_query, local_dict=local_vars)
                 
                 rename = {}
                 df_fields = []
@@ -869,6 +902,17 @@ class IZIAnalysis(models.Model):
                 df = df.sort_values(by=df_sorts, ascending=df_sorts_asc)
                 if self.limit:
                     df = df.head(self.limit)
+
+                for col in df.columns:
+                    if df[col].dtype == 'object':
+                        # kalau ada yg masih object dan isinya date, convert ke string
+                        if df[col].apply(lambda x: isinstance(x, (date, datetime))).any():
+                            df[col] = df[col].apply(
+                                lambda x: x.strftime("%Y-%m-%d") if isinstance(x, (date, datetime)) else x
+                            )
+                    elif pandas.api.types.is_datetime64_any_dtype(df[col]):
+                        # kalau dtype datetime64, convert juga
+                        df[col] = df[col].dt.strftime("%Y-%m-%d")
                 
                 return {
                     'data': df.to_dict('records'),
@@ -1222,14 +1266,13 @@ class IZIAnalysis(models.Model):
         #         for i, item in enumerate(res_data):
         #             item[metric] = cumulative_sums[i]
         
-        # fixed cumulative sum
         for metric in self.metric_ids:
-            calc = metric.calculation
-            if calc == 'csum':
-                totals = [item[metric.name] for item in res_data]
-                cumulative_sums = list(accumulate(totals))
-                for i, item in enumerate(res_data):
-                    item[metric.name] = cumulative_sums[i]
+            if metric.calculation == 'csum':
+                res_data = self.apply_cumulative_sum_by_group(
+                    res_data=res_data,
+                    metric_name=metric.name,
+                    groupby_fields=res_dimensions[1:],
+                )
 
         # Values
         for record in res_data:
@@ -1306,7 +1349,7 @@ class IZIAnalysis(models.Model):
         else:
             return data
     
-    def check_special_variable(self, table_query):
+    def check_special_variable(self, table_query, special_variable_values={}):
         # Replace Special Variable in Query
         user_id = self.env.user.id
         user_name = self.env.user.name
@@ -1321,19 +1364,55 @@ class IZIAnalysis(models.Model):
                 company_name = allowed_companies[0].name
                 for company in allowed_companies:
                     company_ids.append(str(company.id))
+        
+        special_variables = re.findall(r'\B#\w+', table_query)
 
-        if '#user_id' in table_query:
-            table_query = table_query.replace('#user_id', str(user_id))
-        if '#company_ids' in table_query:
-            table_query = table_query.replace('#company_ids', '(%s)' % (',').join(company_ids))
-        if '#company_id' in table_query:
-            table_query = table_query.replace('#company_id', str(company_id))
-        if '#user_name' in table_query:
-            table_query = table_query.replace('#user_name', str(user_name))
-        if '#company_name' in table_query:
-            table_query = table_query.replace('#company_name', str(company_name))
-        if '#user_tz' in table_query:
-            table_query = table_query.replace('#user_tz', str(user_tz))
+        for special_variable in special_variables:
+            variable = special_variable.replace('#', '')
+            if variable in special_variable_values:
+                value = special_variable_values[variable]
+                if isinstance(value, list):
+                    value = '(%s)' % (',').join(map(str, value))
+                table_query = table_query.replace(special_variable, str(value))
+            elif special_variable == '#user_id':
+                table_query = table_query.replace(special_variable, str(user_id))
+            elif special_variable == '#company_ids':
+                table_query = table_query.replace(special_variable, '(%s)' % (',').join(company_ids))
+            elif special_variable == '#company_id':
+                table_query = table_query.replace(special_variable, str(company_id))
+            elif special_variable == '#user_name':
+                table_query = table_query.replace(special_variable, str(user_name))
+            elif special_variable == '#company_name':
+                table_query = table_query.replace(special_variable, str(company_name))
+            elif special_variable == '#user_tz':
+                table_query = table_query.replace(special_variable, str(user_tz))
+            elif special_variable == '#izi_start_date':
+                izi_start_date = '1000-01-01'
+                if 'izi_start_date' in special_variable_values:
+                    if special_variable_values.get('izi_start_date'):
+                        izi_start_date = special_variable_values.get('izi_start_date')
+                table_query = table_query.replace('#izi_start_date', izi_start_date)
+            elif special_variable == '#izi_end_date':
+                izi_end_date = '3000-01-01'
+                if 'izi_end_date' in special_variable_values:
+                    if special_variable_values.get('izi_end_date'):
+                        izi_end_date = special_variable_values.get('izi_end_date')
+                table_query = table_query.replace('#izi_end_date', izi_end_date)
+            elif special_variable == '#izi_start_datetime':
+                izi_start_datetime = '1000-01-01 00:00:00'
+                if 'izi_start_datetime' in special_variable_values:
+                    if special_variable_values.get('izi_start_datetime'):
+                        izi_start_datetime = special_variable_values.get('izi_start_datetime')
+                table_query = table_query.replace('#izi_start_datetime', izi_start_datetime)
+            elif special_variable == '#izi_end_datetime':
+                izi_end_datetime = '3000-01-01 23:59:59'
+                if 'izi_end_datetime' in special_variable_values:
+                    if special_variable_values.get('izi_end_datetime'):
+                        izi_end_datetime = special_variable_values.get('izi_end_datetime')
+                table_query = table_query.replace('#izi_end_datetime', izi_end_datetime)
+            else:
+                table_query = table_query.replace(special_variable, 'NULL')
+
         if 'test_query' in self._context:
             try:
                 matches = re.findall(r"limit \d+", table_query, re.IGNORECASE)
@@ -1347,7 +1426,6 @@ class IZIAnalysis(models.Model):
                     table_query = table_query = '%s %s' % (table_query, 'limit 1')
             except Exception:
                 pass
-            
         if 'table_query' not in table_query:
             table_query = '(%s) table_query' % (table_query)
 
@@ -1376,17 +1454,23 @@ class IZIAnalysis(models.Model):
         dimension_queries = []
         field_by_alias = {}
         field_by_name = {}
+        alias_by_field_id = {}
+        dimension_by_field_id = {}
         metric_query = ''
         metric_queries = []
         sort_query = ''
         sort_queries = []
         filter_query = "'IZI' = 'IZI'"
+        date_until_filter_query = "'IZI' = 'IZI'"
         filter_queries = []
         filter_temp_result_list = []
         limit_query = ''
         dashboard_filter_queries = []
+        additional_dashboard_filter_queries = []
         res_lang_codes = []
         field_type_by_alias = {}
+
+        special_variable_values = {}
 
         res_langs = self.env['res.lang'].with_context(active_test=False).search([('active', '=', True)], order='active desc')
         for res_lang in res_langs:
@@ -1397,6 +1481,7 @@ class IZIAnalysis(models.Model):
             field_alias = field.name
             field_by_alias[field_alias] = field.field_name
             field_by_name[field.field_name] = field
+            alias_by_field_id[field.id] = field_alias
             field_type_by_alias[field_alias] = field.field_type
         
         max_dimension = False
@@ -1457,6 +1542,8 @@ class IZIAnalysis(models.Model):
             res_dimensions.append(dimension_alias)
             res_fields.append(dimension_alias)
             field_by_alias[dimension_alias] = dimension.field_id.field_name
+            alias_by_field_id[dimension.field_id.id] = dimension_alias
+            dimension_by_field_id[dimension.field_id.id] = dimension
 
             count_dimension += 1
             if max_dimension:
@@ -1472,7 +1559,21 @@ class IZIAnalysis(models.Model):
             metric_alias = "%s" % (metric.field_id.name)
             if metric.name_alias:
                 metric_alias = metric.name_alias
-            metric_queries.append('%s(%s) as "%s"' % (metric.calculation, metric.field_id.field_name, metric_alias))
+            
+            metric_name = metric.field_id.field_name
+            if metric.custom_query:
+                metric_name = metric.custom_query
+                metric_queries.append('%s as "%s"' % (
+                    metric_name, metric_alias))
+            else:
+                metric_calculation = metric.calculation
+                if metric_calculation == 'csum':
+                    metric_calculation = 'sum'
+                if metric_calculation == 'countd':
+                    metric_queries.append('count(distinct %s) as "%s"' % (metric_name, metric_alias))
+                else:
+                    metric_queries.append('%s(%s) as "%s"' % (metric_calculation, metric_name, metric_alias))
+
             res_metrics.append(metric_alias)
             res_fields.append(metric_alias)
 
@@ -1503,11 +1604,14 @@ class IZIAnalysis(models.Model):
             filter_queries.append(fltr_str)
 
         filter_query += ' %s' % ' '.join(filter_queries)
+        date_until_filter_query += ' %s' % ' '.join(filter_queries)
+
+        filter_start_date = False
 
         # Build Dashboard Date Filter Query
         if kwargs.get('filters'):
             # Date Filters
-            if self.date_field_id and kwargs.get('filters').get('date_format'):
+            if kwargs.get('filters').get('date_format'):
                 start_date = False
                 end_date = False
                 start_datetime = False
@@ -1535,17 +1639,37 @@ class IZIAnalysis(models.Model):
                     start_datetime = self.convert_to_utc(start_datetime)
                     end_datetime = date_range.get('end_datetime')
                     end_datetime = self.convert_to_utc(end_datetime)
+
                 # Create Query
                 if self.date_field_id.field_type == 'date':
-                    if start_date:
-                        dashboard_filter_queries.append('(%s >= $$%s$$)' % (self.date_field_id.field_name, start_date))
+                    if self.date_field_type == 'date_range':
+                        if start_date:
+                            dashboard_filter_queries.append('(%s >= $$%s$$)' % (self.date_field_id.field_name, start_date))
+                    elif self.date_field_type == 'date_until':
+                        if start_date:
+                            additional_dashboard_filter_queries.append('(%s >= $$%s$$)' % (self.date_field_id.field_name, start_date))
                     if end_date:
                         dashboard_filter_queries.append('(%s <= $$%s$$)' % (self.date_field_id.field_name, end_date))
-                if self.date_field_id.field_type == 'datetime':
-                    if start_datetime:
-                        dashboard_filter_queries.append('(%s >= $$%s$$)' % (self.date_field_id.field_name, start_datetime))
+                    
+                elif self.date_field_id.field_type == 'datetime':
+                    if self.date_field_type == 'date_range':
+                        if start_datetime:
+                            dashboard_filter_queries.append('(%s >= $$%s$$)' % (self.date_field_id.field_name, start_datetime))
+                    elif self.date_field_type == 'date_until':
+                        if start_datetime:
+                            additional_dashboard_filter_queries.append('(%s >= $$%s$$)' % (self.date_field_id.field_name, start_datetime))
                     if end_datetime:
                         dashboard_filter_queries.append('(%s <= $$%s$$)' % (self.date_field_id.field_name, end_datetime))
+                
+                special_variable_values.update({
+                    'izi_start_date': start_date,
+                    'izi_end_date': end_date,
+                    'izi_start_datetime': start_datetime,
+                    'izi_end_datetime': end_datetime,
+                })
+
+                filter_start_date = start_date
+            
             # Process Dynamic Filters
             # Dynamic Filters is in Dashboard View
             if kwargs.get('filters').get('dynamic'):
@@ -1616,6 +1740,30 @@ class IZIAnalysis(models.Model):
                                 dashboard_filter_queries.append('(%s)' % ' OR '.join(jsonb_filter_queries))
                             else:                                
                                 dashboard_filter_queries.append('(%s in (%s))' % (dynamic_filter.get('field_name'), f_values_query_string))
+
+            # Special Variables From Dynamic Filters
+            if kwargs.get('filters').get('all_dynamic'):
+                for dynamic_filter in kwargs.get('filters').get('all_dynamic'):
+                    if dynamic_filter.get('field_name') and dynamic_filter.get('values'):
+                        # Convert to Array
+                        if not isinstance(dynamic_filter.get('values'), list):
+                            dynamic_filter['values'] = [
+                                dynamic_filter.get('values')]
+
+                        f_values_query_string = []
+                        for f_val in dynamic_filter.get('values'):
+                            if type(f_val) == int:
+                                f_values_query_string.append('%s' % f_val)
+                            elif type(f_val) == float:
+                                f_values_query_string.append('%s' % f_val)
+                            else:
+                                f_values_query_string.append('$$%s$$' % f_val)
+
+                        f_values_query_string = ','.join(f_values_query_string)
+                        special_variable_values.update({
+                            dynamic_filter.get('field_name'): f_values_query_string
+                        })
+
             # Process Action Filters
             # Action Filters Is Active When The Chart Is Clicked
             if kwargs.get('filters').get('action'):
@@ -1666,6 +1814,10 @@ class IZIAnalysis(models.Model):
         if dashboard_filter_queries:
             dashboard_filter_query = (' and ').join(dashboard_filter_queries)
             filter_query += ' and (%s)' % dashboard_filter_query
+            if additional_dashboard_filter_queries:
+                additional_dashboard_filter_queries += dashboard_filter_queries 
+                additional_dashboard_filter_query = (' and ').join(additional_dashboard_filter_queries)
+                date_until_filter_query += ' and (%s)' % additional_dashboard_filter_query
             
         # Build Filter Temp Query
         # Temporary Filters is in Analysis View
@@ -1685,6 +1837,26 @@ class IZIAnalysis(models.Model):
 
             if filter_sub_query:
                 filter_query += ' and (%s)' % filter_sub_query
+                date_until_filter_query += ' and (%s)' % filter_sub_query
+        
+        if kwargs.get('pagination_search'):
+            search_keyword = kwargs.get('pagination_search')
+            pagination_search_query = []
+
+            for dimension in dimensions:
+                field_name = dimension.field_id.field_name
+                if dimension.field_type != 'string':
+                    field_name = 'CAST(%s AS TEXT )' % field_name
+                pagination_search_query.append(
+                    '%s ilike \'%%%s%%\'' % (field_name, search_keyword))
+
+            for metric in self.metric_ids:
+                field_name = 'CAST(%s AS TEXT )' % metric.field_id.field_name
+                pagination_search_query.append(
+                    '%s ilike \'%%%s%%\'' % (field_name, search_keyword))
+
+            filter_query += 'AND (%s)' % ' OR '.join(pagination_search_query)
+            date_until_filter_query += 'AND (%s)' % ' OR '.join(pagination_search_query)
 
         # Build Sort Query
         for sort in self.sort_ids:
@@ -1729,11 +1901,17 @@ class IZIAnalysis(models.Model):
             else:
                 table_query = self.table_id.db_query.replace(';', '')
                 if kwargs.get('allowed_company_ids'):
-                    table_query = self.with_context(allowed_company_ids=kwargs.get('allowed_company_ids')).check_special_variable(table_query)
+                    table_query = self.with_context(allowed_company_ids=kwargs.get('allowed_company_ids')).check_special_variable(table_query, special_variable_values)
                 else:
-                    table_query = self.check_special_variable(table_query)
+                    table_query = self.check_special_variable(table_query, special_variable_values)
+        
+        final_query = False
         if filter_query:
             filter_query = 'WHERE %s' % (filter_query)
+            final_query = filter_query            
+            if self.date_field_type == 'date_until' and kwargs.get('pagination_limit') and kwargs.get('pagination_offset'):
+                date_until_filter_query = 'WHERE %s' % (date_until_filter_query)
+                final_query = date_until_filter_query
         if dimension_query:
             dimension_query = 'GROUP BY %s' % (dimension_query)
         if sort_query:
@@ -1752,8 +1930,12 @@ class IZIAnalysis(models.Model):
             %s
             %s
             %s
-            %s;
-        ''' % (metric_query, table_query, filter_query, dimension_query, sort_query, limit_query)
+            %s
+        ''' % (metric_query, table_query, final_query, dimension_query, sort_query, limit_query)
+
+        if kwargs.get('pagination_limit') and kwargs.get('pagination_offset'):
+            query = 'SELECT * FROM (%s) original_query LIMIT %s OFFSET %s' % (
+                query, kwargs.get('pagination_limit'), kwargs.get('pagination_offset'))
 
         func_check_query = getattr(self.source_id, 'check_query_%s' % self.source_id.type)
         func_check_query(**{
@@ -1774,17 +1956,132 @@ class IZIAnalysis(models.Model):
             }
 
         result = {'res_data': []}
-        if self.table_id.is_stored:
-            self.env.cr.execute(query)
-            result['res_data'] = self.env.cr.dictfetchall()
-        else:
-            func_get_analysis_data = getattr(self, 'get_analysis_data_%s' % self.source_id.type)
-            result = func_get_analysis_data(**{
-                'query': query,
-            })
+
+        server_side = kwargs.get('server_side', False)
+
+        if not server_side or (server_side and kwargs.get('pagination_limit') != None and kwargs.get('pagination_offset') != None) or (server_side and kwargs.get('is_excel_export')):
+            if self.table_id.is_stored:
+                self.env.cr.execute(query)
+                result['res_data'] = self.env.cr.dictfetchall()
+            else:
+                func_get_analysis_data = getattr(self, 'get_analysis_data_%s' % self.source_id.type)
+                result = func_get_analysis_data(**{
+                    'query': query,
+                })
 
         res_data = result.get('res_data')
         res_data = self._transform_json_data(res_data)
+
+        data_count = len(res_data)
+        if kwargs.get('pagination_limit') and kwargs.get('pagination_offset'):
+            query = '''
+                SELECT
+                    %s
+                FROM
+                    %s
+                %s
+                %s
+                %s
+                %s
+            ''' % (metric_query, table_query, final_query, dimension_query, sort_query, limit_query)
+
+            func_check_query = getattr(
+                self.source_id, 'check_query_%s' % self.source_id.type)
+            func_check_query(**{
+                'query': table_query,
+            })
+
+            result = {'res_data': []}
+            if self.table_id.is_stored:
+                self.env.cr.execute(query)
+                result['res_data'] = self.env.cr.dictfetchall()
+            else:
+                func_get_analysis_data = getattr(
+                    self, 'get_analysis_data_%s' % self.source_id.type)
+                result = func_get_analysis_data(**{
+                    'query': query,
+                })
+            data_count = len(result['res_data'])
+
+        if kwargs.get('pagination_limit') and kwargs.get('pagination_offset'):
+            query = '''
+                SELECT
+                    %s
+                FROM
+                    %s
+                %s
+                %s
+                %s
+                %s
+            ''' % (metric_query, table_query, filter_query, dimension_query, sort_query, limit_query)
+
+            func_check_query = getattr(
+                self.source_id, 'check_query_%s' % self.source_id.type)
+            func_check_query(**{
+                'query': table_query,
+            })
+
+            result = {'res_data': []}
+            if self.table_id.is_stored:
+                self.env.cr.execute(query)
+                result['res_data'] = self.env.cr.dictfetchall()
+            else:
+                func_get_analysis_data = getattr(
+                    self, 'get_analysis_data_%s' % self.source_id.type)
+                result = func_get_analysis_data(**{
+                    'query': query,
+                })
+
+            res_data_temp = result.get('res_data')
+            res_data_temp = self._transform_json_data(res_data_temp)
+
+            for metric in self.metric_ids:
+                if metric.calculation == 'csum':
+                    res_data_temp = self.apply_cumulative_sum_by_group(
+                        res_data=res_data_temp,
+                        metric_name=metric.name_alias or metric.name,
+                        groupby_fields=res_dimensions[1:],
+                )
+
+            # === Replace metric values in res_data berdasarkan dimensi ===
+            if res_data and res_data_temp:
+                # ambil semua nama metric dari self.metric_ids
+                metric_names = [m.name_alias or m.name for m in self.metric_ids]
+
+                # semua dimensi aktif = res_dimensions tanpa metric
+                dim_keys = [d for d in res_dimensions if d not in metric_names]
+
+                def make_key(row):
+                    return tuple(row.get(dim) for dim in dim_keys)
+
+                # buat lookup dari res_data_temp
+                temp_lookup = {make_key(r): r for r in res_data_temp}
+
+                # overwrite metric di res_data dengan hasil dari res_data_temp
+                for row in res_data:
+                    key = make_key(row)
+                    if key in temp_lookup:
+                        temp_row = temp_lookup[key]
+                        for metric in metric_names:
+                            if metric in temp_row:
+                                row[metric] = temp_row[metric]
+
+        else:
+            for metric in self.metric_ids:
+                if metric.calculation == 'csum':
+                    res_data = self.apply_cumulative_sum_by_group(
+                        res_data=res_data,
+                        metric_name=metric.name_alias or metric.name,
+                        groupby_fields=res_dimensions[1:],
+                    )
+
+            if (self.date_field_type == 'date_until' and filter_start_date and (dimension := dimension_by_field_id.get(self.date_field_id.id)) and (alias := alias_by_field_id.get(self.date_field_id.id))):
+                res_data = self.filter_data_by_date(
+                    res_data,
+                    alias,
+                    filter_start_date,
+                    dimension.field_format
+                )  
 
         for record in res_data:
             res_value = []
@@ -1793,6 +2090,7 @@ class IZIAnalysis(models.Model):
             res_values.append(res_value)
 
         result = {
+            'data_count': data_count,
             'data': res_data,
             'metrics': res_metrics,
             'dimensions': res_dimensions,
@@ -2015,6 +2313,117 @@ class IZIAnalysis(models.Model):
                 'message': str(e),
             }
         return res
+    
+    def apply_cumulative_sum_by_group(self, res_data, metric_name, groupby_fields=None):
+        """
+        Hitung cumulative sum berdasarkan dimensi pengelompokan (tanpa mengubah urutan res_data).
+        
+        :param res_data: List of dicts (output akhir Anda)
+        :param metric_name: Nama kolom metric yang dihitung cumulative-nya (misal 'Total Balance')
+        :param groupby_fields: List of dimension names untuk pengelompokan (ex: ['Kategori Utama'])
+        """
+        if groupby_fields is None:
+            groupby_fields = []
+
+        # Simpan history nilai per grup
+        # key = tuple group, value = list of (index, value)
+        group_history = defaultdict(list)
+
+        # Kumpulkan nilai berdasarkan group
+        for idx, row in enumerate(res_data):
+            group_key = tuple(row[field] for field in groupby_fields)
+            value = row.get(metric_name, 0) or 0
+            group_history[group_key].append((idx, value))
+
+        # Hitung cumulative per group dan masukkan kembali ke res_data
+        for group_key, index_value_list in group_history.items():
+            values = [val for idx, val in index_value_list]
+            cumsums = list(accumulate(values))
+            for (idx, _), cumval in zip(index_value_list, cumsums):
+                res_data[idx][metric_name] = cumval
+        
+        return res_data
+
+    def parse_date_auto(self, date_str):
+        """
+        Mendeteksi format tanggal (day, week, month, quarter, year)
+        dan mengubahnya menjadi datetime.date (awal periode).
+        """
+        date_str = str(date_str).strip()
+        
+        # Year only
+        if date_str.isdigit() and len(date_str) == 4:
+            return datetime(int(date_str), 1, 1).date()
+        
+        # ---------- Quarter (robust) ----------
+        su = date_str.upper()
+        # cari pola Q1, Q 1, 1Q, 1 Q, QUARTER 1, dll.
+        q_match = (
+            re.search(r'\bQ\s*([1-4])\b', su) or          # Q1, Q 1
+            re.search(r'\b([1-4])\s*Q\b', su) or          # 1Q, 1 Q
+            re.search(r'\bQUARTER\s*([1-4])\b', su)       # QUARTER 1
+        )
+        if q_match:
+            quarter = int(q_match.group(1))
+            # cari tahun (4 digit)
+            y_match = re.search(r'\b(19|20)\d{2}\b', su)
+            if not y_match:
+                raise ValueError(f"Tahun tidak ditemukan pada string quarter: {date_str}")
+            year = int(y_match.group(0))
+            month = (quarter - 1) * 3 + 1
+            return datetime(year, month, 1).date()
+        # ---------------------------------------
+        
+        # Month Year
+        for fmt in ["%B %Y", "%b %Y"]:
+            try:
+                return datetime.strptime(date_str, fmt).date().replace(day=1)
+            except ValueError:
+                pass
+        
+        # Week Year (anggap awal minggu = Senin)
+        if "week" in date_str.lower():
+            parts = date_str.lower().replace("week", "").split()
+            week_num = int(parts[0])
+            year = int(parts[1])
+            return datetime.strptime(f"{year}-W{week_num}-1", "%Y-W%W-%w").date()
+        
+        # Full date (day)
+        for fmt in ["%Y-%m-%d", "%d %B %Y", "%d %b %Y"]:
+            try:
+                return datetime.strptime(date_str, fmt).date()
+            except ValueError:
+                pass
+        
+        raise ValueError(f"Format tanggal tidak dikenali: {date_str}")
+
+    def filter_data_by_date(self, data_list, date_key, cutoff_str, mode):
+        """
+        Memfilter data berdasarkan date_key.
+        cutoff_str sudah pasti format 'YYYY-MM-DD'.
+        mode: 'day', 'week', 'month', 'quarter', 'year'
+        """
+        cutoff_date = datetime.strptime(cutoff_str, "%Y-%m-%d").date()
+
+        # Normalisasi cutoff sesuai mode
+        if mode == "month":
+            cutoff_date = cutoff_date.replace(day=1)
+        elif mode == "quarter":
+            quarter = (cutoff_date.month - 1) // 3 + 1
+            cutoff_date = datetime(cutoff_date.year, (quarter - 1) * 3 + 1, 1).date()
+        elif mode == "year":
+            cutoff_date = cutoff_date.replace(month=1, day=1)
+        elif mode == "week":
+            # ISO Monday
+            cutoff_date = cutoff_date - timedelta(days=cutoff_date.weekday())
+
+        result = []
+        for item in data_list:
+            item_date = self.parse_date_auto(item[date_key])
+            if item_date >= cutoff_date:
+                result.append(item)
+        return result       
+
 
 class IZIAnalysisMetric(models.Model):
     _name = 'izi.analysis.metric'
@@ -2030,6 +2439,7 @@ class IZIAnalysisMetric(models.Model):
     name_alias = fields.Char(string="Alias")
     calculation = fields.Selection([
         ('count', 'Count'),
+        ('countd', 'Count Distinct'),
         ('sum', 'Sum'),
         ('avg', 'Avg'),
         ('csum', 'Cumulative Sum'),
@@ -2042,6 +2452,7 @@ class IZIAnalysisMetric(models.Model):
     suffix = fields.Char('Suffix')
     locale_code = fields.Char('Locale Code', default='en-US')
     decimal_places = fields.Integer('Decimal Places', default=0)
+    custom_query = fields.Text('Custom Query', default=False)
 
     @api.onchange('field_id')
     def onchange_field_id(self):

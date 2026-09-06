@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_committee_root" name="Committees &amp; Councils" sequence="10"/>
+
+    <menuitem id="menu_committee_dashboard" name="Dashboard" parent="menu_committee_root" action="action_committee_dashboard" sequence="10"/>
+    <menuitem id="menu_committee_committee" name="Committees" parent="menu_committee_root" action="action_committee_committee" sequence="20"/>
+    <menuitem id="menu_committee_meeting" name="Meetings" parent="menu_committee_root" action="action_committee_meeting" sequence="30"/>
+    <menuitem id="menu_committee_minutes" name="Minutes" parent="menu_committee_root" action="action_committee_minutes" sequence="40"/>
+    <menuitem id="menu_committee_topic" name="Topics" parent="menu_committee_root" action="action_committee_topic" sequence="50"/>
+    <menuitem id="menu_committee_task" name="Tasks" parent="menu_committee_root" action="action_committee_task" sequence="60"/>
+    <menuitem id="menu_committee_decision" name="Decisions" parent="menu_committee_root" action="action_committee_decision" sequence="70"/>
+    <menuitem id="menu_committee_support_request" name="Support Requests" parent="menu_committee_root" action="action_committee_support_request" sequence="80"/>
+    <menuitem id="menu_committee_status_update" name="Status Updates" parent="menu_committee_root" action="action_committee_status_update" sequence="90"/>
+
+    <menuitem id="menu_committee_configuration" name="Configuration" parent="menu_committee_root" sequence="100" groups="committee_council.group_committee_manager"/>
+
+    <menuitem id="menu_committee_config_lists" name="Classification Lists" parent="menu_committee_configuration" sequence="10"/>
+    <menuitem id="menu_committee_reference_classification" name="Reference/Relation Classification" parent="menu_committee_config_lists" action="action_committee_reference_classification" sequence="10"/>
+    <menuitem id="menu_committee_importance" name="Committee Importance" parent="menu_committee_config_lists" action="action_committee_importance" sequence="20"/>
+    <menuitem id="menu_committee_agency" name="Bodies &amp; Agencies" parent="menu_committee_config_lists" action="action_committee_agency" sequence="30"/>
+    <menuitem id="menu_committee_secrecy" name="Committee Secrecy" parent="menu_committee_config_lists" action="action_committee_secrecy" sequence="40"/>
+    <menuitem id="menu_committee_specialty" name="Classification by Jurisdiction" parent="menu_committee_config_lists" action="action_committee_specialty" sequence="50"/>
+    <menuitem id="menu_committee_periodicity" name="Meeting Periodicity" parent="menu_committee_config_lists" action="action_committee_periodicity" sequence="60"/>
+    <menuitem id="menu_committee_meeting_location_type" name="Meeting Location Type" parent="menu_committee_config_lists" action="action_committee_meeting_location_type" sequence="70"/>
+    <menuitem id="menu_committee_state_classification" name="Classification by Status" parent="menu_committee_config_lists" action="action_committee_state_classification" sequence="80"/>
+    <menuitem id="menu_committee_membership_classification" name="Classification by Membership" parent="menu_committee_config_lists" action="action_committee_membership_classification" sequence="90"/>
+    <menuitem id="menu_committee_member_role" name="Committee Member Classification" parent="menu_committee_config_lists" action="action_committee_member_role" sequence="100"/>
+    <menuitem id="menu_committee_topic_classification" name="Topic Classification" parent="menu_committee_config_lists" action="action_committee_topic_classification" sequence="110"/>
+    <menuitem id="menu_committee_vote_answer" name="Voting Answers" parent="menu_committee_config_lists" action="action_committee_vote_answer" sequence="120"/>
+    <menuitem id="menu_committee_appointment_email_setting" name="Appointment Email Settings" parent="menu_committee_config_lists" action="action_committee_appointment_email_setting" sequence="130"/>
+    <menuitem id="menu_committee_verification" name="Verification Checklist" parent="menu_committee_config_lists" action="action_committee_verification" sequence="140"/>
+
+    <menuitem id="menu_committee_config_review" name="Review &amp; Adoption" parent="menu_committee_configuration" sequence="20"/>
+    <menuitem id="menu_committee_review_authority" name="Review Authorities" parent="menu_committee_config_review" action="action_committee_review_authority" sequence="10"/>
+    <menuitem id="menu_committee_review_stage" name="Review Authority Stages" parent="menu_committee_config_review" action="action_committee_review_stage" sequence="20"/>
+    <menuitem id="menu_committee_adoption_authority" name="Adoption Authorities" parent="menu_committee_config_review" action="action_committee_adoption_authority" sequence="30"/>
+    <menuitem id="menu_committee_adoption_stage" name="Adoption Authority Stages" parent="menu_committee_config_review" action="action_committee_adoption_stage" sequence="40"/>
+
+    <menuitem id="menu_committee_minutes_letter_template" name="Minutes Letter Templates" parent="menu_committee_configuration" action="action_committee_minutes_letter_template" sequence="30"/>
+
+</odoo>

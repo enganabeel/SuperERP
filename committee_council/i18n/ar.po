@@ -1,0 +1,1062 @@
+# Translation of committee_council module (Arabic).
+msgid ""
+msgstr ""
+"Project-Id-Version: committee_council\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-08-19 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: ar\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: model:committee.vote.answer,name:committee_council.vote_answer_abstain
+msgid "Abstain"
+msgstr "ممتنع"
+
+#: code:views/committee_views.xml
+msgid "Activate"
+msgstr "تفعيل"
+
+#: code:models/committee_committee.py
+#: code:models/committee_status_update.py
+#: code:views/committee_views.xml
+#: model:committee.state.classification,name:committee_council.state_class_active
+msgid "Active"
+msgstr "نشط"
+
+#: code:models/committee_topic.py
+msgid "Administration/Department"
+msgstr "الإدارة/القسم"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_admin
+msgid "Administrative Matters"
+msgstr "أمور إدارية"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Adoption Authorities"
+msgstr "جهات الاعتماد"
+
+#: code:models/committee_committee.py
+#: code:models/committee_minutes.py
+#: code:models/committee_review.py
+msgid "Adoption Authority"
+msgstr "جهة الاعتماد"
+
+#: code:models/committee_minutes.py
+msgid "Adoption Authority Notes"
+msgstr "ملاحظات جهة الاعتماد"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Adoption Authority Stages"
+msgstr "مراحل جهات الاعتماد"
+
+#: code:models/committee_review.py
+#: code:views/committee_config_views.xml
+msgid "Adoption Stages"
+msgstr "مراحل الاعتماد"
+
+#: code:models/committee_committee.py
+#: code:models/committee_member.py
+#: code:models/committee_topic.py
+#: code:views/committee_views.xml
+msgid "Agency"
+msgstr "الوكالة"
+
+#: model:committee.member.role,name:committee_council.member_role_agency_official
+msgid "Agency Official"
+msgstr "مسؤول الجهة"
+
+#: model:committee.member.role,name:committee_council.member_role_agency_rep
+msgid "Agency Representative"
+msgstr "ممثل الجهة"
+
+#: code:models/committee_committee.py
+msgid "Allow Assigning Committee Members"
+msgstr "السماح بتعيين أعضاء اللجنة"
+
+#: code:models/committee_meeting.py
+msgid "Allow Closing Attendance"
+msgstr "السماح بإغلاق الحضور"
+
+#: code:models/committee_committee.py
+msgid "Allow Opening/Closing Voting"
+msgstr "السماح بفتح وإغلاق التصويت"
+
+#: code:models/committee_committee.py
+msgid "Allow Periodic Committee Update"
+msgstr "السماح بالتحديث الدوري للجنة"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_budget
+msgid "Annual Budget"
+msgstr "الموازنة السنوية"
+
+#: code:models/committee_topic.py
+msgid "Answer"
+msgstr "الإجابة"
+
+#: code:models/committee_letter_template.py
+msgid "Applies On"
+msgstr "يطبق على"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Appointment Email Settings"
+msgstr "إعدادات إيميلات التعيينات"
+
+#: code:models/committee_minutes.py
+msgid "Approval Transfer Date"
+msgstr "تاريخ إحالة الاعتماد"
+
+#: code:views/committee_minutes_views.xml
+msgid "Approve"
+msgstr "اعتماد"
+
+#: code:models/committee_minutes.py
+#: model:committee.vote.answer,name:committee_council.vote_answer_approved
+msgid "Approved"
+msgstr "موافق"
+
+#: code:views/committee_views.xml
+msgid "Archive"
+msgstr "أرشفة"
+
+#: code:models/committee_committee.py
+#: code:models/committee_status_update.py
+#: code:views/committee_views.xml
+msgid "Archived"
+msgstr "مؤرشفة"
+
+#: code:models/committee_support_request.py
+msgid "Assigned Department"
+msgstr "الإدارة المكلفة"
+
+#: code:models/committee_task.py
+msgid "Assigned To"
+msgstr "مسند إلى"
+
+#: code:models/committee_minutes.py
+#: code:models/committee_topic.py
+#: code:models/committee_verification.py
+#: code:views/committee_minutes_views.xml
+msgid "Attachments"
+msgstr "المرفقات"
+
+#: code:models/committee_meeting.py
+#: code:views/committee_meeting_views.xml
+msgid "Attendance"
+msgstr "الحضور"
+
+#: code:models/committee_meeting.py
+msgid "Attendance Closed"
+msgstr "الحضور مغلق"
+
+#: code:models/committee_meeting.py
+msgid "Attended"
+msgstr "حضر"
+
+#: code:models/committee_review.py
+msgid "Authority Manager"
+msgstr "مدير الجهة"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Bodies & Agencies"
+msgstr "الهيئات والوكالات"
+
+#: model:committee.membership.classification,name:committee_council.membership_class_bodies
+msgid "Bodies Administration"
+msgstr "إدارة الهيئات"
+
+#: code:models/committee_letter_template.py
+#: code:views/committee_config_views.xml
+#: code:views/committee_minutes_views.xml
+msgid "Body"
+msgstr "المحتوى"
+
+#: code:models/committee_meeting.py
+msgid "Cancelled"
+msgstr "ملغاة"
+
+#: code:models/committee_config.py
+msgid "Chairman Role"
+msgstr "دور رئيس اللجنة"
+
+#: code:views/committee_menus.xml
+msgid "Classification Lists"
+msgstr "قوائم التصنيف"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Classification by Jurisdiction"
+msgstr "تصنيف حسب الاختصاص"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Classification by Membership"
+msgstr "تصنيف حسب العضوية"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Classification by Status"
+msgstr "تصنيف حسب الحالة"
+
+#: code:views/committee_meeting_views.xml
+msgid "Close Attendance"
+msgstr "إغلاق الحضور"
+
+#: code:views/committee_topic_views.xml
+msgid "Close Voting"
+msgstr "إغلاق التصويت"
+
+#: code:models/committee_decision.py
+#: code:models/committee_topic.py
+msgid "Closed"
+msgstr "مغلق"
+
+#: model:committee.state.subclassification,name:committee_council.state_subclass_recommendations_closed
+msgid "Closed - Recommendations Concluded"
+msgstr "منتهية بالتوصيات"
+
+#: model:committee.state.subclassification,name:committee_council.state_subclass_referral_closed
+msgid "Closed - Referral Closure"
+msgstr "منتهية بإغلاق الحوالة"
+
+#: code:models/committee_decision.py
+#: code:models/committee_meeting.py
+#: code:models/committee_member.py
+#: code:models/committee_minutes.py
+#: code:models/committee_status_update.py
+#: code:models/committee_support_request.py
+#: code:models/committee_task.py
+#: code:models/committee_topic.py
+#: code:models/committee_transaction.py
+#: code:models/committee_verification.py
+msgid "Committee"
+msgstr "اللجنة"
+
+#: model:committee.member.role,name:committee_council.member_role_chairman
+msgid "Committee Chairman"
+msgstr "رئيس اللجنة"
+
+#: code:models/committee_committee.py
+msgid "Committee Head/Manager"
+msgstr "رئيس/مدير اللجنة"
+
+#: code:models/committee_committee.py
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Committee Importance"
+msgstr "أهمية اللجنة"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Committee Member Classification"
+msgstr "تصنيف أعضاء اللجنة"
+
+#: code:models/committee_committee.py
+msgid "Committee Name"
+msgstr "اسم اللجنة"
+
+#: code:models/committee_committee.py
+msgid "Committee Representatives"
+msgstr "ممثلو اللجنة"
+
+#: code:models/committee_committee.py
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Committee Secrecy"
+msgstr "سرية اللجنة"
+
+#: code:models/committee_committee.py
+#: model:committee.member.role,name:committee_council.member_role_secretary
+msgid "Committee Secretary"
+msgstr "سكرتير اللجنة"
+
+#: code:views/committee_views.xml
+msgid "Committee Status"
+msgstr "حالة اللجنة"
+
+#: code:views/committee_status_update_views.xml
+msgid "Committee Status Updates"
+msgstr "تحديثات حالة اللجنة"
+
+#: code:views/committee_topic_views.xml
+msgid "Committee Topics"
+msgstr "موضوعات اللجنة"
+
+#: code:views/committee_menus.xml
+#: code:views/committee_views.xml
+msgid "Committees"
+msgstr "اللجان"
+
+#: code:views/committee_menus.xml
+msgid "Committees & Councils"
+msgstr "اللجان والمجالس"
+
+#: code:views/committee_views.xml
+msgid "Committees Dashboard"
+msgstr "لوحة اللجان"
+
+#: model:committee.secrecy,name:committee_council.secrecy_confidential
+msgid "Confidential"
+msgstr "سري"
+
+#: code:views/committee_menus.xml
+msgid "Configuration"
+msgstr "الإعدادات"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_tenders
+msgid "Contracts & Tenders"
+msgstr "العقود والمنافسات"
+
+#: code:models/committee_config.py
+msgid "Coordinating Agency"
+msgstr "وكالة تنسيقية"
+
+#: code:views/committee_views.xml
+msgid "Create your first committee"
+msgstr "أنشئ أول لجنة"
+
+#: code:models/committee_status_update.py
+msgid "Current Committee State"
+msgstr "حالة اللجنة الحالية"
+
+#: code:views/committee_views.xml
+msgid "Current Topics"
+msgstr "الموضوعات الحالية"
+
+#: code:models/committee_config.py
+#: model:committee.periodicity,name:committee_council.periodicity_daily
+msgid "Daily"
+msgstr "يومي"
+
+#: code:views/committee_menus.xml
+msgid "Dashboard"
+msgstr "لوحة المعلومات"
+
+#: code:models/committee_decision.py
+#: code:models/committee_status_update.py
+#: code:models/committee_transaction.py
+msgid "Date"
+msgstr "التاريخ"
+
+#: code:models/committee_task.py
+msgid "Deadline"
+msgstr "تاريخ الاستحقاق"
+
+#: code:models/committee_committee.py
+#: code:views/committee_decision_views.xml
+#: code:views/committee_menus.xml
+#: code:views/committee_views.xml
+msgid "Decisions"
+msgstr "القرارات"
+
+#: model:committee.membership.classification,name:committee_council.membership_class_delegated
+msgid "Delegated by Memo"
+msgstr "إدارة بمذكرة تفويض"
+
+#: code:models/committee_support_request.py
+#: code:models/committee_task.py
+#: code:views/committee_task_views.xml
+msgid "Description"
+msgstr "الوصف"
+
+#: code:models/committee_meeting.py
+msgid "Discussion Topics"
+msgstr "موضوعات النقاش"
+
+#: code:models/committee_meeting.py
+#: code:models/committee_support_request.py
+#: code:models/committee_task.py
+msgid "Done"
+msgstr "منتهية"
+
+#: code:models/committee_committee.py
+#: code:models/committee_meeting.py
+#: code:models/committee_status_update.py
+#: code:models/committee_topic.py
+#: code:views/committee_views.xml
+msgid "Draft"
+msgstr "مسودة"
+
+#: code:models/committee_config.py
+msgid "Email Template"
+msgstr "قالب البريد الإلكتروني"
+
+#: code:models/committee_meeting.py
+msgid "End Time"
+msgstr "وقت النهاية"
+
+#: code:models/committee_review.py
+msgid "Entity Name"
+msgstr "اسم الجهة"
+
+#: code:models/committee_config.py
+msgid "Executive Agency"
+msgstr "وكالة تنفيذية"
+
+#: model:committee.importance,name:committee_council.importance_expert
+msgid "Expert"
+msgstr "خبير"
+
+#: model:committee.reference.classification,name:committee_council.reference_class_external
+msgid "External"
+msgstr "خارجي"
+
+#: code:models/committee_transaction.py
+msgid "External System Reference"
+msgstr "مرجع النظام الخارجي"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_financial
+msgid "Financial Matters"
+msgstr "أمور مالية"
+
+#: model:committee.specialty,name:committee_council.specialty_general
+msgid "General"
+msgstr "عام"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_grievances
+msgid "Grievances & Complaints"
+msgstr "التظلمات والشكاوى"
+
+#: code:views/committee_topic_views.xml
+msgid "Grounds/Attachments"
+msgstr "الحيثيات/المرفقات"
+
+#: code:models/committee_topic.py
+msgid "Grounds/Attachments Notes"
+msgstr "ملاحظات الحيثيات/المرفقات"
+
+#: code:views/committee_views.xml
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#: code:models/committee_task.py
+msgid "High"
+msgstr "عالية"
+
+#: model:committee.meeting.location.type,name:committee_council.location_type_hybrid
+msgid "Hybrid"
+msgstr "هجين"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_it
+msgid "IT & Digital Projects"
+msgstr "مشاريع تقنية المعلومات والتحول الرقمي"
+
+#: code:views/committee_views.xml
+msgid "Importance"
+msgstr "الأهمية"
+
+#: code:models/committee_config.py
+#: model:committee.meeting.location.type,name:committee_council.location_type_in_person
+msgid "In Person"
+msgstr "حضوري"
+
+#: code:models/committee_decision.py
+#: code:models/committee_support_request.py
+#: code:models/committee_task.py
+msgid "In Progress"
+msgstr "قيد التنفيذ"
+
+#: model:committee.state.classification,name:committee_council.state_class_inactive
+msgid "Inactive"
+msgstr "غير نشطة"
+
+#: code:models/committee_transaction.py
+msgid "Incoming"
+msgstr "وارد"
+
+#: model:committee.importance,name:committee_council.importance_initiative
+msgid "Initiative"
+msgstr "مبادرة"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_strategy
+msgid "Institution Strategy"
+msgstr "استراتيجية المؤسسة"
+
+#: model:committee.importance,name:committee_council.importance_internal
+#: model:committee.reference.classification,name:committee_council.reference_class_internal
+msgid "Internal"
+msgstr "داخلي"
+
+#: model:committee.membership.classification,name:committee_council.membership_class_internal
+msgid "Internal Administration"
+msgstr "إدارة داخلية"
+
+#: code:models/committee_verification.py
+msgid "Item"
+msgstr "البند"
+
+#: code:models/committee_committee.py
+msgid "Jurisdiction"
+msgstr "الاختصاص"
+
+#: code:models/committee_minutes.py
+msgid "Letter Template"
+msgstr "قالب الخطاب"
+
+#: code:models/committee_meeting.py
+msgid "Location Type"
+msgstr "نوع مكان الانعقاد"
+
+#: code:models/committee_meeting.py
+msgid "Location/Link"
+msgstr "المكان/الرابط"
+
+#: code:models/committee_task.py
+msgid "Low"
+msgstr "منخفضة"
+
+#: model:committee.importance,name:committee_council.importance_management
+#: model:committee.reference.classification,name:committee_council.reference_class_management
+msgid "Management"
+msgstr "إدارة"
+
+#: code:views/committee_meeting_views.xml
+msgid "Mark Done"
+msgstr "تعليم كمنتهية"
+
+#: code:models/committee_decision.py
+#: code:models/committee_meeting.py
+#: code:models/committee_minutes.py
+msgid "Meeting"
+msgstr "الاجتماع"
+
+#: code:models/committee_meeting.py
+msgid "Meeting Date"
+msgstr "تاريخ الاجتماع"
+
+#: code:models/committee_committee.py
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Meeting Location Type"
+msgstr "مكان انعقاد اللجنة"
+
+#: code:models/committee_meeting.py
+msgid "Meeting No."
+msgstr "رقم الاجتماع"
+
+#: code:models/committee_committee.py
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Meeting Periodicity"
+msgstr "دورية انعقاد اللجنة"
+
+#: code:models/committee_meeting.py
+msgid "Meeting Subject"
+msgstr "موضوع الاجتماع"
+
+#: code:models/committee_committee.py
+#: code:views/committee_meeting_views.xml
+#: code:views/committee_menus.xml
+#: code:views/committee_views.xml
+msgid "Meetings"
+msgstr "الاجتماعات"
+
+#: code:models/committee_meeting.py
+#: code:models/committee_member.py
+#: code:models/committee_minutes.py
+#: code:models/committee_topic.py
+#: model:committee.member.role,name:committee_council.member_role_member
+msgid "Member"
+msgstr "عضو"
+
+#: code:models/committee_minutes.py
+msgid "Member Signatures"
+msgstr "توقيعات الأعضاء"
+
+#: code:models/committee_committee.py
+#: code:views/committee_views.xml
+msgid "Members"
+msgstr "الأعضاء"
+
+#: code:models/committee_committee.py
+msgid "Membership Classification"
+msgstr "تصنيف حسب العضوية"
+
+#: model:committee.importance,name:committee_council.importance_ministry
+#: model:committee.reference.classification,name:committee_council.reference_class_ministry
+msgid "Ministry"
+msgstr "وزارة"
+
+#: code:models/committee_committee.py
+#: code:models/committee_letter_template.py
+#: code:models/committee_meeting.py
+#: code:models/committee_minutes.py
+#: code:views/committee_menus.xml
+#: code:views/committee_minutes_views.xml
+#: code:views/committee_views.xml
+msgid "Minutes"
+msgstr "المحاضر"
+
+#: code:models/committee_minutes.py
+msgid "Minutes Body"
+msgstr "محتوى المحضر"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Minutes Letter Templates"
+msgstr "إعدادات خطابات المحاضر"
+
+#: code:models/committee_minutes.py
+msgid "Minutes No."
+msgstr "رقم المحضر"
+
+#: code:models/committee_config.py
+#: model:committee.periodicity,name:committee_council.periodicity_monthly
+msgid "Monthly"
+msgstr "شهري"
+
+#: code:models/committee_review.py
+msgid "Multi-stage Adoption"
+msgstr "اعتماد متعدد المراحل"
+
+#: code:models/committee_review.py
+msgid "Multi-stage Review"
+msgstr "مراجعة متعددة المراحل"
+
+#: code:models/committee_committee.py
+#: code:models/committee_decision.py
+#: code:models/committee_meeting.py
+#: code:models/committee_minutes.py
+#: code:models/committee_support_request.py
+#: code:models/committee_task.py
+#: model:committee.state.classification,name:committee_council.state_class_new
+msgid "New"
+msgstr "جديدة"
+
+#: model:committee.state.subclassification,name:committee_council.state_subclass_new_incomplete
+msgid "New - Incomplete"
+msgstr "جديدة لم تكتمل"
+
+#: model:committee.state.subclassification,name:committee_council.state_subclass_new_intake
+msgid "New - Intake"
+msgstr "جديدة بالاستقبال"
+
+#: code:models/committee_task.py
+msgid "Normal"
+msgstr "عادية"
+
+#: model:committee.vote.answer,name:committee_council.vote_answer_rejected
+msgid "Not Approved"
+msgstr "غير موافق"
+
+#: code:models/committee_decision.py
+#: code:models/committee_task.py
+#: code:models/committee_topic.py
+#: code:models/committee_transaction.py
+#: code:models/committee_verification.py
+#: code:views/committee_task_views.xml
+#: code:views/committee_topic_views.xml
+msgid "Notes"
+msgstr "ملاحظات"
+
+#: code:models/committee_config.py
+msgid "Number of Days"
+msgstr "عدد الأيام"
+
+#: code:views/committee_topic_views.xml
+msgid "Offer"
+msgstr "العرض"
+
+#: code:models/committee_topic.py
+msgid "Offer/Details"
+msgstr "العرض/التفاصيل"
+
+#: code:models/committee_config.py
+#: model:committee.periodicity,name:committee_council.periodicity_on_request
+msgid "On Request"
+msgstr "عند الطلب"
+
+#: code:views/committee_topic_views.xml
+msgid "Open Voting"
+msgstr "فتح التصويت"
+
+#: code:models/committee_topic.py
+msgid "Open for Voting"
+msgstr "مفتوح للتصويت"
+
+#: model:committee.importance,name:committee_council.importance_operation
+msgid "Operational"
+msgstr "تشغيلية"
+
+#: model:committee.importance,name:committee_council.importance_other
+msgid "Other"
+msgstr "أخرى"
+
+#: code:models/committee_transaction.py
+msgid "Outgoing"
+msgstr "صادر"
+
+#: model:committee.importance,name:committee_council.importance_partnership
+msgid "Partnerships"
+msgstr "شراكات"
+
+#: model:committee.state.subclassification,name:committee_council.state_subclass_pending
+msgid "Pending"
+msgstr "معلقة"
+
+#: code:models/committee_status_update.py
+msgid "Periodic Update"
+msgstr "إفادة دورية"
+
+#: code:views/committee_views.xml
+msgid "Periodicity"
+msgstr "الدورية"
+
+#: code:models/committee_task.py
+msgid "Priority"
+msgstr "الأولوية"
+
+#: model:committee.secrecy,name:committee_council.secrecy_public
+msgid "Public"
+msgstr "عام"
+
+#: code:models/committee_topic.py
+msgid "Reason/Justification"
+msgstr "السبب/المبرر"
+
+#: code:models/committee_decision.py
+#: code:models/committee_transaction.py
+msgid "Recipient"
+msgstr "الجهة المحال إليها"
+
+#: code:models/committee_minutes.py
+#: code:models/committee_topic.py
+#: code:views/committee_minutes_views.xml
+#: code:views/committee_topic_views.xml
+msgid "Recommendations"
+msgstr "التوصيات"
+
+#: code:models/committee_committee.py
+msgid "Reference"
+msgstr "المرجع"
+
+#: code:models/committee_transaction.py
+msgid "Reference No."
+msgstr "الرقم المرجعي"
+
+#: code:models/committee_committee.py
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Reference/Relation Classification"
+msgstr "تصنيف حسب المرجعية أو جهة الارتباط"
+
+#: code:views/committee_views.xml
+msgid "Reject"
+msgstr "رفض"
+
+#: code:models/committee_committee.py
+#: code:models/committee_status_update.py
+msgid "Rejected"
+msgstr "مرفوضة"
+
+#: code:models/committee_config.py
+#: model:committee.meeting.location.type,name:committee_council.location_type_remote
+msgid "Remote"
+msgstr "عن بعد"
+
+#: code:views/committee_meeting_views.xml
+msgid "Reopen Attendance"
+msgstr "إعادة فتح الحضور"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_reports
+msgid "Reports & Recommendations"
+msgstr "التقارير والتوصيات"
+
+#: code:models/committee_support_request.py
+msgid "Request Date"
+msgstr "تاريخ الطلب"
+
+#: code:models/committee_config.py
+msgid "Requires Justification"
+msgstr "يتطلب سبب أو مبرر"
+
+#: code:views/committee_minutes_views.xml
+#: code:views/committee_topic_views.xml
+#: code:views/committee_views.xml
+msgid "Reset to Draft"
+msgstr "إعادة إلى مسودة"
+
+#: code:views/committee_menus.xml
+#: code:views/committee_views.xml
+msgid "Review & Adoption"
+msgstr "المراجعة والاعتماد"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Review Authorities"
+msgstr "جهات المراجعة"
+
+#: code:models/committee_committee.py
+#: code:models/committee_minutes.py
+#: code:models/committee_review.py
+msgid "Review Authority"
+msgstr "جهة المراجعة"
+
+#: code:models/committee_minutes.py
+msgid "Review Authority Notes"
+msgstr "ملاحظات جهة المراجعة"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Review Authority Stages"
+msgstr "مراحل جهات المراجعة"
+
+#: code:models/committee_review.py
+#: code:views/committee_config_views.xml
+msgid "Review Stages"
+msgstr "مراحل المراجعة"
+
+#: code:views/committee_minutes_views.xml
+msgid "Review/Adoption Notes"
+msgstr "ملاحظات المراجعة/الاعتماد"
+
+#: code:models/committee_member.py
+msgid "Role Classification"
+msgstr "تصنيف الدور"
+
+#: model:committee.reference.classification,name:committee_council.reference_class_royal
+msgid "Royal"
+msgstr "ملكي"
+
+#: code:models/committee_meeting.py
+msgid "Scheduled"
+msgstr "مجدولة"
+
+#: code:models/committee_config.py
+msgid "Secrecy Code"
+msgstr "رمز السرية"
+
+#: code:models/committee_config.py
+msgid "Secret"
+msgstr "سري"
+
+#: code:models/committee_config.py
+msgid "Secretary Role"
+msgstr "دور السكرتير"
+
+#: code:views/committee_minutes_views.xml
+msgid "Send for Review"
+msgstr "إرسال للمراجعة"
+
+#: code:models/committee_transaction.py
+msgid "Sender"
+msgstr "المرسل"
+
+#: code:views/committee_views.xml
+msgid "Settings"
+msgstr "الإعدادات"
+
+#: code:models/committee_config.py
+msgid "Show as Votes"
+msgstr "إظهار كأصوات"
+
+#: code:views/committee_minutes_views.xml
+msgid "Signatures"
+msgstr "التوقيعات"
+
+#: code:models/committee_meeting.py
+#: code:models/committee_minutes.py
+msgid "Signed"
+msgstr "موقّع"
+
+#: code:models/committee_minutes.py
+msgid "Signed On"
+msgstr "تاريخ التوقيع"
+
+#: code:models/committee_config.py
+#: model:committee.specialty,name:committee_council.specialty_specialists
+msgid "Specialists Only"
+msgstr "مختصين فقط"
+
+#: code:models/committee_decision.py
+#: code:models/committee_review.py
+msgid "Stage"
+msgstr "المرحلة"
+
+#: code:models/committee_review.py
+msgid "Stage Manager"
+msgstr "مسؤول المرحلة"
+
+#: code:models/committee_meeting.py
+msgid "Start Time"
+msgstr "وقت البداية"
+
+#: model:committee.reference.classification,name:committee_council.reference_class_state
+msgid "State"
+msgstr "دولة"
+
+#: code:models/committee_status_update.py
+msgid "Statement"
+msgstr "الإفادة"
+
+#: code:views/committee_views.xml
+msgid "Status"
+msgstr "الحالة"
+
+#: code:models/committee_committee.py
+#: code:models/committee_config.py
+msgid "Status Classification"
+msgstr "تصنيف الحالة"
+
+#: code:models/committee_committee.py
+msgid "Status Sub-classification"
+msgstr "تصنيف فرعي حسب الحالة"
+
+#: code:models/committee_committee.py
+#: code:views/committee_menus.xml
+msgid "Status Updates"
+msgstr "تحديثات الحالة"
+
+#: code:models/committee_config.py
+#: code:views/committee_config_views.xml
+msgid "Sub-classifications"
+msgstr "التصنيفات الفرعية"
+
+#: code:models/committee_decision.py
+#: code:models/committee_letter_template.py
+#: code:models/committee_support_request.py
+#: code:models/committee_transaction.py
+msgid "Subject"
+msgstr "الموضوع"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_contracts
+msgid "Supply Contracts"
+msgstr "عقود التوريد"
+
+#: code:models/committee_committee.py
+#: code:views/committee_menus.xml
+#: code:views/committee_support_request_views.xml
+#: code:views/committee_views.xml
+msgid "Support Requests"
+msgstr "طلبات الدعم"
+
+#: model:committee.state.classification,name:committee_council.state_class_suspended
+msgid "Suspended"
+msgstr "موقوفة"
+
+#: code:models/committee_task.py
+msgid "Task Name"
+msgstr "اسم المهمة"
+
+#: code:models/committee_committee.py
+#: code:views/committee_menus.xml
+#: code:views/committee_task_views.xml
+#: code:views/committee_views.xml
+msgid "Tasks"
+msgstr "المهام"
+
+#: code:models/committee_committee.py
+msgid "Temporary Manager"
+msgstr "مدير مؤقت"
+
+#: code:models/committee_topic.py
+msgid "Topic"
+msgstr "الموضوع"
+
+#: code:models/committee_topic.py
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Topic Classification"
+msgstr "تصنيف الموضوع"
+
+#: code:models/committee_topic.py
+msgid "Topic Date"
+msgstr "تاريخ الموضوع"
+
+#: code:models/committee_topic.py
+msgid "Topic Title"
+msgstr "عنوان الموضوع"
+
+#: code:models/committee_committee.py
+#: code:views/committee_menus.xml
+msgid "Topics"
+msgstr "الموضوعات"
+
+#: code:models/committee_minutes.py
+msgid "Topics Discussed"
+msgstr "الموضوعات التي تمت مناقشتها"
+
+#: code:models/committee_committee.py
+#: code:views/committee_views.xml
+msgid "Transactions"
+msgstr "المعاملات"
+
+#: code:models/committee_transaction.py
+msgid "Type"
+msgstr "النوع"
+
+#: code:models/committee_minutes.py
+#: code:models/committee_task.py
+msgid "Under Review"
+msgstr "قيد المراجعة"
+
+#: code:models/committee_status_update.py
+msgid "Update Type"
+msgstr "نوع الإفادة"
+
+#: code:models/committee_status_update.py
+msgid "Updated By"
+msgstr "حدثه"
+
+#: code:models/committee_task.py
+msgid "Urgent"
+msgstr "عاجلة"
+
+#: code:models/committee_committee.py
+#: code:views/committee_menus.xml
+#: code:views/committee_verification_views.xml
+#: code:views/committee_views.xml
+msgid "Verification Checklist"
+msgstr "قائمة التحقق"
+
+#: code:models/committee_verification.py
+msgid "Verification Date"
+msgstr "تاريخ التحقق"
+
+#: code:models/committee_verification.py
+msgid "Verified"
+msgstr "تم التحقق"
+
+#: code:views/committee_views.xml
+msgid "Visible Committee Actions"
+msgstr "إجراءات اللجنة الظاهرة"
+
+#: code:models/committee_topic.py
+#: code:views/committee_topic_views.xml
+msgid "Votes"
+msgstr "الأصوات"
+
+#: code:views/committee_config_views.xml
+#: code:views/committee_menus.xml
+msgid "Voting Answers"
+msgstr "إجابات التصويت"
+
+#: code:models/committee_topic.py
+msgid "Voting End Date"
+msgstr "تاريخ إنتهاء التصويت"
+
+#: code:models/committee_status_update.py
+msgid "Warning Notice"
+msgstr "إفادة على شكل إنذار"
+
+#: code:models/committee_config.py
+#: model:committee.periodicity,name:committee_council.periodicity_weekly
+msgid "Weekly"
+msgstr "أسبوعي"
+
+#: model:committee.topic.classification,name:committee_council.topic_class_procedures
+msgid "Work Procedures"
+msgstr "إجراءات العمل"
+
+#: code:models/committee_config.py
+#: model:committee.periodicity,name:committee_council.periodicity_yearly
+msgid "Yearly"
+msgstr "سنوي"
+

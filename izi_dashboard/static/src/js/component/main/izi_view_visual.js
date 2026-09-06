@@ -2,7 +2,7 @@
 
 import Widget from "@izi_dashboard/legacy_core/widget";
 import { _t } from "@web/core/l10n/translation";
-import { jsonrpc } from "@web/core/network/rpc_service";
+import { rpc } from "@web/core/network/rpc";
 import { useService } from "@web/core/utils/hooks";
 
 function isQuarter(value) {
@@ -326,7 +326,7 @@ var IZIViewVisual = Widget.extend({
                     drilldown_fields_menus.className = 'drilldown-fields-menus';
                     drilldown_fields.appendChild(drilldown_fields_menus);
 
-                    jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_available_fields', {
+                    rpc('/web/dataset/call_kw/izi.analysis/ui_get_available_fields', {
                         model: 'izi.analysis',
                         method: 'ui_get_available_fields',
                         args: [[analysis_id], {}],
@@ -440,7 +440,7 @@ var IZIViewVisual = Widget.extend({
                 } else if (false) {
                     // Open Action
                     if (self.action_model && self.drilldown_level > self.max_drilldown_level) {
-                        jsonrpc('/web/dataset/call_kw/izi.analysis/ui_get_view_parameters', {
+                        rpc('/web/dataset/call_kw/izi.analysis/ui_get_view_parameters', {
                             model: 'izi.analysis',
                             method: 'ui_get_view_parameters',
                             args: [[analysis_id], args],
@@ -476,7 +476,7 @@ var IZIViewVisual = Widget.extend({
     _convertDomainToUTC(domain, callback) {
         var self = this;
         if (self.analysis_id) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/convert_domain_to_utc', {
+            rpc('/web/dataset/call_kw/izi.analysis/convert_domain_to_utc', {
                 model: 'izi.analysis',
                 method: 'convert_domain_to_utc',
                 args: [self.analysis_id, domain],
@@ -1148,7 +1148,7 @@ var IZIViewVisual = Widget.extend({
             if (self.parent.$description) {
                 self.parent.$description.append(`<span class="spinner-border spinner-border-small"/>`);
             }
-            jsonrpc('/web/dataset/call_kw/izi.analysis/action_get_lab_description', {
+            rpc('/web/dataset/call_kw/izi.analysis/action_get_lab_description', {
                 model: 'izi.analysis',
                 method: 'action_get_lab_description',
                 args: [self.analysis_id, ai_analysis_data, self.block_id],
@@ -1225,7 +1225,7 @@ var IZIViewVisual = Widget.extend({
             if (dashboard_id) {
                 kwargs.dashboard_id = parseInt(dashboard_id);
             }
-            jsonrpc('/web/dataset/call_kw/izi.analysis/try_get_analysis_data_dashboard', {
+            rpc('/web/dataset/call_kw/izi.analysis/try_get_analysis_data_dashboard', {
                 model: 'izi.analysis',
                 method: 'try_get_analysis_data_dashboard',
                 args: [self.analysis_id],
@@ -1241,7 +1241,7 @@ var IZIViewVisual = Widget.extend({
     runDataScript: function (context={}, callback=undefined) {
         var self = this;
         if (self.analysis_id) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/run_data_script', {
+            rpc('/web/dataset/call_kw/izi.analysis/run_data_script', {
                 model: 'izi.analysis',
                 method: 'run_data_script',
                 args: [self.analysis_id],
@@ -1377,7 +1377,7 @@ var IZIViewVisual = Widget.extend({
     _openAnalysisByName: function (analysisName) {
         var self = this;
         if (analysisName) {
-            jsonrpc('/web/dataset/call_kw/izi.analysis/search_read', {
+            rpc('/web/dataset/call_kw/izi.analysis/search_read', {
                 model: 'izi.analysis',
                 method: 'search_read',
                 args: [[['name', '=', analysisName]], ['id', 'name']],

@@ -3,6 +3,7 @@
     <data>
         <record model="ir.actions.act_window" id="izi_kpi_action">
             <field name="name">Key Performance Indicator</field>
+            <field name="path">izi-kpi</field>
             <field name="res_model">izi.kpi</field>
             <field name="view_mode">list,form</field>
         </record>

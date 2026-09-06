@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Reference / relation classification -->
+    <record id="view_committee_reference_classification_list" model="ir.ui.view">
+        <field name="name">committee.reference.classification.list</field>
+        <field name="model">committee.reference.classification</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_reference_classification" model="ir.actions.act_window">
+        <field name="name">Reference/Relation Classification</field>
+        <field name="res_model">committee.reference.classification</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Importance -->
+    <record id="view_committee_importance_list" model="ir.ui.view">
+        <field name="name">committee.importance.list</field>
+        <field name="model">committee.importance</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_importance" model="ir.actions.act_window">
+        <field name="name">Committee Importance</field>
+        <field name="res_model">committee.importance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Agency -->
+    <record id="view_committee_agency_list" model="ir.ui.view">
+        <field name="name">committee.agency.list</field>
+        <field name="model">committee.agency</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="is_executive"/>
+                <field name="is_coordinating"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_agency" model="ir.actions.act_window">
+        <field name="name">Bodies &amp; Agencies</field>
+        <field name="res_model">committee.agency</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Secrecy -->
+    <record id="view_committee_secrecy_list" model="ir.ui.view">
+        <field name="name">committee.secrecy.list</field>
+        <field name="model">committee.secrecy</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="is_secret"/>
+                <field name="secrecy_number"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_secrecy" model="ir.actions.act_window">
+        <field name="name">Committee Secrecy</field>
+        <field name="res_model">committee.secrecy</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Specialty -->
+    <record id="view_committee_specialty_list" model="ir.ui.view">
+        <field name="name">committee.specialty.list</field>
+        <field name="model">committee.specialty</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="is_specialist"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_specialty" model="ir.actions.act_window">
+        <field name="name">Classification by Jurisdiction</field>
+        <field name="res_model">committee.specialty</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Periodicity -->
+    <record id="view_committee_periodicity_list" model="ir.ui.view">
+        <field name="name">committee.periodicity.list</field>
+        <field name="model">committee.periodicity</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="days"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_periodicity" model="ir.actions.act_window">
+        <field name="name">Meeting Periodicity</field>
+        <field name="res_model">committee.periodicity</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Meeting location type -->
+    <record id="view_committee_meeting_location_type_list" model="ir.ui.view">
+        <field name="name">committee.meeting.location.type.list</field>
+        <field name="model">committee.meeting.location.type</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="is_attendance"/>
+                <field name="is_remote"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_meeting_location_type" model="ir.actions.act_window">
+        <field name="name">Meeting Location Type</field>
+        <field name="res_model">committee.meeting.location.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- State classification (+ sub) -->
+    <record id="view_committee_state_classification_list" model="ir.ui.view">
+        <field name="name">committee.state.classification.list</field>
+        <field name="model">committee.state.classification</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_committee_state_classification_form" model="ir.ui.view">
+        <field name="name">committee.state.classification.form</field>
+        <field name="model">committee.state.classification</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Sub-classifications">
+                            <field name="sub_classification_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="active" widget="boolean_toggle"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_committee_state_classification" model="ir.actions.act_window">
+        <field name="name">Classification by Status</field>
+        <field name="res_model">committee.state.classification</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Membership classification -->
+    <record id="view_committee_membership_classification_list" model="ir.ui.view">
+        <field name="name">committee.membership.classification.list</field>
+        <field name="model">committee.membership.classification</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_membership_classification" model="ir.actions.act_window">
+        <field name="name">Classification by Membership</field>
+        <field name="res_model">committee.membership.classification</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Member role -->
+    <record id="view_committee_member_role_list" model="ir.ui.view">
+        <field name="name">committee.member.role.list</field>
+        <field name="model">committee.member.role</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="is_chairman"/>
+                <field name="is_secretary"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_member_role" model="ir.actions.act_window">
+        <field name="name">Committee Member Classification</field>
+        <field name="res_model">committee.member.role</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Topic classification -->
+    <record id="view_committee_topic_classification_list" model="ir.ui.view">
+        <field name="name">committee.topic.classification.list</field>
+        <field name="model">committee.topic.classification</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_topic_classification" model="ir.actions.act_window">
+        <field name="name">Topic Classification</field>
+        <field name="res_model">committee.topic.classification</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Vote answers -->
+    <record id="view_committee_vote_answer_list" model="ir.ui.view">
+        <field name="name">committee.vote.answer.list</field>
+        <field name="model">committee.vote.answer</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="requires_reason"/>
+                <field name="show_as_votes"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_vote_answer" model="ir.actions.act_window">
+        <field name="name">Voting Answers</field>
+        <field name="res_model">committee.vote.answer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Appointment email settings -->
+    <record id="view_committee_appointment_email_setting_list" model="ir.ui.view">
+        <field name="name">committee.appointment.email.setting.list</field>
+        <field name="model">committee.appointment.email.setting</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="template_id"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_appointment_email_setting" model="ir.actions.act_window">
+        <field name="name">Appointment Email Settings</field>
+        <field name="res_model">committee.appointment.email.setting</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Review authority -->
+    <record id="view_committee_review_authority_list" model="ir.ui.view">
+        <field name="name">committee.review.authority.list</field>
+        <field name="model">committee.review.authority</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="is_group"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_committee_review_authority_form" model="ir.ui.view">
+        <field name="name">committee.review.authority.form</field>
+        <field name="model">committee.review.authority</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="is_group"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Review Stages">
+                            <field name="stage_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="manager_id"/>
+                                    <field name="is_authority_manager"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_committee_review_authority" model="ir.actions.act_window">
+        <field name="name">Review Authorities</field>
+        <field name="res_model">committee.review.authority</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Adoption authority -->
+    <record id="view_committee_adoption_authority_list" model="ir.ui.view">
+        <field name="name">committee.adoption.authority.list</field>
+        <field name="model">committee.adoption.authority</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="is_group"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_committee_adoption_authority_form" model="ir.ui.view">
+        <field name="name">committee.adoption.authority.form</field>
+        <field name="model">committee.adoption.authority</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="is_group"/>
+                        <field name="active"/>
+                    </group>
+                    <notebook>
+                        <page string="Adoption Stages">
+                            <field name="stage_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name"/>
+                                    <field name="manager_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_committee_adoption_authority" model="ir.actions.act_window">
+        <field name="name">Adoption Authorities</field>
+        <field name="res_model">committee.adoption.authority</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Review / adoption stages (standalone lists) -->
+    <record id="view_committee_review_stage_list" model="ir.ui.view">
+        <field name="name">committee.review.stage.list</field>
+        <field name="model">committee.review.stage</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="authority_id"/>
+                <field name="manager_id"/>
+                <field name="is_authority_manager"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_review_stage" model="ir.actions.act_window">
+        <field name="name">Review Authority Stages</field>
+        <field name="res_model">committee.review.stage</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_committee_adoption_stage_list" model="ir.ui.view">
+        <field name="name">committee.adoption.stage.list</field>
+        <field name="model">committee.adoption.stage</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="authority_id"/>
+                <field name="manager_id"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_committee_adoption_stage" model="ir.actions.act_window">
+        <field name="name">Adoption Authority Stages</field>
+        <field name="res_model">committee.adoption.stage</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Minutes letter template -->
+    <record id="view_committee_minutes_letter_template_list" model="ir.ui.view">
+        <field name="name">committee.minutes.letter.template.list</field>
+        <field name="model">committee.minutes.letter.template</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="applies_to"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_committee_minutes_letter_template_form" model="ir.ui.view">
+        <field name="name">committee.minutes.letter.template.form</field>
+        <field name="model">committee.minutes.letter.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="applies_to"/>
+                        <field name="subject"/>
+                        <field name="active"/>
+                    </group>
+                    <group string="Body">
+                        <p class="text-muted">
+                            Available placeholders: object.committee_id.name, object.minutes_number,
+                            object.approval_transfer_date, object.review_notes, object.name
+                        </p>
+                        <field name="body" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_committee_minutes_letter_template" model="ir.actions.act_window">
+        <field name="name">Minutes Letter Templates</field>
+        <field name="res_model">committee.minutes.letter.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

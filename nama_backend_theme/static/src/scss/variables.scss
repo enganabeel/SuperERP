@@ -14,8 +14,17 @@
   --nama-shadow: 0 10px 28px rgba(22, 43, 55, .07);
 }
 
+// Icon-glyph classes must keep their own font (Font Awesome / Odoo's icon
+// set / Material Icons) - excluded from the forced override below so
+// glyphs don't turn into boxes/wrong characters.
+$nama-icon-exclusions: '.fa, .fab, .fas, .far, .fal, .oi, .material-icons, [class*="fa-"], [class*="oi-"]';
+
 body.o_web_client {
-  font-family: 'Tajawal', Arial, sans-serif;
+  font-family: 'Tajawal', Arial, sans-serif !important;
   background: radial-gradient(circle at 74% -8%, #dff7f0 0, transparent 25%), var(--nama-bg);
   color: var(--nama-text);
+
+  *:not(#{$nama-icon-exclusions}) {
+    font-family: 'Tajawal', Arial, sans-serif !important;
+  }
 }

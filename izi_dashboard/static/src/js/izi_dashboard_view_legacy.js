@@ -1,34 +1,34 @@
-odoo.define('izi_dashboard.IZIDashboardView', function (require) {
-    "use strict";
-    
-    var core = require('web.core');
-    var AbstractView = require('web.AbstractView');
-    var view_registry = require('web.view_registry');
-    var _lt = core._lt;
-    var IZIDashboardModel = require('izi_dashboard.IZIDashboardModel');
-    var IZIDashboardController = require('izi_dashboard.IZIDashboardController');
-    var IZIDashboardRenderer = require('izi_dashboard.IZIDashboardRenderer');
-    var IZIDashboardView = AbstractView.extend({
-        template: "IZIDashboard",
-        display_name: _lt('IZIDashboard'),
-        events: {
-        },
-        icon: 'fa-tachometer',
-        config: _.extend({},AbstractView.prototype.config, {
-            Model: IZIDashboardModel,
-            Controller: IZIDashboardController,
-            Renderer: IZIDashboardRenderer,
-        }),
-        viewType: 'izidashboard',
-        withControlPanel: false,
-        withSearchPanel: false,
-    
-        init: function () {
-            this._super.apply(this, arguments);
-        },
-    });
-    
-    view_registry.add('izidashboard', IZIDashboardView);
-    
-    return IZIDashboardView;
+/** @odoo-module */
+// NOTE: web.AbstractView / web.view_registry were removed from Odoo core
+// after 16.0 and have no Odoo 18 equivalent. This file is a
+// syntax-modernized reference only (odoo.define -> @odoo-module) and is not
+// registered in the manifest. The active Dashboard view type registration
+// for Odoo 18 is izi_dashboard_view.js (registry.category("views")).
+import AbstractView from "@web/legacy/js/views/abstract_view";
+import viewRegistry from "@web/legacy/js/views/view_registry";
+import IZIDashboardModel from "@izi_dashboard/js/izi_dashboard_model";
+import IZIDashboardController from "@izi_dashboard/js/izi_dashboard_controller_legacy";
+import IZIDashboardRenderer from "@izi_dashboard/js/izi_dashboard_renderer";
+
+export const IZIDashboardView = AbstractView.extend({
+    template: "IZIDashboard",
+    display_name: "IZIDashboard",
+    events: {},
+    icon: "fa-tachometer",
+    config: Object.assign({}, AbstractView.prototype.config, {
+        Model: IZIDashboardModel,
+        Controller: IZIDashboardController,
+        Renderer: IZIDashboardRenderer,
+    }),
+    viewType: "izidashboard",
+    withControlPanel: false,
+    withSearchPanel: false,
+
+    init: function () {
+        this._super.apply(this, arguments);
+    },
 });
+
+viewRegistry.add("izidashboard", IZIDashboardView);
+
+export default IZIDashboardView;

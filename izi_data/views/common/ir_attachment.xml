@@ -3,6 +3,7 @@
     <data>
         <record id="action_attachment" model="ir.actions.act_window">
             <field name="name">Attachments</field>
+            <field name="path">izi-attachment</field>  
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">ir.attachment</field>
             <field name="context">{'default_analytic': True}</field>
