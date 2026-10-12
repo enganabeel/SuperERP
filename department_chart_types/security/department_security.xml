@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--
+            Who may see a department's Manager.
+
+            The restriction is on the *views*, not on the field. A model-level
+            `groups=` on manager_id would strip it from every read, including
+            the ones other modules make for their own logic, so instead each
+            place a department offers the manager - form, org chart card,
+            kanban, list, search bar - carries this group. A user outside it
+            never receives the node in the arch, and so never receives the
+            value either: the org chart only fetches the fields its arch
+            declares. The PDF follows for free, since it rasterises the live
+            chart.
+
+            No category, so the group shows up as a plain checkbox under
+            "Other" on a user's Access Rights page instead of joining the HR
+            access ladder.
+        -->
+        <record id="group_show_department_manager" model="res.groups">
+            <field name="name">Show Department Manager</field>
+            <field name="comment">Members see the Manager of a department, on the department form, the org chart, the kanban and the list. For everyone else the field is not shown at all.</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Default top-menu entries, created against the current default
+        website on install. Edit freely afterwards in
+        Website > Site > Menu Editor — these are just a sensible starting
+        point mirroring the reference site's nav.
+    -->
+    <record id="menu_afc2027_about" model="website.menu">
+        <field name="name">About Us</field>
+        <field name="url">/about-us</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="menu_afc2027_news" model="website.menu">
+        <field name="name">News</field>
+        <field name="url">/blog</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="menu_afc2027_visit" model="website.menu">
+        <field name="name">Visit</field>
+        <field name="url">#</field>
+        <field name="new_window">True</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="menu_afc2027_careers" model="website.menu">
+        <field name="name">Careers</field>
+        <field name="url">#</field>
+        <field name="new_window">True</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">40</field>
+    </record>
+</odoo>

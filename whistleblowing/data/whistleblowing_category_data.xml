@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="category_fraud" model="whistleblowing.category">
+        <field name="name">Fraud</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="category_corruption" model="whistleblowing.category">
+        <field name="name">Corruption / Bribery</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="category_harassment" model="whistleblowing.category">
+        <field name="name">Harassment / Bullying</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="category_discrimination" model="whistleblowing.category">
+        <field name="name">Discrimination</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="category_conflict_of_interest" model="whistleblowing.category">
+        <field name="name">Conflict of Interest</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="category_safety" model="whistleblowing.category">
+        <field name="name">Health &amp; Safety Violation</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="category_data_privacy" model="whistleblowing.category">
+        <field name="name">Data Privacy Breach</field>
+        <field name="sequence">70</field>
+    </record>
+    <record id="category_financial_misconduct" model="whistleblowing.category">
+        <field name="name">Financial Misconduct</field>
+        <field name="sequence">80</field>
+    </record>
+    <record id="category_other" model="whistleblowing.category">
+        <field name="name">Other</field>
+        <field name="sequence">100</field>
+    </record>
+</odoo>

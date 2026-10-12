@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_hr_department_tree" model="ir.actions.report">
+        <field name="name">Department Tree</field>
+        <field name="model">hr.department</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_department_tree_report.report_department_tree</field>
+        <field name="print_report_name">'Department Tree - %s' % (object.env.company.name)</field>
+        <field name="binding_model_id" ref="hr.model_hr_department"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!--
+        Recursive node template: renders one department row, then recurses
+        into its (active) children, one indent level deeper. depth is
+        clamped to 4 for styling purposes only; deeper trees keep
+        recursing correctly, they just stop getting a visually distinct
+        shade past level 4.
+    -->
+    <template id="report_department_node">
+        <div t-attf-class="dept_node dept_level_#{depth if depth &lt; 4 else 4}">
+            <div class="dept_row">
+                <span class="dept_name" t-esc="node.name"/>
+                <span class="dept_meta">
+                    <span t-if="node.manager_id" class="dept_manager" t-esc="node.manager_id.name"/>
+                    <span t-if="node.total_employee" class="dept_badge">
+                        <t t-esc="node.total_employee"/>
+                        <t t-if="node.total_employee == 1"> employee</t>
+                        <t t-else=""> employees</t>
+                    </span>
+                </span>
+            </div>
+            <t t-set="child_depts" t-value="node.child_ids.filtered(lambda c: c.active).sorted(key=lambda c: c.name or '')"/>
+            <div t-if="child_depts" class="dept_children">
+                <t t-foreach="child_depts" t-as="child_dept">
+                    <t t-call="hr_department_tree_report.report_department_node">
+                        <t t-set="node" t-value="child_dept"/>
+                        <t t-set="depth" t-value="depth + 1"/>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_department_tree">
+        <t t-call="web.html_container">
+            <t t-set="company" t-value="env.company"/>
+            <t t-call="web.internal_layout">
+                <div class="page o_dept_tree_report">
+                    <style>
+                        .o_dept_tree_report {
+                            font-family: Arial, Helvetica, sans-serif;
+                            color: #1A1A1A;
+                            font-size: 11px;
+                        }
+                        .o_dept_tree_report .dept_report_header {
+                            margin-bottom: 22px;
+                            border-bottom: 2px solid #0D3B23;
+                            padding-bottom: 10px;
+                        }
+                        .o_dept_tree_report .dept_report_header h1 {
+                            font-size: 20px;
+                            font-weight: 700;
+                            color: #0D3B23;
+                            margin: 0 0 4px 0;
+                        }
+                        .o_dept_tree_report .dept_report_meta {
+                            font-size: 10px;
+                            color: #666666;
+                        }
+                        .o_dept_tree_report .dept_tree_root {
+                            margin-top: 4px;
+                        }
+                        .o_dept_tree_report .dept_node {
+                            position: relative;
+                            margin-bottom: 5px;
+                        }
+                        .o_dept_tree_report .dept_row {
+                            display: flex;
+                            align-items: baseline;
+                            justify-content: space-between;
+                            padding: 6px 10px;
+                            border-radius: 3px;
+                            page-break-inside: avoid;
+                        }
+                        .o_dept_tree_report .dept_name {
+                            font-weight: 700;
+                        }
+                        .o_dept_tree_report .dept_meta {
+                            white-space: nowrap;
+                            font-weight: 400;
+                        }
+                        .o_dept_tree_report .dept_manager {
+                            font-size: 9.5px;
+                            font-style: italic;
+                            opacity: .85;
+                            margin-right: 8px;
+                        }
+                        .o_dept_tree_report .dept_badge {
+                            display: inline-block;
+                            font-size: 9px;
+                            font-weight: 700;
+                            background: rgba(0, 0, 0, .08);
+                            border-radius: 9px;
+                            padding: 1px 8px;
+                        }
+                        .o_dept_tree_report .dept_children {
+                            margin-left: 20px;
+                            padding-left: 16px;
+                            margin-top: 5px;
+                            border-left: 1.5px solid #D8E3DC;
+                        }
+                        .o_dept_tree_report .dept_children > .dept_node {
+                            position: relative;
+                        }
+                        .o_dept_tree_report .dept_children > .dept_node > .dept_row::before {
+                            content: "";
+                            position: absolute;
+                            left: -16px;
+                            top: 50%;
+                            width: 14px;
+                            height: 1.5px;
+                            background: #D8E3DC;
+                        }
+
+                        /* Depth-based shading: dark brand green at the top,
+                           lightening with each level so the eye reads
+                           hierarchy at a glance even before reading text. */
+                        .o_dept_tree_report .dept_level_0 > .dept_row {
+                            background: #0D3B23;
+                            color: #ffffff;
+                            font-size: 13px;
+                        }
+                        .o_dept_tree_report .dept_level_0 > .dept_row .dept_badge {
+                            background: rgba(255, 255, 255, .22);
+                            color: #ffffff;
+                        }
+                        .o_dept_tree_report .dept_level_1 > .dept_row {
+                            background: #E3EEE7;
+                            border-left: 3px solid #1B5E3F;
+                            font-size: 12px;
+                        }
+                        .o_dept_tree_report .dept_level_2 > .dept_row {
+                            background: #F3F8F5;
+                            border-left: 3px solid #6FA98A;
+                            font-size: 11px;
+                        }
+                        .o_dept_tree_report .dept_level_3 > .dept_row {
+                            border-left: 3px solid #C9D6CF;
+                            font-size: 10.5px;
+                            font-weight: 400;
+                        }
+                        .o_dept_tree_report .dept_level_3 > .dept_row .dept_name {
+                            font-weight: 600;
+                        }
+                        .o_dept_tree_report .dept_level_4 > .dept_row {
+                            border-left: 3px solid #E4EAE7;
+                            font-size: 10px;
+                            font-weight: 400;
+                            color: #555555;
+                        }
+                    </style>
+
+                    <t t-set="roots" t-value="docs.filtered(lambda d: not d.parent_id or d.parent_id not in docs).sorted(key=lambda d: d.name or '')"/>
+
+                    <div class="dept_report_header">
+                        <h1>Department Structure</h1>
+                        <div class="dept_report_meta">
+                            <span t-esc="company.name"/> —
+                            <span t-esc="len(roots)"/> top-level department<t t-if="len(roots) != 1">s</t>,
+                            <span t-esc="len(docs)"/> department<t t-if="len(docs) != 1">s</t> total —
+                            generated <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
+                        </div>
+                    </div>
+
+                    <div class="dept_tree_root">
+                        <t t-foreach="roots" t-as="dept">
+                            <t t-call="hr_department_tree_report.report_department_node">
+                                <t t-set="node" t-value="dept"/>
+                                <t t-set="depth" t-value="0"/>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

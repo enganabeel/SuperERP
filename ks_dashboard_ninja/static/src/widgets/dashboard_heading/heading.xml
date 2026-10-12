@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="dashboard_heading" owl="1">
+        <t t-if="item.ks_dashboard_item_type == 'ks_heading'" t-call="dashboard_heading_template"/>
+    </t>
+
+    <t t-name="dashboard_heading_template" owl="1">
+        <div class="ks_db_item_preview_footer_note">
+            <strong>Note :</strong>
+            Dashboard Heading
+        </div>
+    </t>
+
+</templates>

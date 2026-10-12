@@ -1,0 +1,212 @@
+/*
+ * Card styling for the "Positional Structure" org chart (hr.job), mirroring
+ * the structural rules department_chart_types defines for .o_org_dept_card
+ * (tight padding, title clamped to 3 lines, badge look) but under our own
+ * class name so this module doesn't depend on another addon's CSS staying
+ * as it is.
+ *
+ * .o_org_node_inner's padding/gap reset is generic (unscoped by model) and
+ * comes from department_chart_types when it's installed; if it isn't, the
+ * cards still work, just with the default web_org node padding.
+ */
+
+.o_org_job_card {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 4px 6px !important;
+    overflow: hidden;
+    line-height: 1.1;
+
+    .o_org_job_title {
+        color: inherit !important;
+        font-size: 11px;
+        font-weight: 700;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .o_org_job_badge {
+        font-size: 9px;
+        padding: 2px 6px;
+        background-color: #eef3f7;
+        color: #212529 !important;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    /* Needed Employees badge: Target minus current headcount, shown only
+       when positive (still short of Target) -- deliberately red/alarm
+       styled, unlike the neutral headcount badge above. */
+    .o_org_job_needed_badge {
+        font-size: 9px;
+        padding: 2px 6px;
+        background-color: #FDECEA;
+        color: #C62828 !important;
+        border: 1px solid #EF9A9A;
+    }
+}
+
+/*
+ * Color by hierarchy_level (depth in the Reports-To chain, capped at 4),
+ * same 5-band palette already used for this module's PDF report and HTML
+ * tree page (job_level_0..4 there, o_org_job_level_0..4 here).
+ */
+
+/* Level 0: a root position (no parent) */
+.o_org_job_card.o_org_job_level_0 {
+    background-color: #2E523F !important;
+    border-top: 6px solid #182D22 !important;
+    color: #ffffff !important;
+}
+
+/* Level 1: direct reports of a root */
+.o_org_job_card.o_org_job_level_1 {
+    background-color: #DCE3ED !important;
+    border-top: 6px solid #6f97b5 !important;
+    color: #1F3148 !important;
+}
+
+/* Level 2 */
+.o_org_job_card.o_org_job_level_2 {
+    background-color: #F2F2F6 !important;
+    border-top: 6px solid #A6B6CA !important;
+    color: #1F3148 !important;
+}
+
+/* Level 3 */
+.o_org_job_card.o_org_job_level_3 {
+    background-color: #F2F2F6 !important;
+    border-top: 6px solid #C9D2DE !important;
+    color: #1F3148 !important;
+}
+
+/* Level 4 and deeper */
+.o_org_job_card.o_org_job_level_4 {
+    background-color: #eef3f7  !important;
+    border-top: 6px solid #9db8cc !important;
+    color: #1F3148 !important;
+}
+
+/* CEO Office position: overrides the level color with the same grey used
+   for a Committee department (o_org_dept_type_committee below), at any depth */
+.o_org_job_card.o_org_job_ceo_office {
+    background-color: #D6D6D6 !important;
+    border: 2px solid #B8B8B8 !important;
+    border-top: 6px solid #9A9A9A !important;
+    color: #1A1A1A !important;
+}
+
+/*
+ * Card styling for the "Department Structure" org chart (hr.department),
+ * the department-side equivalent of the job card above -- same structural
+ * rules, same 5-band level palette, same Available override.
+ */
+
+.o_org_dept_level_card {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 4px 6px !important;
+    overflow: hidden;
+    line-height: 1.1;
+
+    .o_org_dept_level_title {
+        color: inherit !important;
+        font-size: 11px;
+        font-weight: 700;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .o_org_dept_level_badge {
+        font-size: 9px;
+        padding: 2px 6px;
+        background-color: #eef3f7 ;
+        color: #212529 !important;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+}
+
+.o_org_dept_level_card.o_org_dept_level_0 {
+    background-color: #2E523F !important;
+    border-top: 6px solid #182D22 !important;
+    color: #ffffff !important;
+}
+
+.o_org_dept_level_card.o_org_dept_level_1 {
+    background-color: #DCE3ED !important;
+    border-top: 6px solid #6f97b5 !important;
+    color: #1F3148 !important;
+}
+
+.o_org_dept_level_card.o_org_dept_level_2 {
+    background-color: #F2F2F6 !important;
+    border-top: 6px solid #A6B6CA !important;
+    color: #1F3148 !important;
+}
+
+.o_org_dept_level_card.o_org_dept_level_3 {
+    background-color: #F2F2F6 !important;
+    border-top: 6px solid #C9D2DE !important;
+    color: #1F3148 !important;
+}
+
+.o_org_dept_level_card.o_org_dept_level_4 {
+    background-color: #F2F2F6 !important;
+    border-top: 6px solid #9db8cc  !important;
+    color: #1F3148 !important;
+}
+
+.o_org_dept_level_card.o_org_dept_level_available {
+    background-color: #FFF7D6 !important;
+    border: 2px solid #E6C947 !important;
+    border-top: 6px solid #D4AF37 !important;
+    color: #4A3F0A !important;
+}
+
+/* Department Structure: dept_type overrides for Committee and CEO */
+.o_org_dept_level_card.o_org_dept_type_committee {
+    background-color: #D6D6D6 !important;
+    border: 2px solid #B8B8B8 !important;
+    border-top: 6px solid #9A9A9A !important;
+    color: #1A1A1A !important;
+}
+
+.o_org_dept_level_card.o_org_dept_type_ceo {
+    background-color: #666666 !important;
+    border: 2px solid #4D4D4D !important;
+    border-top: 6px solid #333333 !important;
+    color: #FFFFFF !important;
+}
+
+/*
+ * "Jobs by Department" card variant: taller box (see node_height in the
+ * view) with a scrollable list of job titles below the header, instead of
+ * the compact single-badge layout the other org cards use.
+ */
+.o_org_dept_jobs_card {
+    padding: 6px 8px !important;
+    gap: 4px;
+
+    .o_org_dept_level_title {
+        -webkit-line-clamp: 2;
+        font-size: 12px;
+    }
+
+    .o_org_dept_job_list {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        text-align: left;
+        white-space: pre-line;
+        font-size: 9px;
+        line-height: 1.5;
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 4px;
+        padding: 4px 6px;
+    }
+}

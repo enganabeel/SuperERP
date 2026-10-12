@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="party_type_employee" model="whistleblowing.party.type">
+        <field name="name">Employee</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="party_type_external" model="whistleblowing.party.type">
+        <field name="name">External</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="party_type_partner" model="whistleblowing.party.type">
+        <field name="name">Partner</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="party_type_vendor" model="whistleblowing.party.type">
+        <field name="name">Vendor</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="party_type_other" model="whistleblowing.party.type">
+        <field name="name">Other</field>
+        <field name="sequence">100</field>
+    </record>
+</odoo>

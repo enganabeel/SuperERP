@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_whistleblowing_form_captcha" inherit_id="whistleblowing.portal_whistleblowing_form">
+
+        <xpath expr="//div[hasclass('d-flex') and hasclass('gap-2')]" position="before">
+            <!-- Human Verification -->
+            <div class="wb-section">
+                <div class="wb-section-title">
+                    <div class="wb-section-icon">🔢</div>
+                    Human Verification
+                </div>
+                <div class="mb-3">
+                    <label for="captchaAnswer" class="form-label">
+                        <t t-esc="captcha_a"/> + <t t-esc="captcha_b"/> = ? <span class="required-indicator">*</span>
+                    </label>
+                    <input type="number" name="captcha_answer" id="captchaAnswer" class="form-control"
+                           style="max-width:160px;padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;"
+                           placeholder="Your answer" required="required" autocomplete="off"/>
+                    <p class="form-text text-muted">Please answer the sum above to confirm you're not a robot.</p>
+                </div>
+            </div>
+        </xpath>
+
+    </template>
+
+</odoo>

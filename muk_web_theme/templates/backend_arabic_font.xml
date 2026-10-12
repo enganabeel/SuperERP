@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!--
+        Backend-only (not frontend/website) Cairo font override for Arabic
+        users. Deliberately inherits web.webclient_bootstrap, the
+        template used only by the /web and /odoo backend routes, rather
+        than the shared web.layout (which web.frontend_layout / website
+        pages also build on), so this does not leak onto the website, whose
+        own Arabic typeface (DIN Next Arabic, theme_afc2027) is set up
+        independently and would otherwise be overridden by this rule.
+
+        Odoo does not set a `lang` attribute on the backend's <html> at
+        render time (web.webclient_bootstrap sets no html_data, and the
+        lang/dir the web client ends up using are only known client-side
+        once the session bootstraps), so a CSS `:lang(ar)` selector is not
+        reliable here the way it is on the website. Instead the Arabic
+        check is done server-side against the current request's active
+        language context, and the font is only linked/applied at all when
+        that's true.
+    -->
+    <template id="webclient_bootstrap_arabic_font" inherit_id="web.webclient_bootstrap">
+        <xpath expr="//t[@t-set='head_web']" position="inside">
+            <t t-if="request.env.context.get('lang', '').startswith('ar')">
+                <link rel="stylesheet"
+                      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&amp;display=swap"/>
+                <style>
+                    body {
+                        font-family: 'Cairo', sans-serif !important;
+                    }
+                </style>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--
+            Type filtering for the org chart.
+
+            "dept_type" filters on the type alone, which is what you want in the
+            list. In the chart it is almost never what you want: pick "Sector"
+            and you get six orphan boxes with nothing under them. So the chart
+            filters go through dept_type_branch, which matches the type *and*
+            everything hanging below it - one whole slice of the hierarchy.
+        -->
+        <record id="view_department_filter_inherit_type" model="ir.ui.view">
+            <field name="name">hr.department.search.inherit.type</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_filter"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='manager_id']" position="after">
+                    <field name="dept_type"/>
+                    <field name="dept_type_branch"/>
+                </xpath>
+
+                <!-- Searching by manager is seeing managers, so it is gated
+                     too - see security/department_security.xml. -->
+                <xpath expr="//field[@name='manager_id']" position="attributes">
+                    <attribute name="groups">department_chart_types.group_show_department_manager</attribute>
+                </xpath>
+
+                <xpath expr="//filter[@name='message_needaction']" position="before">
+                    <filter string="CEO &amp; below" name="branch_ceo"
+                            domain="[('dept_type_branch', '=', 'ceo')]"/>
+                    <filter string="Committees &amp; below" name="branch_committee"
+                            domain="[('dept_type_branch', '=', 'committee')]"/>
+                    <filter string="Sectors &amp; below" name="branch_sector"
+                            domain="[('dept_type_branch', '=', 'sector')]"/>
+                    <filter string="Executive Departments &amp; below" name="branch_executive"
+                            domain="[('dept_type_branch', '=', 'executive')]"/>
+                    <filter string="Departments &amp; below" name="branch_department"
+                            domain="[('dept_type_branch', '=', 'department')]"/>
+                    <filter string="Functions &amp; below" name="branch_function"
+                            domain="[('dept_type_branch', '=', 'function')]"/>
+                    <separator/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!--
+            Chart-only search view.
+
+            In a list, typing a department name should return that department
+            and nothing else. In the chart that is useless: search
+            "Marketing & Communication" and you get one lonely box, its sector
+            emptied of everything under it. So the chart searches through
+            name_branch, which matches the name *and* everything hanging below
+            it. It is placed FIRST, which also makes it what pressing Enter
+            uses; the plain "Department" search stays available right under it.
+
+            It is a primary inherited view, so hr's own arch plus the type
+            filters added above come along; only the action below uses it.
+        -->
+        <record id="view_department_filter_org" model="ir.ui.view">
+            <field name="name">hr.department.search.org</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_filter"/>
+            <field name="mode">primary</field>
+            <field name="priority">99</field>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="name_branch" string="Department &amp; Everything Below"
+                           filter_domain="[('name_branch', 'ilike', self)]"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_careers_cta" name="Careers CTA">
+        <section class="py-5" data-snippet="s_careers_cta" data-name="Careers CTA">
+            <div class="container">
+                <div class="s_afc_careers text-center">
+                    <span class="s_afc_careers_eyebrow" contenteditable="true">Career | Join Us</span>
+                    <h3 class="s_afc_careers_heading" contenteditable="true">
+                        Be Part of an Extraordinary Event
+                    </h3>
+                    <p class="s_afc_careers_text mx-auto" contenteditable="true">
+                        Join us and be part of a team shaping unforgettable sporting moments and
+                        building a sustainable organizational legacy beyond the tournament.
+                    </p>
+                    <a href="#" class="btn btn-afc-solid mt-2">Discover all opportunities</a>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

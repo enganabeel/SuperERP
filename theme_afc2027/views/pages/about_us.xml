@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        "About Us" page (/about-us). Content and section design copied from
+        the reference site's /about page — that host (an Azure Static Web
+        App) is blocked by this environment's network egress policy, so
+        this was built from a full-page screenshot the user provided rather
+        than a live fetch. Text below is copied verbatim from that
+        screenshot, including the "Pass the Ball" value re-using the same
+        body copy as "Create the Chance" (that duplication is present on
+        the reference site itself, not a mistake introduced here).
+
+        Structure follows the same "template + website.page record" pattern
+        Odoo itself uses for its own default pages (verified against
+        addons/website/data/website_data.xml on the 18.0 branch: the
+        homepage/contactus templates + homepage_page/contactus_page
+        website.page records).
+    -->
+    <template id="page_about_us_v2" name="About Us Page">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+
+                    <!-- Page banner -->
+                    <section class="s_afc_page_banner o_afc_has_overlay_header"
+                             style="background-image:url('/theme_afc2027/static/src/img/hero-bg.jpg');">
+                        <div class="container">
+                            <span class="s_afc_hero_eyebrow" contenteditable="true">Welcome to LOC</span>
+                            <h1 contenteditable="true">Hosting the Asian Cup<br/>Saudi Arabia 2027™</h1>
+                        </div>
+                    </section>
+
+                    <!-- Crest + intro statement -->
+                    <section class="s_afc_about_intro">
+                        <div class="container text-center">
+                            <!--
+                                Placeholder crest: the reference site's real
+                                winged-crest emblem isn't available in this
+                                build (see NOTES.md) — reusing the theme's
+                                existing logo placeholder here. Swap for the
+                                real crest image once you have it.
+                            -->
+                            <img src="/theme_afc2027/static/src/img/logo-light.svg"
+                                 alt="LOC crest" class="s_afc_about_crest"/>
+                            <p class="s_afc_about_crest_caption" contenteditable="true">
+                                AFC Asian Cup Saudi Arabia 2027<br/>Local Organizing Committee
+                            </p>
+                            <p class="s_afc_about_lede mx-auto" contenteditable="true">
+                                LOC is responsible for planning, managing, and delivering major
+                                sporting events and strategic initiatives in collaboration with
+                                governmental, private sector, and international stakeholders.
+                                Through operational excellence, innovation, and effective
+                                coordination, LOC creates exceptional experiences while
+                                contributing to the continued growth of sport in Saudi Arabia.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Vision / Mission mosaic -->
+                    <section class="s_afc_vision_mission">
+                        <div class="s_afc_vm_badge d-none d-lg-flex">
+                            <img src="/theme_afc2027/static/src/img/logo-light.svg" alt="LOC crest"/>
+                        </div>
+                        <div class="row g-0">
+                            <div class="col-lg-6 s_afc_vm_cell s_afc_vm_text s_afc_vm_vision">
+                                <div class="s_afc_vm_inner">
+                                    <h2 contenteditable="true">Our Vision</h2>
+                                    <p contenteditable="true">
+                                        To be a leading organisation in the delivery of
+                                        world-class sporting events and experiences that create
+                                        lasting impact, inspire communities, and elevate Saudi
+                                        Arabia's position on the global sporting stage
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 s_afc_vm_cell s_afc_vm_img"
+                                 style="background-image:url('/theme_afc2027/static/src/img/stadium-night.jpg');"/>
+                            <!--
+                                Reference site shows a distinct
+                                celebration/podium photo here; no matching
+                                asset exists in this theme build (see
+                                NOTES.md) so the stadium photo is reused as a
+                                placeholder — swap in a real image.
+                            -->
+                            <div class="col-lg-6 s_afc_vm_cell s_afc_vm_img"
+                                 style="background-image:url('/theme_afc2027/static/src/img/stadium-night.jpg');"/>
+                            <div class="col-lg-6 s_afc_vm_cell s_afc_vm_text s_afc_vm_mission">
+                                <div class="s_afc_vm_inner">
+                                    <h2 contenteditable="true">Our Mission</h2>
+                                    <p contenteditable="true">
+                                        To deliver exceptional sporting events through
+                                        integrated planning, operational excellence,
+                                        innovation, and collaboration while creating
+                                        sustainable value for stakeholders, communities,
+                                        and future generations
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Our Values -->
+                    <section class="s_afc_values">
+                        <div class="container">
+                            <h2 class="text-center" contenteditable="true">Our Values</h2>
+                            <div class="row g-4 mt-2 justify-content-center">
+                                <div class="col-sm-6 col-lg-4 s_afc_value">
+                                    <div class="s_afc_value_icon"><i class="fa fa-share-alt"/></div>
+                                    <h5 contenteditable="true">Leave a Mark</h5>
+                                    <p contenteditable="true">
+                                        We strive to create a lasting positive impact through
+                                        every event we deliver, leaving a legacy that inspires
+                                        people, strengthens communities, and advances the
+                                        future of sport
+                                    </p>
+                                </div>
+                                <div class="col-sm-6 col-lg-4 s_afc_value">
+                                    <div class="s_afc_value_icon"><i class="fa fa-magic"/></div>
+                                    <h5 contenteditable="true">Create the Chance</h5>
+                                    <p contenteditable="true">
+                                        We believe collaboration drives success. By sharing
+                                        knowledge, empowering others, and working as one team,
+                                        we strengthen trust and achieve better outcomes together
+                                    </p>
+                                </div>
+                                <div class="col-sm-6 col-lg-4 s_afc_value">
+                                    <div class="s_afc_value_icon"><i class="fa fa-flag"/></div>
+                                    <h5 contenteditable="true">Serve the Squad</h5>
+                                    <p contenteditable="true">
+                                        We lead by serving others, supporting our teams,
+                                        partners, and stakeholders with humility,
+                                        accountability, and a shared commitment to achieving
+                                        success together
+                                    </p>
+                                </div>
+                                <div class="col-sm-6 col-lg-4 s_afc_value">
+                                    <div class="s_afc_value_icon"><i class="fa fa-heart-o"/></div>
+                                    <h5 contenteditable="true">Practice Under the Strain</h5>
+                                    <p contenteditable="true">
+                                        We prepare with resilience, adaptability, and
+                                        discipline, enabling us to perform with confidence and
+                                        deliver excellence under pressure
+                                    </p>
+                                </div>
+                                <div class="col-sm-6 col-lg-4 s_afc_value">
+                                    <div class="s_afc_value_icon"><i class="fa fa-heart-o"/></div>
+                                    <h5 contenteditable="true">Pass the Ball</h5>
+                                    <p contenteditable="true">
+                                        We believe collaboration drives success. By sharing
+                                        knowledge, empowering others, and working as one team,
+                                        we strengthen trust and achieve better outcomes together
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <t t-call="theme_afc2027.s_careers_cta"/>
+
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!--
+        noupdate="1" matches the pattern Odoo's own website_data.xml uses
+        for homepage_page/contactus_page: create the page record once, then
+        leave it alone on future module upgrades. Without this, every
+        upgrade re-touches the website.page -> ir.ui.view delegation link,
+        which is what repeatedly triggered a dangling theme_template_id
+        crash after this page was once deleted via the UI (see NOTES.md,
+        v1.0.12). Once created, there's no need to re-process it anyway.
+    -->
+    <data noupdate="1">
+        <record id="page_about_us_page_v2" model="website.page">
+            <field name="url">/about-us</field>
+            <field name="is_published">True</field>
+            <field name="view_id" ref="page_about_us_v2"/>
+            <field name="track">True</field>
+            <field name="website_meta_description">About the Local Organizing Committee for the AFC Asian Cup Saudi Arabia 2027.</field>
+        </record>
+    </data>
+</odoo>

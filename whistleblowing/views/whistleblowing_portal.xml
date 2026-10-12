@@ -1,0 +1,1176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Public Portal Template -->
+    <template id="portal_whistleblowing_form" name="Whistleblowing Report Form">
+          <t t-call="web.layout">
+		            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+            <div class="o_portal_layout">
+                <style>
+                    :root {
+                        --primary: #1B5E3F;
+                        --primary-light: #2A7D52;
+                        --primary-dark: #0D3B23;
+                        --accent: #D4AF37;
+                        --text-dark: #1A1A1A;
+                        --text-light: #FFFFFF;
+                        --bg-light: #F8F9F7;
+                        --border: #E0E0E0;
+                        --error: #E74C3C;
+                        --success: #27AE60;
+                    }
+
+                    body{
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+                            line-height: 1.6;
+                            margin: 0px;
+                            padding: 0px;
+                    }
+
+                    /* Override Odoo defaults for better styling */
+                    .o_portal_layout {
+                        background: #FFFFFF !important;
+                    }
+
+                    .wb-header {
+                        background: linear-gradient(135deg, #0D3B23 0%, #1B5E3F 100%) !important;
+                        color: white !important;
+                        padding: 40px 20px !important;
+                        text-align: center !important;
+                        border-bottom: 4px solid #D4AF37 !important;
+                        margin-bottom: -40px !important;
+                    }
+
+                    .wb-header-logo {
+                        display: block !important;
+                        width: 90px !important;
+                        height: 90px !important;
+                        margin: 0 auto 20px !important;
+                    }
+
+                    .wb-header h1 {
+                        font-size: 2.5em !important;
+                        font-weight: 700 !important;
+                        margin-bottom: 15px !important;
+                        color: white !important;
+                    }
+
+                    .wb-header p {
+                        color: white !important;
+
+                    }
+
+                    .wb-form-card {
+                        background: white !important;
+                        border-radius: 18px !important;
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+                        max-width: 900px !important;
+                        margin: -10px auto !important;
+                    }
+
+                    .wb-form-header {
+                        background: #F8F9F7 !important;
+                        border-bottom: 1px solid #E0E0E0 !important;
+                        padding: 30px !important;
+                         border-radius: 8px !important;
+                    }
+
+                    .wb-form-header h2 {
+                        color: #1B5E3F !important;
+                        margin-bottom: 10px !important;
+                    }
+
+                    .wb-form-header p {
+                        color: #666 !important;
+                    }
+
+                    .wb-form-content {
+                        padding: 40px !important;
+                    }
+
+                    .wb-section {
+                        margin-bottom: 40px !important;
+                    }
+
+                    .wb-section-title {
+                        display: flex !important;
+                        align-items: center !important;
+                        margin-bottom: 20px !important;
+                        font-size: 1.15em !important;
+                        font-weight: 600 !important;
+                        color: #1B5E3F !important;
+                    }
+
+                    .wb-section-icon {
+                        width: 32px !important;
+                        height: 32px !important;
+                        background: #1B5E3F !important;
+                        color: white !important;
+                        border-radius: 50% !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        margin-right: 12px !important;
+                        font-weight: bold !important;
+                        font-size: 1.2em !important;
+                    }
+
+                    .required-indicator {
+                        color: #E74C3C !important;
+                    }
+
+                    .optional-indicator {
+                        color: #999 !important;
+                        font-size: 0.85em !important;
+                    }
+
+                    /* Form Controls Styling */
+                    .form-label {
+                        color: #1A1A1A !important;
+                        font-weight: 500 !important;
+                        margin-bottom: 8px !important;
+                        display: block !important;
+                    }
+
+                    .form-control {
+                        border: 1px solid #DDD !important;
+                        border-radius: 4px !important;
+                        padding: 10px 12px !important;
+                        font-size: 1em !important;
+                        transition: all 0.3s ease !important;
+                        background-color: #FFFFFF !important;
+                        color: #333 !important;
+                    }
+
+                    .form-control:focus {
+                        border-color: #1B5E3F !important;
+                        box-shadow: 0 0 0 0.2rem rgba(27, 94, 63, 0.25) !important;
+                        background-color: #FFFFFF !important;
+                    }
+
+                    .form-select {
+                        border: 1px solid #DDD !important;
+                        border-radius: 4px !important;
+                        padding: 10px 12px !important;
+                        font-size: 1em !important;
+                        background-color: #FFFFFF !important;
+                        color: #333 !important;
+                        cursor: pointer !important;
+                    }
+
+                    .form-select:focus {
+                        border-color: #1B5E3F !important;
+                        box-shadow: 0 0 0 0.2rem rgba(27, 94, 63, 0.25) !important;
+                        background-color: #FFFFFF !important;
+                    }
+
+                    .form-select option {
+                        background-color: #FFFFFF !important;
+                        color: #333 !important;
+                    }
+
+                    textarea.form-control {
+                        resize: vertical !important;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+                        min-height: 150px !important;
+                    }
+
+                    .form-check {
+                        display: flex !important;
+                        align-items: center !important;
+                        margin-bottom: 12px !important;
+                    }
+
+                    .form-check-input {
+                        width: 20px !important;
+                        height: 20px !important;
+                        margin-right: 10px !important;
+                        border: 1px solid #DDD !important;
+                        border-radius: 3px !important;
+                        cursor: pointer !important;
+                        flex-shrink: 0 !important;
+                    }
+
+                    .form-check-input:checked {
+                        background-color: #1B5E3F !important;
+                        border-color: #1B5E3F !important;
+                    }
+
+                    .form-check-label {
+                        margin-bottom: 0 !important;
+                        cursor: pointer !important;
+                        color: #333 !important;
+                    }
+
+                    .wb-checkbox-group {
+                        border: 1px solid #DDD !important;
+                        border-radius: 4px !important;
+                        padding: 12px 14px !important;
+                        max-height: 160px !important;
+                        overflow-y: auto !important;
+                        background-color: #FFFFFF !important;
+                    }
+
+                    .wb-checkbox-group .form-check {
+                        margin-bottom: 8px !important;
+                    }
+
+                    .wb-checkbox-group .form-check:last-child {
+                        margin-bottom: 0 !important;
+                    }
+
+                    .form-text.text-muted {
+                        color: #999 !important;
+                        font-size: 0.85em !important;
+                        display: block !important;
+                        margin-top: 5px !important;
+                    }
+
+                    .row {
+                        display: flex !important;
+                        flex-wrap: wrap !important;
+                        margin-right: -15px !important;
+                        margin-left: -15px !important;
+                    }
+
+                    .col-md-6 {
+                        flex: 0 0 50% !important;
+                        max-width: 50% !important;
+                        padding-right: 15px !important;
+                        padding-left: 15px !important;
+                    }
+
+                    .mb-3 {
+                        margin-bottom: 20px !important;
+                    }
+
+                    .d-flex {
+                        display: flex !important;
+                    }
+
+                    .gap-2 {
+                        gap: 12px !important;
+                    }
+
+                    .btn {
+                        border-radius: 4px !important;
+                        padding: 10px 24px !important;
+                        font-weight: 500 !important;
+                        cursor: pointer !important;
+                        transition: all 0.3s ease !important;
+                        border: none !important;
+                    }
+
+                    .btn-primary {
+                        background-color: #1B5E3F !important;
+                        color: white !important;
+                        border: 1px solid #1B5E3F !important;
+                    }
+
+                    .btn-primary:hover {
+                        background-color: #0D3B23 !important;
+                        border-color: #0D3B23 !important;
+                    }
+
+                    .btn-secondary {
+                        background-color: #999 !important;
+                        color: white !important;
+                        border: 1px solid #999 !important;
+                    }
+
+                    .btn-secondary:hover {
+                        background-color: #777 !important;
+                        border-color: #777 !important;
+                    }
+
+                    /* Section header with a big round icon + title/subtitle */
+                    .wb-section-header {
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 16px !important;
+                        margin-bottom: 20px !important;
+                    }
+
+                    .wb-round-icon {
+                        flex-shrink: 0 !important;
+                        width: 56px !important;
+                        height: 56px !important;
+                        border-radius: 50% !important;
+                        background: #1B5E3F !important;
+                        color: white !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        font-size: 1.4em !important;
+                    }
+
+                    .wb-section-header-title {
+                        font-size: 1.3em !important;
+                        font-weight: 700 !important;
+                        color: #1B5E3F !important;
+                    }
+
+                    .wb-section-header-subtitle {
+                        color: #777 !important;
+                        font-size: 0.9em !important;
+                        margin-top: 2px !important;
+                    }
+
+                    .wb-evidence-toggle {
+                        background: #F8F9F7 !important;
+                        border: 1px solid #EEE !important;
+                        border-radius: 6px !important;
+                        padding: 14px 18px !important;
+                    }
+
+                    .wb-evidence-toggle .form-check {
+                        margin-bottom: 0 !important;
+                    }
+
+                    /* Upload card: dropzone + allowed-formats info card */
+                    .wb-upload-card {
+                        border: 1px solid #E8E8E8 !important;
+                        border-radius: 8px !important;
+                        padding: 20px !important;
+                        margin-top: 16px !important;
+                    }
+
+                    .wb-upload-card-title {
+                        font-weight: 700 !important;
+                        color: #1A1A1A !important;
+                        margin-bottom: 14px !important;
+                    }
+
+                    .wb-dropzone {
+                        border: 2px dashed #C9D6CF !important;
+                        border-radius: 8px !important;
+                        padding: 36px 20px !important;
+                        text-align: center !important;
+                        background: #FCFDFC !important;
+                        transition: border-color 0.2s ease, background-color 0.2s ease !important;
+                        position: relative !important;
+                    }
+
+                    .wb-dropzone.wb-dropzone-hover {
+                        border-color: #1B5E3F !important;
+                        background: rgba(27, 94, 63, 0.04) !important;
+                    }
+
+                    .wb-dropzone-icon {
+                        font-size: 2.4em !important;
+                        color: #1B5E3F !important;
+                        opacity: 0.6 !important;
+                        margin-bottom: 12px !important;
+                        display: block !important;
+                    }
+
+                    .wb-dropzone-title {
+                        font-weight: 700 !important;
+                        color: #1A1A1A !important;
+                    }
+
+                    .wb-dropzone-or {
+                        color: #999 !important;
+                        font-size: 0.85em !important;
+                        margin: 6px 0 !important;
+                    }
+
+                    .wb-choose-files-btn {
+                        background: white !important;
+                        border: 1px solid #1B5E3F !important;
+                        color: #1B5E3F !important;
+                        border-radius: 6px !important;
+                        padding: 8px 18px !important;
+                        font-weight: 600 !important;
+                    }
+
+                    .wb-choose-files-btn:hover {
+                        background: rgba(27, 94, 63, 0.08) !important;
+                    }
+
+                    .wb-dropzone-hint {
+                        color: #999 !important;
+                        font-size: 0.82em !important;
+                        margin-top: 12px !important;
+                    }
+
+                    .wb-file-list {
+                        margin-top: 14px !important;
+                        text-align: left !important;
+                    }
+
+                    .wb-file-list-item {
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 8px !important;
+                        background: white !important;
+                        border: 1px solid #EEE !important;
+                        border-radius: 4px !important;
+                        padding: 6px 10px !important;
+                        margin-bottom: 6px !important;
+                        font-size: 0.88em !important;
+                        color: #333 !important;
+                    }
+
+                    .wb-file-list-item span {
+                        flex: 1 !important;
+                        overflow: hidden !important;
+                        text-overflow: ellipsis !important;
+                        white-space: nowrap !important;
+                        text-align: left !important;
+                    }
+
+                    .wb-file-list-remove {
+                        background: none !important;
+                        border: none !important;
+                        color: #E74C3C !important;
+                        cursor: pointer !important;
+                        padding: 2px 6px !important;
+                        font-size: 1em !important;
+                        line-height: 1 !important;
+                        flex-shrink: 0 !important;
+                    }
+
+                    .wb-file-list-remove:hover {
+                        color: #C0392B !important;
+                    }
+
+                    .wb-upload-info-card {
+                        background: #F8F9F7 !important;
+                        border-radius: 8px !important;
+                        padding: 20px !important;
+                        text-align: center !important;
+                        height: 100% !important;
+                    }
+
+                    .wb-upload-info-icon {
+                        width: 44px !important;
+                        height: 44px !important;
+                        border-radius: 50% !important;
+                        background: rgba(27, 94, 63, 0.1) !important;
+                        color: #1B5E3F !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        margin: 0 auto 10px !important;
+                        font-size: 1.1em !important;
+                    }
+
+                    .wb-upload-info-label {
+                        font-weight: 700 !important;
+                        color: #1A1A1A !important;
+                        font-size: 0.9em !important;
+                    }
+
+                    .wb-upload-info-value {
+                        color: #1B5E3F !important;
+                        font-size: 0.85em !important;
+                        margin-bottom: 12px !important;
+                    }
+
+                    .wb-upload-info-card hr {
+                        margin: 12px 0 !important;
+                        border-color: #E0E0E0 !important;
+                    }
+
+                    /* Privacy &amp; Confidentiality card */
+                    .wb-privacy-card {
+                        display: flex !important;
+                        align-items: stretch !important;
+                        gap: 24px !important;
+                        background: white !important;
+                        border: 1px solid #EEE !important;
+                        border-left: 4px solid #1B5E3F !important;
+                        border-radius: 8px !important;
+                        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
+                        padding: 28px !important;
+                        margin: 30px 0 !important;
+                    }
+
+                    .wb-privacy-icon-col {
+                        flex-shrink: 0 !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+
+                    .wb-privacy-icon-badge {
+                        width: 90px !important;
+                        height: 90px !important;
+                        border-radius: 50% !important;
+                        background: rgba(27, 94, 63, 0.06) !important;
+                        border: 2px dashed rgba(27, 94, 63, 0.25) !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                    }
+
+                    .wb-privacy-icon-badge i {
+                        width: 56px !important;
+                        height: 56px !important;
+                        border-radius: 50% !important;
+                        background: #1B5E3F !important;
+                        color: white !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        font-size: 1.4em !important;
+                    }
+
+                    .wb-privacy-card h5 {
+                        color: #1B5E3F !important;
+                        margin-bottom: 6px !important;
+                    }
+
+                    .wb-privacy-subtitle {
+                        color: #666 !important;
+                        margin-bottom: 18px !important;
+                    }
+
+                    .wb-privacy-feature {
+                        text-align: center !important;
+                    }
+
+                    .wb-privacy-feature-icon {
+                        width: 42px !important;
+                        height: 42px !important;
+                        border-radius: 50% !important;
+                        background: #F8F9F7 !important;
+                        color: #1B5E3F !important;
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        margin: 0 auto 8px !important;
+                    }
+
+                    .wb-privacy-feature div:last-child {
+                        color: #555 !important;
+                        font-size: 0.82em !important;
+                        line-height: 1.3 !important;
+                    }
+
+                    /* Submit / clear buttons */
+                    .wb-btn-submit, .wb-btn-clear {
+                        border-radius: 6px !important;
+                        padding: 14px 24px !important;
+                        font-weight: 700 !important;
+                        text-transform: uppercase !important;
+                        letter-spacing: 0.03em !important;
+                        cursor: pointer !important;
+                        flex: 1 !important;
+                    }
+
+                    .wb-btn-submit {
+                        background: #1B5E3F !important;
+                        border: 1px solid #1B5E3F !important;
+                        color: white !important;
+                    }
+
+                    .wb-btn-submit:hover {
+                        background: #0D3B23 !important;
+                        border-color: #0D3B23 !important;
+                    }
+
+                    .wb-btn-clear {
+                        background: white !important;
+                        border: 1px solid #DDD !important;
+                        color: #666 !important;
+                    }
+
+                    .wb-btn-clear:hover {
+                        background: #F8F9F7 !important;
+                    }
+
+                    .wb-thankyou {
+                        text-align: center !important;
+                        color: #888 !important;
+                        font-size: 0.88em !important;
+                        margin-top: 18px !important;
+                    }
+
+                    .wb-footer {
+                        background: #0D3B23 !important;
+                        color: white !important;
+                        text-align: center !important;
+                        padding: 40px 20px !important;
+                        margin-top: 60px !important;
+                    }
+
+                    .wb-footer h4 {
+                        color: white !important;
+                    }
+
+                    .wb-footer p {
+                        color: rgba(255, 255, 255, 0.9) !important;
+                    }
+                    /* Responsive adjustments */
+                    @media (max-width: 768px) {
+                        .col-md-6 {
+                            flex: 0 0 100% !important;
+                            max-width: 100% !important;
+                        }
+
+                        .wb-header h1 {
+                            font-size: 1.8em !important;
+                        }
+
+                        .wb-form-content {
+                            padding: 20px !important;
+                        }
+                    }
+                </style>
+                <div class="wb-header">
+                    <div>
+                        <!--
+                            Placeholder logo/avatar: replace
+                            static/src/img/logo-placeholder.svg with the real
+                            logo file whenever it's available (same filename
+                            keeps this working with no further edit needed).
+                        -->
+                        <img src="/whistleblowing/static/src/img/Saudi2027-02.png" style="height:250px !important;width:250px !important;padding-bottom:0px;" alt="Logo" class="wb-header-logo"/>
+                    
+                        <p style="font-size: 1.1em; opacity: 0.95; margin-bottom: 20px;">
+                            Confidential Incident Reporting
+                        </p>
+                        <p style="opacity: 0.85;">
+                            We are committed to maintaining the highest ethical standards. If you believe we are falling short of our commitments, we encourage you to speak up.
+                        </p>
+                        <div style="display: inline-block; background: rgba(255, 255, 255, 0.15); border-left: 3px solid #D4AF37; padding: 12px 20px; margin-top: 20px;">
+                            🔒 Secure &amp; Confidential | Anonymous Option Available
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wb-form-card">
+                    <div class="wb-form-header">
+                        <h2>Submit Your Report</h2>
+                        <p>All fields marked with <span class="required-indicator">*</span> are required</p>
+                    </div>
+
+                    <div class="wb-form-content">
+                        <form id="wbReportForm" action="/whistleblowing/submit" method="post" class="form-horizontal" enctype="multipart/form-data">
+                            <!-- Section 1: Report Type -->
+                            <div class="wb-section">
+                                <div class="wb-section-title">
+                                    <div class="wb-section-icon">?</div>
+                                    Report Type
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" name="is_anonymous" id="isAnonymous" value="1" checked="checked" class="form-check-input"/>
+                                    <label for="isAnonymous" class="form-check-label">
+                                        <strong>Submit Anonymously</strong>
+                                        <span class="optional-indicator"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Section 2: Reporter Info (Optional) -->
+                            <div class="wb-section" id="reporterSection" style="display: none;background: var(--bg-light);     padding: 20px;     border-radius: 4px;     border-left: 4px solid var(--primary);">
+                                <div class="wb-section-title">
+                                    <div class="wb-section-icon">👤</div>
+                                    Your Information
+                                    <span class="optional-indicator">(optional)</span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="reporterName" class="form-label">Name</label>
+                                        <input type="text" style="padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" name="reporter_name" id="reporterName" class="form-control" placeholder="Your full name"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="reporterPhone" class="form-label">Mobile Number</label>
+                                        <input type="tel" style="padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" name="reporter_phone" id="reporterPhone" class="form-control" placeholder="+966 (XX) XXXX-XXXX"/>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reporterEmail" class="form-label">Email Address</label>
+                                    <input type="email" style="padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" name="reporter_email" id="reporterEmail" class="form-control" placeholder="your.email@example.com"/>
+                                </div>
+                                <p style="font-size: 0.85em; color: #999;">
+                                    If you provide your contact information, compliance officers may reach out to clarify details. Your information will remain confidential.
+                                </p>
+                            </div>
+
+                            <!-- Section 3: Incident Details -->
+                            <div class="wb-section">
+                                <div class="wb-section-title">
+                                    <div class="wb-section-icon">📋</div>
+                                    Incident Details
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="dateIncident" class="form-label">Date of Incident <span class="required-indicator">*</span></label>
+                                        <input type="date" style="padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" name="date_incident" id="dateIncident" class="form-control" required="required"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="location" class="form-label">Location <span class="required-indicator">*</span></label>
+                                        <input type="text" style="padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" name="location" id="location" class="form-control" placeholder="Where did this occur?" required="required"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="category" class="form-label">Incident Category <span class="required-indicator">*</span></label>
+                                        <select name="category_id" style="padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" id="category" class="form-select" required="required">
+                                            <option value="">-- Select Category --</option>
+                                            <t t-foreach="categories" t-as="cat">
+                                                <option t-att-value="cat.id" t-out="cat.name"/>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Parties Involved</label>
+                                        <div class="wb-checkbox-group">
+                                            <t t-foreach="party_types" t-as="pt">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="party_type_ids" t-att-value="pt.id" t-att-id="'partyType_%d' % pt.id" t-att-data-other="'1' if pt.id == party_type_other_id else None" class="form-check-input party-type-checkbox"/>
+                                                    <label t-att-for="'partyType_%d' % pt.id" class="form-check-label" t-out="pt.name"/>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        <div id="partyTypeOtherSection" class="mt-2" style="display: none;">
+                                            <label for="partyTypeOtherNote" class="form-label">Please specify</label>
+                                            <input type="text" style="width:100%;padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" name="party_type_other_note" id="partyTypeOtherNote" class="form-control" placeholder="Specify the other party type"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section 4: Incident Description -->
+                            <div class="wb-section">
+                                <div class="wb-section-title">
+                                    <div class="wb-section-icon">📝</div>
+                                    Describe the Incident
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Incident Details <span class="required-indicator">*</span></label>
+                                    <p style="color: #555; margin-bottom: 10px;">
+                                        Please provide details of the incident. It is essential that the information provided is as specific as possible, such as who committed the violation, how, when, and where it occurred, and how it can be substantiated. If you have any supporting evidence, please indicate that in your report and attach the relevant documents, if applicable, so that we can review and process the matter appropriately.
+                                    </p>
+                                    <textarea name="description" style="width: 100%;padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" placeholder="" id="description" class="form-control" rows="6" required="required"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="individuals" class="form-label">Individuals Present</label>
+                                    <input type="text" name="individuals_present" id="individuals" class="form-control" style="width: 100%;padding: 12px 14px !important;border: 1px solid var(--border) !important;border-radius: 4px !important;font-family: inherit;font-size: 0.95em !important;background: #FAFAFA !important;" placeholder="Names of people involved or who witnessed the incident"/>
+                                </div>
+                            </div>
+
+                            <!-- Section 5: Evidence -->
+                            <div class="wb-section">
+                                <div class="wb-section-header">
+                                    <div class="wb-round-icon"><i class="fa fa-shield"/></div>
+                                    <div>
+                                        <div class="wb-section-header-title">Supporting Evidence</div>
+                                        <div class="wb-section-header-subtitle">You can upload any files or documents that support your report.</div>
+                                    </div>
+                                </div>
+                                <div class="wb-evidence-toggle mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="has_evidence" id="hasEvidence" value="1" class="form-check-input"/>
+                                        <label for="hasEvidence" class="form-check-label">
+                                            I have attachments (emails, documents, screenshots, etc.)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="fileUploadSection" style="display: none;">
+                                    <div class="wb-upload-card">
+                                        <div class="wb-upload-card-title"><i class="fa fa-upload me-2"/>Upload Files</div>
+                                        <div class="row g-3">
+                                             <div class="col-md-10" style="width:40%">
+                                                <div class="wb-dropzone" id="wbDropzone">
+                                                    <i class="fa fa-cloud-upload wb-dropzone-icon"/>
+                                                    <div class="wb-dropzone-title">Drag and drop files here</div>
+                                                    <div class="wb-dropzone-or">or</div>
+                                                    <button type="button" class="btn wb-choose-files-btn" id="wbChooseFilesBtn">
+                                                        <i class="fa fa-upload me-1"/> Choose Files
+                                                    </button>
+                                                    <div class="wb-dropzone-hint">PDF, JPG, PNG, DOCX up to 10MB each</div>
+                                                    <input type="file" name="evidence" id="evidence" multiple="multiple" style="display:none;"/>
+                                                    <div id="wbFileList" class="wb-file-list"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="height: 225px;"> 
+                                                <div class="wb-upload-info-card" style="    border: 2px dashed #C9D6CF !important;border-radius: 8px !important;">
+                                                    <div class="wb-upload-info-icon"><i class="fa fa-file-text-o"/></div>
+                                                    <div class="wb-upload-info-label">Allowed formats</div>
+                                                    <div class="wb-upload-info-value">PDF, JPG, PNG, DOCX</div>
+                                                    <hr/>
+                                                    <div class="wb-upload-info-label">Max file size</div>
+                                                    <div class="wb-upload-info-value">10MB per file</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Privacy Notice -->
+                            <div class="wb-privacy-card">
+                                <div class="wb-privacy-icon-col">
+                                    <div class="wb-privacy-icon-badge">
+                                        <i class="fa fa-lock"/>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5><i class="fa fa-lock me-2"/>Privacy &amp; Confidentiality</h5>
+                                    <p class="wb-privacy-subtitle">Your report will be handled with the highest level of confidentiality.</p>
+                                    <div class="row g-3">
+                                        <div class="col-6 col-md-3">
+                                            <div class="wb-privacy-feature">
+                                                <div class="wb-privacy-feature-icon"><i class="fa fa-user"/></div>
+                                                <div>Treated as strictly confidential</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="wb-privacy-feature">
+                                                <div class="wb-privacy-feature-icon"><i class="fa fa-users"/></div>
+                                                <div>Reviewed only by authorized compliance officers</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="wb-privacy-feature">
+                                                <div class="wb-privacy-feature-icon"><i class="fa fa-shield"/></div>
+                                                <div>Protected from unauthorized access</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 col-md-3">
+                                            <div class="wb-privacy-feature">
+                                                <div class="wb-privacy-feature-icon"><i class="fa fa-search"/></div>
+                                                <div>Investigated thoroughly and impartially</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn wb-btn-submit">
+                                    <i class="fa fa-paper-plane me-2"/>Submit Report
+                                </button>
+                                <button type="reset" class="btn wb-btn-clear">
+                                    <i class="fa fa-times me-2"/>Clear Form
+                                </button>
+                            </div>
+                            <p class="wb-thankyou"><i class="fa fa-shield me-1"/>Thank you for helping us maintain a safe and ethical workplace.</p>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="wb-footer">
+                    <h4>Questions or Need Help?</h4>
+                    <p>If you have any questions about this reporting system, please contact the Governance, Risk and Compliance Department.</p>
+                    <p style="margin-top: 20px; opacity: 0.9;">Thank you for maintaining our commitment to integrity and ethical excellence.</p>
+                    <p style="margin-top: 10px; opacity: 0.8;">© 2026 Ejad Tech. All reports are confidential.</p>
+                </div>
+
+                <script>
+                    document.getElementById('isAnonymous').addEventListener('change', function() {
+                        const section = document.getElementById('reporterSection');
+                        if (this.checked) {
+                            section.style.display = 'none';
+                            document.getElementById('reporterName').value = '';
+                            document.getElementById('reporterPhone').value = '';
+                            document.getElementById('reporterEmail').value = '';
+                        } else {
+                            section.style.display = 'block';
+                        }
+                    });
+
+                    document.getElementById('hasEvidence').addEventListener('change', function() {
+                        document.getElementById('fileUploadSection').style.display = this.checked ? 'block' : 'none';
+                    });
+
+                    document.querySelectorAll('.party-type-checkbox[data-other="1"]').forEach(function(checkbox) {
+                        checkbox.addEventListener('change', function() {
+                            const section = document.getElementById('partyTypeOtherSection');
+                            section.style.display = this.checked ? 'block' : 'none';
+                            if (!this.checked) {
+                                document.getElementById('partyTypeOtherNote').value = '';
+                            }
+                        });
+                    });
+
+                    (function() {
+                        const dropzone = document.getElementById('wbDropzone');
+                        const fileInput = document.getElementById('evidence');
+                        const chooseBtn = document.getElementById('wbChooseFilesBtn');
+                        const fileList = document.getElementById('wbFileList');
+                        if (!dropzone || !fileInput) {
+                            return;
+                        }
+
+                        // The native file input only ever holds the files from
+                        // the *last* selection/drop -- keep our own running list so
+                        // choosing/dropping more files appends instead of replacing,
+                        // and so a single file can be removed without clearing the
+                        // rest. The input's real FileList is rebuilt from this array
+                        // (via DataTransfer) after every change, since that's what
+                        // actually gets submitted with the form.
+                        let selectedFiles = [];
+
+                        function isDuplicate(file) {
+                            return selectedFiles.some(function(existing) {
+                                return existing.name === file.name
+                                    &amp;&amp; existing.size === file.size
+                                    &amp;&amp; existing.lastModified === file.lastModified;
+                            });
+                        }
+
+                        function addFiles(fileListLike) {
+                            Array.from(fileListLike).forEach(function(file) {
+                                if (!isDuplicate(file)) {
+                                    selectedFiles.push(file);
+                                }
+                            });
+                            syncInput();
+                            renderFileList();
+                        }
+
+                        function removeFileAt(index) {
+                            selectedFiles.splice(index, 1);
+                            syncInput();
+                            renderFileList();
+                        }
+
+                        function syncInput() {
+                            const dt = new DataTransfer();
+                            selectedFiles.forEach(function(file) {
+                                dt.items.add(file);
+                            });
+                            fileInput.files = dt.files;
+                        }
+
+                        function renderFileList() {
+                            fileList.innerHTML = '';
+                            selectedFiles.forEach(function(file, index) {
+                                const item = document.createElement('div');
+                                item.className = 'wb-file-list-item';
+                                item.innerHTML = '<i class="fa fa-paperclip"/><span/>'
+                                    + '<button type="button" class="wb-file-list-remove" title="Remove"><i class="fa fa-times"/></button>';
+                                item.querySelector('span').textContent = file.name;
+                                item.querySelector('.wb-file-list-remove').addEventListener('click', function(ev) {
+                                    ev.preventDefault();
+                                    ev.stopPropagation();
+                                    removeFileAt(index);
+                                });
+                                fileList.appendChild(item);
+                            });
+                        }
+
+                        chooseBtn.addEventListener('click', function() {
+                            fileInput.click();
+                        });
+
+                        fileInput.addEventListener('change', function() {
+                            addFiles(fileInput.files);
+                        });
+
+                        const reportForm = document.getElementById('wbReportForm');
+                        if (reportForm) {
+                            reportForm.addEventListener('reset', function() {
+                                selectedFiles = [];
+                                renderFileList();
+                            });
+                        }
+
+                        ['dragenter', 'dragover'].forEach(function(evtName) {
+                            dropzone.addEventListener(evtName, function(ev) {
+                                ev.preventDefault();
+                                ev.stopPropagation();
+                                dropzone.classList.add('wb-dropzone-hover');
+                            });
+                        });
+
+                        ['dragleave', 'drop'].forEach(function(evtName) {
+                            dropzone.addEventListener(evtName, function(ev) {
+                                ev.preventDefault();
+                                ev.stopPropagation();
+                                dropzone.classList.remove('wb-dropzone-hover');
+                            });
+                        });
+
+                        dropzone.addEventListener('drop', function(ev) {
+                            const dt = ev.dataTransfer;
+                            if (dt &amp;&amp; dt.files &amp;&amp; dt.files.length) {
+                                addFiles(dt.files);
+                            }
+                        });
+                    })();
+                </script>
+            </div>
+        </t>
+    </template>
+
+    <!-- Success Page -->
+    <template id="portal_report_success" name="Report Submitted Successfully">
+        <t t-call="web.layout">
+            <div class="o_portal_layout">
+                <style>
+                    .success-container {
+                        max-width: 600px !important;
+                        margin: 60px auto !important;
+                        text-align: center !important;
+                        padding: 40px !important;
+                        background: white !important;
+                        border-radius: 8px !important;
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+                    }
+
+                    .success-icon {
+                        font-size: 4em !important;
+                        margin-bottom: 20px !important;
+                    }
+
+                    .success-container h2 {
+                        color: #27AE60 !important;
+                        font-size: 2em !important;
+                        margin-bottom: 15px !important;
+                    }
+
+                    .success-container p {
+                        color: #666 !important;
+                        margin-bottom: 20px !important;
+                        line-height: 1.6 !important;
+                    }
+
+                    .reference-box {
+                        background: #F8F9F7 !important;
+                        border-left: 4px solid #1B5E3F !important;
+                        padding: 20px !important;
+                        margin: 30px 0 !important;
+                        text-align: left !important;
+                        border-radius: 4px !important;
+                    }
+
+                    .reference-box label {
+                        color: #666 !important;
+                        font-size: 0.9em !important;
+                        display: block !important;
+                        margin-bottom: 5px !important;
+                    }
+
+                    .reference-box code {
+                        font-size: 1.2em !important;
+                        color: #1B5E3F !important;
+                        font-weight: bold !important;
+                    }
+
+                    .btn {
+                        border-radius: 4px !important;
+                        padding: 10px 24px !important;
+                        font-weight: 500 !important;
+                        cursor: pointer !important;
+                        transition: all 0.3s ease !important;
+                        border: none !important;
+                    }
+
+                    .btn-primary {
+                        background-color: #1B5E3F !important;
+                        color: white !important;
+                        border: 1px solid #1B5E3F !important;
+                    }
+
+                    .btn-primary:hover {
+                        background-color: #0D3B23 !important;
+                        border-color: #0D3B23 !important;
+                    }
+                </style>
+
+                <div class="success-container">
+                    <div class="success-icon">✓</div>
+                    <h2>Report Submitted Successfully</h2>
+                    <p>
+                        Thank you for your integrity and commitment to ethical excellence.
+                        Your report has been received and will be treated with the utmost confidentiality.
+                    </p>
+
+                    <div class="reference-box">
+                        <label>Your Report Reference Number:</label>
+                        <code t-out="reference"></code>
+                        <p style="margin-top: 10px; font-size: 0.9em; color: #999;">
+                            Keep this number for your records.
+                        </p>
+                    </div>
+
+                    <p style="font-size: 0.95em; color: #555;">
+                        A compliance officer will review your report. If you provided your contact information,
+                        you may be contacted for follow-up questions. Your identity is protected if you submitted anonymously.
+                    </p>
+
+                    <a href="/" class="btn btn-primary" style="background: #1B5E3F; border-color: #1B5E3F; margin-top: 20px;">
+                        Return to Home
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Error Page -->
+    <template id="portal_report_error" name="Report Submission Error">
+        <t t-call="web.layout">
+            <div class="o_portal_layout">
+                <style>
+                    .error-container {
+                        max-width: 600px !important;
+                        margin: 60px auto !important;
+                        text-align: center !important;
+                        padding: 40px !important;
+                        background: white !important;
+                        border-radius: 8px !important;
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+                    }
+
+                    .error-icon {
+                        font-size: 4em !important;
+                        color: #E74C3C !important;
+                        margin-bottom: 20px !important;
+                    }
+
+                    .error-container h2 {
+                        color: #E74C3C !important;
+                        font-size: 2em !important;
+                        margin-bottom: 15px !important;
+                    }
+
+                    .error-container p {
+                        color: #666 !important;
+                        margin-bottom: 20px !important;
+                    }
+
+                    .error-box {
+                        background: rgba(231, 76, 60, 0.1) !important;
+                        border-left: 4px solid #E74C3C !important;
+                        padding: 20px !important;
+                        margin: 30px 0 !important;
+                        text-align: left !important;
+                        border-radius: 4px !important;
+                        color: #666 !important;
+                    }
+                </style>
+
+                <div class="error-container">
+                    <div class="error-icon">⚠</div>
+                    <h2>Error Submitting Report</h2>
+                    <p>
+                        We encountered an issue while processing your report. Please try again or contact support.
+                    </p>
+
+                    <div class="error-box">
+                        <strong>Error Details:</strong>
+                        <p t-out="error_message" style="margin-top: 10px;"></p>
+                    </div>
+
+                    <p>
+                        If the problem persists, please contact your Compliance Officer or IT Support.
+                    </p>
+
+                    <a href="/whistleblowing/report" class="btn btn-primary" style="background: #1B5E3F; border-color: #1B5E3F; margin-top: 20px;">
+                        Back to Form
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

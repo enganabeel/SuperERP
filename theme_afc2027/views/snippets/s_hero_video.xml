@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_hero_video" name="Hero Video">
+        <section class="s_afc_hero_video o_afc_has_overlay_header"
+                 data-snippet="s_hero_video" data-name="Hero Video"
+                 style="background-image:url('/theme_afc2027/static/src/img/hero-bg.jpg');">
+            <video class="hero-video-bg opacity-100" autoplay="autoplay" muted="muted" loop="loop"
+                   playsinline="playsinline" preload="auto" aria-hidden="true"
+                   src="https://ambitious-beach-0ac119c03.7.azurestaticapps.net/videos/Afc-asian-Cup-saudi-arabia-2027.mp4"/>
+            <div class="container py-5 text-center">
+                <span class="s_afc_hero_eyebrow" contenteditable="true">
+                    AFC Asian Cup Saudi Arabia 2027™
+                </span>
+                <h1 class="mx-auto" contenteditable="true">
+                    Welcome! Thank you for your interest in the Local Organizing Committee.
+                </h1>
+                <p class="lead mt-3 mx-auto" contenteditable="true">
+                    We work in close coordination with governmental and private stakeholders to
+                    deliver a successful tournament for the Kingdom and the region.
+                </p>
+                <div class="mt-4">
+                    <a href="#" class="s_afc_play_btn s_afc_video_trigger"
+                       data-bs-toggle="modal" data-bs-target="#afcHeroVideoModal"
+                       aria-label="Play welcome video">
+                        <i class="fa fa-play"/>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="modal fade" id="afcHeroVideoModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content bg-black">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+                            data-bs-dismiss="modal" aria-label="Close" style="z-index:1;"/>
+                    <div class="ratio ratio-16x9">
+                        <!--
+                            No src by default here — theme.js copies the src
+                            from the background <video class="hero-video-bg">
+                            above into this one when the modal opens (so
+                            there's a single place to change the video URL),
+                            and plays it with sound/controls. If you'd rather
+                            embed a YouTube/Vimeo video instead of a direct
+                            .mp4, replace this <video> with an <iframe> and
+                            remove the "data-oe-video-sync" attribute.
+                        -->
+                        <video class="w-100 h-100" data-oe-video-sync="1"
+                               controls="controls" playsinline="playsinline"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

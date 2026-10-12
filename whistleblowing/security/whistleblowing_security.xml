@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="module_category_whistleblowing" model="ir.module.category">
+            <field name="name">Whistleblowing</field>
+            <field name="description">Manage confidential whistleblowing reports</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <record id="group_whistleblowing_user" model="res.groups">
+            <field name="name">Reporter (Submit Only)</field>
+            <field name="category_id" ref="module_category_whistleblowing"/>
+            <field name="comment">Can create whistleblowing reports and view their own reports only.</field>
+        </record>
+
+        <record id="group_whistleblowing_officer" model="res.groups">
+            <field name="name">Compliance Officer</field>
+            <field name="category_id" ref="module_category_whistleblowing"/>
+            <field name="implied_ids" eval="[(4, ref('group_whistleblowing_user'))]"/>
+            <field name="comment">Can review, investigate and manage all whistleblowing reports.</field>
+        </record>
+
+        <record id="group_whistleblowing_manager" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="category_id" ref="module_category_whistleblowing"/>
+            <field name="implied_ids" eval="[(4, ref('group_whistleblowing_officer'))]"/>
+            <field name="comment">Full access: manage configuration (categories, party types) and all reports.</field>
+        </record>
+
+        <!-- Record rules -->
+        <record id="whistleblowing_report_rule_own" model="ir.rule">
+            <field name="name">Whistleblowing Report: Reporter sees own reports only</field>
+            <field name="model_id" ref="model_whistleblowing_report"/>
+            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_whistleblowing_user'))]"/>
+            <field name="perm_read">True</field>
+            <field name="perm_write">True</field>
+            <field name="perm_create">True</field>
+            <field name="perm_unlink">False</field>
+        </record>
+
+        <record id="whistleblowing_report_rule_officer" model="ir.rule">
+            <field name="name">Whistleblowing Report: Officers see all reports</field>
+            <field name="model_id" ref="model_whistleblowing_report"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_whistleblowing_officer'))]"/>
+            <field name="perm_read">True</field>
+            <field name="perm_write">True</field>
+            <field name="perm_create">True</field>
+            <field name="perm_unlink">True</field>
+        </record>
+
+    </data>
+</odoo>

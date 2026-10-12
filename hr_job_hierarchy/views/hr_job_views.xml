@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_job_form_inherit_hierarchy" model="ir.ui.view">
+        <field name="name">hr.job.form.inherit.hierarchy</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_job_survey"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='department_id']" position="after">
+                <field name="parent_id"/>
+                <field name="chart_layout"/>
+                <field name="is_available"/>
+                <field name="is_ceo_office"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" name="action_view_job_employees" type="object" icon="fa-users">
+                    <field string="Employees" name="no_of_employee" widget="statinfo"/>
+                </button>
+            </xpath>
+            <!--
+                position="after" on the field itself would land inside
+                Target's own row (it's rendered as "Target [n] new
+                Employees" in one inline group), squeezing our field
+                between the number and that text instead of below it as
+                its own labeled row. Go one level up instead, after
+                Target's whole row, so this becomes its own row below it.
+            -->
+            <xpath expr="//field[@name='no_of_recruitment']/.." position="after">
+                <label for="needed_employees"/>
+                <div>
+                    <field name="needed_employees"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

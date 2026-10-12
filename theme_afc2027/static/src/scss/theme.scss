@@ -1,0 +1,785 @@
+// ============================================================================
+// theme_afc2027 — frontend stylesheet
+// Loaded in web.assets_frontend, after Bootstrap/Odoo core CSS compiles.
+//
+// NOTE: the Google Fonts stylesheet is NOT @import-ed here. Odoo
+// concatenates every file in web.assets_frontend into one bundle, so an
+// @import placed inside this file is no longer "first in the stylesheet" by
+// the time the browser sees the final bundle — CSS requires @import to be
+// the very first rule, so the browser silently drops it. Instead the font
+// stylesheet URL is listed as its own entry in __manifest__.py's
+// web.assets_frontend list, which Odoo emits as a plain
+// <link rel="stylesheet"> tag (see __manifest__.py).
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// Header / navigation
+// ----------------------------------------------------------------------------
+.o_header_afc2027 {
+    transition: background-color .25s ease, box-shadow .25s ease;
+    background-color: transparent;
+    // The hero (and any positioned section) comes after the header in the
+    // DOM, so without an explicit z-index the header paints *behind* page
+    // content and the menu is invisible. 1030 = Bootstrap's $zindex-fixed.
+    z-index: 1030;
+
+    .navbar-brand img {
+        max-height: 44px;
+        transition: max-height .25s ease;
+    }
+
+    .nav-link {
+        font-family: $font-family-headings;
+        font-weight: 600;
+        font-size: .95rem;
+        letter-spacing: .02em;
+        text-transform: uppercase;
+        color: $afc-color-white;
+        padding: .5rem 1rem !important;
+
+        &:hover, &:focus {
+            color: $afc-color-accent;
+        }
+    }
+
+    &.o_header_afc2027_scrolled {
+        background-color: $afc-color-primary-dk;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, .25);
+
+        .navbar-brand img {
+            max-height: 34px;
+        }
+    }
+
+    .o_afc_lang_switcher {
+        .btn {
+            border: 1px solid rgba($afc-color-white, .4);
+            color: $afc-color-white;
+            font-size: .85rem;
+            text-transform: uppercase;
+        }
+    }
+}
+
+// The fixed header is transparent by design over the hero
+// (transparent-until-scroll pattern). On pages that do NOT start with a
+// dark hero (.o_afc_has_overlay_header), a transparent header with white
+// links would be unreadable and would cover the top of the content — give
+// those pages a solid header and push the content down below it.
+#wrapwrap:not(:has(.o_afc_has_overlay_header)) {
+    .o_header_afc2027 {
+        background-color: $afc-color-primary-dk;
+    }
+
+    main {
+        padding-top: 76px;
+    }
+}
+
+// ----------------------------------------------------------------------------
+// s_hero_video — full-bleed hero with background image/video + play button
+// ----------------------------------------------------------------------------
+.s_afc_hero_video {
+    position: relative;
+    min-height: 640px;
+    display: flex;
+    align-items: center;
+    background-color: $afc-color-primary-dk;
+    background-size: cover;
+    background-position: center;
+    color: $afc-color-white;
+    overflow: hidden;
+
+    // Full-bleed background video (added when a real hero video is wired
+    // up — see s_hero_video.xml). Sits behind the gradient overlay and the
+    // text; the section's background-image (set inline) shows through as
+    // an instant-paint placeholder until the video has loaded/starts
+    // playing, then stays as a fallback if the <video> element is removed.
+    .hero-video-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(7, 42, 32, .75) 0%, rgba(7, 42, 32, .35) 45%, rgba(7, 42, 32, .85) 100%);
+        z-index: 1;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .s_afc_hero_eyebrow {
+        display: inline-block;
+        font-family: $font-family-headings;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        font-size: .8rem;
+        color: $afc-color-accent;
+        margin-bottom: 1rem;
+    }
+
+    h1 {
+        font-family: $font-family-headings;
+        font-weight: 800;
+        font-size: clamp(2rem, 4vw, 3.25rem);
+        line-height: 1.15;
+        max-width: 44rem;
+    }
+
+    .lead {
+        max-width: 38rem;
+        opacity: .9;
+    }
+
+    .s_afc_play_btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: rgba($afc-color-white, .15);
+        border: 2px solid rgba($afc-color-white, .6);
+        color: $afc-color-white;
+        font-size: 1.5rem;
+        transition: transform .2s ease, background-color .2s ease;
+
+        &:hover {
+            background-color: $afc-color-accent;
+            border-color: $afc-color-accent;
+            color: $afc-color-ink;
+            transform: scale(1.06);
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+// s_who_we_are — mission statement split section
+// ----------------------------------------------------------------------------
+.s_afc_who_we_are {
+    background-color: $afc-color-white;
+    padding: 5rem 0;
+
+    .s_afc_section_label {
+        font-family: $font-family-headings;
+        font-weight: 700;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        font-size: .8rem;
+        color: $afc-color-primary;
+        margin-bottom: .75rem;
+    }
+
+    h2 {
+        font-family: $font-family-headings;
+        font-weight: 800;
+        color: $afc-color-ink;
+    }
+
+    .s_afc_divider {
+        width: 56px;
+        height: 4px;
+        background-color: $afc-color-accent;
+        margin: 1.25rem 0 1.5rem;
+    }
+
+    .row.align-items-center img {
+        border-radius: $border-radius-lg;
+    }
+}
+
+// ----------------------------------------------------------------------------
+// s_news_carousel — latest news cards
+// ----------------------------------------------------------------------------
+.s_afc_news {
+    background-color: $afc-color-paper;
+    padding: 5rem 0;
+
+    .s_afc_news_card {
+        display: block;
+        background-color: $afc-color-white;
+        border-radius: $border-radius-lg;
+        overflow: hidden;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, .06);
+        transition: transform .2s ease, box-shadow .2s ease;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, .12);
+        }
+
+        .s_afc_news_img {
+            aspect-ratio: 16 / 10;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .s_afc_news_body {
+            padding: 1.25rem 1.4rem 1.5rem;
+        }
+
+        .s_afc_news_date {
+            font-size: .78rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: $afc-color-primary;
+        }
+
+        h5 {
+            font-family: $font-family-headings;
+            font-weight: 700;
+            margin: .5rem 0 0;
+            color: $afc-color-ink;
+        }
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        width: 44px;
+        height: 44px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: $afc-color-primary;
+        border-radius: 50%;
+        opacity: .9;
+    }
+}
+
+// ----------------------------------------------------------------------------
+// s_vendors — partners / suppliers band
+// ----------------------------------------------------------------------------
+.s_afc_vendors {
+    background-color: $afc-color-primary-dk;
+    color: $afc-color-white;
+    padding: 4.5rem 0;
+    text-align: center;
+
+    h2 {
+        font-family: $font-family-headings;
+        font-weight: 800;
+    }
+
+    p.lead {
+        max-width: 42rem;
+        margin: 0 auto 2rem;
+        opacity: .85;
+    }
+
+    .btn-afc-outline {
+        border: 2px solid $afc-color-accent;
+        color: $afc-color-accent;
+        font-family: $font-family-headings;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        padding: .65rem 1.75rem;
+
+        &:hover {
+            background-color: $afc-color-accent;
+            color: $afc-color-ink;
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+// s_careers_cta — careers call-to-action banner
+// ----------------------------------------------------------------------------
+.s_afc_careers {
+    background-image: url('/theme_afc2027/static/src/img/pattern.png'),
+        linear-gradient(120deg, $afc-color-primary 0%, $afc-color-primary-dk 100%);
+    background-size: 420px auto, cover;
+    background-repeat: repeat, no-repeat;
+    color: $afc-color-white;
+    border-radius: $border-radius-lg;
+    padding: 3.5rem 2rem;
+
+    .s_afc_careers_eyebrow {
+        display: inline-block;
+        font-family: $font-family-headings;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        font-size: .8rem;
+        color: $afc-color-accent;
+        margin-bottom: .75rem;
+    }
+
+    h3.s_afc_careers_heading {
+        font-family: $font-family-headings;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+        line-height: 1.15;
+        max-width: 40rem;
+        margin: 0 auto .75rem;
+    }
+
+    .s_afc_careers_text {
+        max-width: 34rem;
+        opacity: .9;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-afc-solid {
+        background-color: $afc-color-accent;
+        color: $afc-color-ink;
+        font-family: $font-family-headings;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        border: none;
+        border-radius: 50rem;
+        padding: .75rem 2.25rem;
+
+        &:hover {
+            background-color: darken($afc-color-accent, 8%);
+            color: $afc-color-ink;
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+// About Us page (/about-us) — see views/pages/about_us.xml
+// ----------------------------------------------------------------------------
+.s_afc_page_banner {
+    position: relative;
+    padding: 8rem 0 4rem;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    color: $afc-color-white;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(7, 42, 32, .55) 0%, rgba(7, 42, 32, .8) 100%);
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    .s_afc_hero_eyebrow {
+        display: block;
+    }
+
+    h1 {
+        font-family: $font-family-headings;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: clamp(1.75rem, 4vw, 2.75rem);
+        margin: .5rem 0 0;
+    }
+}
+
+.s_afc_about_intro {
+    background-color: $afc-color-white;
+    padding: 4.5rem 0 3rem;
+
+    .s_afc_about_crest {
+        max-width: 120px;
+        margin: 0 auto 1rem;
+        display: block;
+    }
+
+    .s_afc_about_crest_caption {
+        font-size: .78rem;
+        font-weight: 600;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: $afc-color-primary;
+        margin-bottom: 2rem;
+    }
+
+    .s_afc_about_lede {
+        max-width: 46rem;
+        color: rgba($afc-color-ink, .75);
+    }
+}
+
+.s_afc_vision_mission {
+    position: relative;
+
+    .s_afc_vm_cell {
+        min-height: 420px;
+    }
+
+    .s_afc_vm_text {
+        display: flex;
+        align-items: center;
+        padding: 3rem 3.5rem;
+
+        .s_afc_vm_inner {
+            max-width: 26rem;
+        }
+
+        h2 {
+            font-family: $font-family-headings;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .s_afc_vm_vision {
+        background-color: mix($afc-color-accent, $afc-color-white, 45%);
+        color: $afc-color-ink;
+    }
+
+    .s_afc_vm_mission {
+        background-color: $afc-color-primary-dk;
+        color: $afc-color-white;
+    }
+
+    .s_afc_vm_img {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .s_afc_vm_badge {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 3;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background-color: $afc-color-white;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, .15);
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+}
+
+.s_afc_values {
+    background-color: $afc-color-white;
+    padding: 5rem 0;
+
+    h2 {
+        font-family: $font-family-headings;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .s_afc_value {
+        text-align: center;
+        padding: 0 1rem;
+
+        .s_afc_value_icon {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 1.25rem;
+            border-radius: 50%;
+            border: 1px solid rgba($afc-color-ink, .15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: $afc-color-primary;
+        }
+
+        h5 {
+            font-family: $font-family-headings;
+            font-weight: 700;
+            margin-bottom: .6rem;
+        }
+
+        p {
+            color: rgba($afc-color-ink, .7);
+            font-size: .92rem;
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+// s_contact_split — contact form + location details
+// ----------------------------------------------------------------------------
+.s_afc_contact {
+    padding: 5rem 0;
+
+    .s_afc_contact_info {
+        background-color: $afc-color-primary;
+        color: $afc-color-white;
+        border-radius: $border-radius-lg;
+        padding: 2.5rem;
+        height: 100%;
+
+        .s_afc_contact_item {
+            display: flex;
+            gap: .85rem;
+            margin-bottom: 1.25rem;
+
+            i {
+                color: $afc-color-accent;
+                margin-top: .2rem;
+            }
+        }
+
+        .s_afc_social_row a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba($afc-color-white, .12);
+            color: $afc-color-white;
+            margin-right: .5rem;
+
+            &:hover {
+                background-color: $afc-color-accent;
+                color: $afc-color-ink;
+            }
+        }
+    }
+
+    form .form-control {
+        border-radius: $border-radius;
+        border-color: rgba($afc-color-ink, .15);
+    }
+
+    .btn-afc-solid {
+        background-color: $afc-color-primary;
+        color: $afc-color-white;
+        font-family: $font-family-headings;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        border: none;
+        padding: .7rem 2rem;
+
+        &:hover {
+            background-color: $afc-color-primary-dk;
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Blog "Media Center" page (/blog) — see views/pages/blog.xml
+// ----------------------------------------------------------------------------
+.o_afc_blog_hero {
+    background-color: $afc-color-primary-dk;
+    background-image: url('/theme_afc2027/static/src/img/pattern.png');
+    background-size: 420px auto;
+    padding: 4.5rem 0 3.5rem;
+
+    h1 {
+        color: $afc-color-white;
+        font-family: $font-family-headings;
+        font-weight: 600;
+        margin: 0;
+    }
+}
+
+.o_afc_blog_head h2 {
+    font-family: $font-family-headings;
+    font-weight: 700;
+    color: $afc-color-ink;
+}
+
+.btn-afc-pill {
+    border: 1px solid $afc-color-primary;
+    color: $afc-color-primary;
+    border-radius: 50rem;
+    font-family: $font-family-headings;
+    font-weight: 600;
+    letter-spacing: .02em;
+    padding: .5rem 1.75rem;
+
+    &:hover, &:focus {
+        background-color: $afc-color-primary;
+        color: $afc-color-white;
+    }
+}
+
+.o_afc_media_card {
+    position: relative;
+    display: block;
+    height: 100%;
+    min-height: 300px;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+
+    .o_afc_media_img {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        transition: transform .3s ease;
+    }
+
+    &:hover .o_afc_media_img {
+        transform: scale(1.05);
+    }
+
+    .o_afc_media_overlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 2.5rem 1.5rem 1.25rem;
+        background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, rgba(10, 10, 10, .78) 55%);
+    }
+
+    .o_afc_media_title {
+        color: $afc-color-white;
+        font-family: $font-family-headings;
+        font-weight: 700;
+        font-size: 1.35rem;
+        margin: 0;
+    }
+
+    .o_afc_media_date {
+        display: block;
+        color: rgba($afc-color-white, .85);
+        font-size: .8rem;
+        margin-top: .5rem;
+    }
+}
+
+// The lead (first) post drives the height of the first row on desktop; its
+// col-lg-4 neighbour stretches to match via h-100.
+@media (min-width: 992px) {
+    .o_afc_blog_lead .o_afc_media_card {
+        min-height: 430px;
+
+        .o_afc_media_title {
+            font-size: 1.6rem;
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Footer
+// ----------------------------------------------------------------------------
+.o_footer_afc2027 {
+    background-color: $afc-color-ink;
+    color: rgba($afc-color-white, .75);
+    padding: 3.5rem 0 1.5rem;
+
+    a {
+        color: rgba($afc-color-white, .75);
+
+        &:hover {
+            color: $afc-color-accent;
+        }
+    }
+
+    .o_afc_footer_social a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba($afc-color-white, .08);
+        margin-right: .5rem;
+
+        &:hover {
+            background-color: $afc-color-accent;
+            color: $afc-color-ink;
+        }
+    }
+
+    .o_afc_footer_legal {
+        border-top: 1px solid rgba($afc-color-white, .1);
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        font-size: .85rem;
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Arabic (RTL) support
+// ----------------------------------------------------------------------------
+// Barlow Condensed and Inter (the brand's Latin fonts, set as
+// $font-family-headings / $font-family-base in primary_variables.scss) have
+// no Arabic glyphs, so Arabic text would otherwise silently fall back to
+// whatever generic Arabic face the visitor's OS/browser ships — inconsistent
+// with the rest of the brand. Odoo sets lang="ar_XXX" on <html> for Arabic
+// visitors; target that to swap in a proper Arabic web font instead. Layout
+// mirroring itself (margins, floats, text-align, etc.) is handled
+// automatically by Odoo's rtlcss asset pipeline — see NOTES.md — this block
+// only covers typography, which rtlcss does not (and should not) touch.
+//
+// DIN Next Arabic is a commercial Monotype font (not on Google Fonts —
+// verified: requesting it from fonts.googleapis.com 400s with "font family
+// not found"), so it has to be self-hosted from licensed font files rather
+// than linked from a CDN. The @font-face rules below point at
+// static/src/fonts/ — see the README.md in that folder for the exact
+// filenames to drop in. Until those files actually exist there, each
+// @font-face simply fails to load and the browser falls through to Changa
+// (a free, open, DIN-style Arabic font used as the interim placeholder), so
+// nothing breaks in the meantime — this is designed to activate itself
+// automatically the moment the real files are added, no further code change
+// needed.
+@font-face {
+    font-family: 'DIN Next Arabic';
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    src: url('/theme_afc2027/static/src/fonts/DINNextLTArabic-Light.woff2') format('woff2'),
+         url('/theme_afc2027/static/src/fonts/DINNextLTArabic-Light.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'DIN Next Arabic';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url('/theme_afc2027/static/src/fonts/DINNextLTArabic-Regular.woff2') format('woff2'),
+         url('/theme_afc2027/static/src/fonts/DINNextLTArabic-Regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'DIN Next Arabic';
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    src: url('/theme_afc2027/static/src/fonts/DINNextLTArabic-Medium.woff2') format('woff2'),
+         url('/theme_afc2027/static/src/fonts/DINNextLTArabic-Medium.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'DIN Next Arabic';
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url('/theme_afc2027/static/src/fonts/DINNextLTArabic-Bold.woff2') format('woff2'),
+         url('/theme_afc2027/static/src/fonts/DINNextLTArabic-Bold.woff') format('woff');
+}
+
+:lang(ar) {
+    font-family: 'DIN Next Arabic', 'Changa', 'Barlow Condensed Fallback', sans-serif;
+
+    h1, h2, h3, h4, h5, h6,
+    .navbar-brand, .nav-link, .btn {
+        font-family: 'DIN Next Arabic', 'Changa', sans-serif;
+        font-weight: 700;
+    }
+}

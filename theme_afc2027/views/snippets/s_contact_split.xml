@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_contact_split" name="Contact Split">
+        <section class="s_afc_contact" data-snippet="s_contact_split" data-name="Contact Split">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-5">
+                        <div class="s_afc_contact_info">
+                            <span class="s_afc_section_label text-white-50" contenteditable="true">
+                                Get in Touch
+                            </span>
+                            <h3 class="text-white" contenteditable="true">Contact the LOC</h3>
+                            <div class="mt-4">
+                                <div class="s_afc_contact_item">
+                                    <i class="fa fa-map-marker fa-lg"/>
+                                    <span contenteditable="true">
+                                        King Branch, Riyadh, Kingdom of Saudi Arabia
+                                    </span>
+                                </div>
+                                <div class="s_afc_contact_item">
+                                    <i class="fa fa-envelope fa-lg"/>
+                                    <span contenteditable="true">info@example.com</span>
+                                </div>
+                                <div class="s_afc_contact_item">
+                                    <i class="fa fa-phone fa-lg"/>
+                                    <span contenteditable="true">+966 00 000 0000</span>
+                                </div>
+                            </div>
+                            <div class="s_afc_social_row mt-4">
+                                <a href="#"><i class="fa fa-twitter"/></a>
+                                <a href="#"><i class="fa fa-instagram"/></a>
+                                <a href="#"><i class="fa fa-facebook"/></a>
+                                <a href="#"><i class="fa fa-linkedin"/></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <section class="s_website_form" data-snippet="s_website_form" data-name="Form">
+                            <form action="/website/form/" method="post"
+                                  enctype="multipart/form-data" class="o_mark_required"
+                                  data-model_name="mail.mail"
+                                  data-success-mode="message">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <div class="row s_website_form_rows">
+                                    <div class="col-12 mb-3 s_website_form_field s_website_form_required"
+                                         data-type="char" data-name="Field-Name">
+                                        <label class="s_website_form_label" for="afc_contact_name">
+                                            Your Name
+                                        </label>
+                                        <input type="text" class="form-control s_website_form_input"
+                                               name="name" id="afc_contact_name" required="1"/>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 mb-3 s_website_form_field s_website_form_required"
+                                         data-type="email" data-name="Field-Email">
+                                        <label class="s_website_form_label" for="afc_contact_email">
+                                            Your Email
+                                        </label>
+                                        <input type="email" class="form-control s_website_form_input"
+                                               name="email_from" id="afc_contact_email" required="1"/>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 mb-3 s_website_form_field"
+                                         data-type="tel" data-name="Field-Phone">
+                                        <label class="s_website_form_label" for="afc_contact_phone">
+                                            Phone Number
+                                        </label>
+                                        <input type="tel" class="form-control s_website_form_input"
+                                               name="phone" id="afc_contact_phone"/>
+                                    </div>
+
+                                    <div class="col-12 mb-3 s_website_form_field s_website_form_required"
+                                         data-type="char" data-name="Field-Subject">
+                                        <label class="s_website_form_label" for="afc_contact_subject">
+                                            Subject
+                                        </label>
+                                        <input type="text" class="form-control s_website_form_input"
+                                               name="subject" id="afc_contact_subject" required="1"/>
+                                    </div>
+
+                                    <div class="col-12 mb-3 s_website_form_field s_website_form_required"
+                                         data-type="text" data-name="Field-Description">
+                                        <label class="s_website_form_label" for="afc_contact_message">
+                                            Your Message
+                                        </label>
+                                        <textarea class="form-control s_website_form_input"
+                                                  name="description" id="afc_contact_message"
+                                                  rows="5" required="1"></textarea>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-afc-solid s_website_form_send">
+                                    Send Message
+                                </button>
+                                <span id="s_website_form_result"/>
+                            </form>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!--
+        Adds "Print PDF" to the org chart toolbar. Extension mode patches
+        web_org's own template, so the button rides along with the renderer
+        patch in org_print.js and needs no view change.
+    -->
+    <t t-name="department_chart_types.OrgRendererPrint"
+       t-inherit="web_org.OrgRenderer"
+       t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('right')]" position="inside">
+            <button
+                t-if="canPrintChartPdf"
+                type="button"
+                class="btn btn-secondary o_org_print_pdf"
+                t-on-click="printChartPdf"
+                t-att-disabled="state.printing"
+                title="Print the chart as shown, with the current filters"
+                aria-label="Print PDF"
+            >
+                <i t-if="state.printing" class="fa fa-circle-o-notch fa-spin me-1"/>
+                <i t-else="" class="fa fa-file-pdf-o me-1"/>
+                <t t-if="state.printing">Printing…</t>
+                <t t-else="">Print PDF</t>
+            </button>
+        </xpath>
+    </t>
+
+</templates>

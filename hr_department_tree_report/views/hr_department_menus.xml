@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Convenience entry point: prints every department for the current
+        company (not just whatever happens to be selected in a list view).
+        The report itself (action_report_hr_department_tree) is also
+        available directly from Departments > select rows > Print, via its
+        binding_model_id/binding_type; this just saves having to select
+        everything by hand for the common "print the whole org" case.
+    -->
+    <record id="action_print_full_department_tree" model="ir.actions.server">
+        <field name="name">Department Tree</field>
+        <field name="model_id" ref="hr.model_hr_department"/>
+        <field name="state">code</field>
+        <field name="code">
+departments = model.search([('company_id', 'in', env.companies.ids)])
+action = env.ref('hr_department_tree_report.action_report_hr_department_tree').report_action(departments)
+        </field>
+    </record>
+
+    <menuitem id="menu_print_full_department_tree"
+              name="Department Tree"
+              parent="hr.hr_menu_hr_reports"
+              action="action_print_full_department_tree"
+              groups="hr.group_hr_user"
+              sequence="50"/>
+
+</odoo>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- 1. Form View Inheritance -->
+        <record id="view_department_form_inherit_type" model="ir.ui.view">
+            <field name="name">hr.department.form.inherit.type</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="dept_type"/>
+                    <field name="chart_layout"/>
+                    <field name="chart_column" groups="base.group_system"/>
+                    <field name="dept_color_class" invisible="1"/>
+                </xpath>
+
+                <!-- Manager is gated - see security/department_security.xml. -->
+                <xpath expr="//field[@name='manager_id']" position="attributes">
+                    <attribute name="groups">department_chart_types.group_show_department_manager</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- 2. The same gate on the other two places a department lists its
+             manager. Without these the group would be trivially bypassed: the
+             chart action itself offers kanban and list next to the org view. -->
+        <record id="hr_department_view_kanban_inherit_manager" model="ir.ui.view">
+            <field name="name">hr.department.kanban.inherit.manager</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.hr_department_view_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='manager_id']" position="attributes">
+                    <attribute name="groups">department_chart_types.group_show_department_manager</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_department_tree_inherit_manager" model="ir.ui.view">
+            <field name="name">hr.department.list.inherit.manager</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='manager_id']" position="attributes">
+                    <attribute name="groups">department_chart_types.group_show_department_manager</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

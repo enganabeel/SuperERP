@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="web_editor.VideoSelector" t-inherit-mode="extension">
+        <xpath expr="//textarea[@id='o_video_text']/.." position="after">
+            <div class="mb-2">
+                <label for="o_local_video_upload"><b>Or upload a video file</b></label>
+                <input type="file" id="o_local_video_upload" accept="video/*"
+                       class="form-control" t-on-change="onUploadLocalVideo"/>
+            </div>
+        </xpath>
+    </t>
+</templates>

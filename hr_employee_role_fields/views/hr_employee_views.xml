@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_employee_form_inherit_role_fields" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.role.fields</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[field[@name='parent_id']]" position="after">
+                <group string="Role Details" name="role_details">
+                    <group>
+                        <field name="role_id"/>
+                        <field name="tournament_time_role_id"/>
+                        <field name="role_level"/>
+                        <field name="line_manager_role_id"/>
+                        <field name="employee_category"/>
+                        <field name="role_status"/>
+                    </group>
+                    <group>
+                        <field name="contractor_type"/>
+                        <field name="emp_id"/>
+                        <field name="secondment_entity"/>
+                        <field name="nationality_category"/>
+                        <field name="work_city"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

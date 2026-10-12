@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_job_form_inherit_role_config" model="ir.ui.view">
+        <field name="name">hr.job.form.inherit.role.config</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr_recruitment.hr_job_survey"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='recruitment2']" position="after">
+                <group string="Role Configuration" name="role_configuration">
+                    <field name="role_id"/>
+                    <field name="role_type_id"/>
+                    <field name="source_type_id"/>
+                    <field name="role_status"/>
+                    <field name="tournament_time_role_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

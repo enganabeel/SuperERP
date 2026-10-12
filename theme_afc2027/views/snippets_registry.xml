@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Registers this theme's building blocks in the website builder's
+        "Blocks" panel, under the "Structure" section, so they can be
+        dragged onto any page.
+
+        Verified against the actual Odoo 18.0 source
+        (addons/website/views/snippets/snippets.xml): the "Structure" panel
+        is a custom <snippets id="snippet_structure"> element (not a div),
+        and each block is registered as a direct child
+        <t t-snippet="module.xml_id" string="Label" group="category"/> with
+        an optional <keywords> child for the block-picker search box — no
+        wrapper divs, no t-thumbnail needed here (that's only used for the
+        "Categories" tiles and the small "Inner content" blocks, both
+        unrelated to this theme).
+
+        group must be one of the categories declared in
+        <snippets id="snippet_groups">: custom, intro, columns, content,
+        images, people, text, contact_and_forms.
+    -->
+    <template id="snippets_registry" inherit_id="website.snippets" name="AFC2027 Snippets">
+        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
+            <t t-snippet="theme_afc2027.s_hero_video" string="Hero Video" group="intro">
+                <keywords>hero, video, welcome, banner, cover, jumbotron, headline</keywords>
+            </t>
+            <t t-snippet="theme_afc2027.s_who_we_are" string="Who We Are" group="content">
+                <keywords>about, mission, who we are, intro, story, text image</keywords>
+            </t>
+            <t t-snippet="theme_afc2027.s_news_carousel" string="News Carousel" group="content">
+                <keywords>news, blog, carousel, articles, updates, press</keywords>
+            </t>
+            <t t-snippet="theme_afc2027.s_vendors" string="Vendors / Partners" group="content">
+                <keywords>partners, vendors, suppliers, sponsors, call to action</keywords>
+            </t>
+            <t t-snippet="theme_afc2027.s_careers_cta" string="Careers CTA" group="content">
+                <keywords>careers, jobs, hiring, cta, call to action, recruitment</keywords>
+            </t>
+            <t t-snippet="theme_afc2027.s_contact_split" string="Contact Split" group="contact_and_forms">
+                <keywords>contact, form, address, phone, email, get in touch</keywords>
+            </t>
+        </xpath>
+    </template>
+</odoo>

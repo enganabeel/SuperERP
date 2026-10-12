@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Report Action -->
+        <record id="action_report_invoice_simple" model="ir.actions.report">
+            <field name="name">فاتورة مبسطة</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_invoice_simple_report.report_invoice_simple</field>
+            <field name="report_file">custom_invoice_simple_report.report_invoice_simple</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+            <field name="print_report_name">'فاتورة_%s' % (object.name or '')</field>
+        </record>
+
+        <!-- QWeb Template -->
+        <template id="report_invoice_simple">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+
+                        <h2 style="text-align:center; margin-bottom: 20px;">
+                            فاتورة مبسطة
+                        </h2>
+
+                        <div class="row" style="margin-bottom: 15px;">
+                            <div class="col-6">
+                                <strong>العميل:</strong>
+                                <span t-esc="o.partner_id.display_name"/>
+                            </div>
+                            <div class="col-6" style="text-align: left;">
+                                <strong>التاريخ:</strong>
+                                <span t-esc="o.invoice_date"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm o_main_table" style="width:100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #000; padding: 4px;">#</th>
+                                    <th style="border: 1px solid #000; padding: 4px;">الصنف / الوصف</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align:center;">الكمية</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align:center;">السعر</th>
+                                    <th style="border: 1px solid #000; padding: 4px; text-align:center;">الإجمالي</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.invoice_line_ids" t-as="line">
+                                    <td style="border: 1px solid #000; padding: 4px; text-align:center;">
+                                        <span t-esc="line.sequence or 0"/>
+                                    </td>
+                                    <td style="border: 1px solid #000; padding: 4px;">
+                                        <span t-esc="line.name"/>
+                                    </td>
+                                    <td style="border: 1px solid #000; padding: 4px; text-align:center;">
+                                        <span t-esc="line.quantity"/>
+                                    </td>
+                                    <td style="border: 1px solid #000; padding: 4px; text-align:center;">
+                                        <span t-esc="line.price_unit"/>
+                                    </td>
+                                    <td style="border: 1px solid #000; padding: 4px; text-align:center;">
+                                        <span t-esc="line.price_subtotal"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

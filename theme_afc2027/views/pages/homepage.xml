@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Pre-fills the default "/" homepage (website.homepage) with the six
+        AFC2027 snippets in reference-site order. Because the target div is
+        an oe_structure (drag-and-drop editable area), everything here stays
+        fully editable/removable/reorderable afterwards in the website
+        builder — this is just a sensible starting layout, not a locked page.
+    -->
+    <template id="homepage_afc2027" inherit_id="website.homepage" name="AFC2027 Homepage Content">
+        <xpath expr="//div[hasclass('oe_structure')]" position="inside">
+            <t t-call="theme_afc2027.s_hero_video"/>
+            <t t-call="theme_afc2027.s_who_we_are"/>
+            <t t-call="theme_afc2027.s_news_carousel"/>
+            <t t-call="theme_afc2027.s_vendors"/>
+            <t t-call="theme_afc2027.s_careers_cta"/>
+            <t t-call="theme_afc2027.s_contact_split"/>
+        </xpath>
+    </template>
+</odoo>

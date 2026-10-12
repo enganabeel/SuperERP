@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+
+      <!-- Action to open Departments with Org View included -->
+        <record id="hr_department_action_org" model="ir.actions.act_window">
+            <field name="name">Departments Hierarchy</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_mode">org,kanban,list,form</field>
+            <field name="view_id" ref="hr_department_view_org"/>
+            <!-- Branch-aware name search: see view_department_filter_org. -->
+            <field name="search_view_id" ref="view_department_filter_org"/>
+        </record>
+
+        <!-- Menu Item -->
+        <menuitem id="menu_hr_department_org"
+                  name="Departments Org Chart"
+                  parent="hr.menu_hr_root"
+                  action="hr_department_action_org"
+                  sequence="15"/>
+
+
+    </data>
+</odoo>

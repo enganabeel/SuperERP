@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Apply the LOC Positional Structure PDF department types to the EXISTING
+        departments. This calls a method that only updates dept_type - it never
+        creates a department record. Runs on install and on every module upgrade.
+    -->
+    <function model="hr.department" name="_autotype_pdf_structure"/>
+</odoo>

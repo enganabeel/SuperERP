@@ -1,0 +1,72 @@
+// ============================================================================
+// theme_afc2027 — primary variables
+// ----------------------------------------------------------------------------
+// This file is loaded in the `web._assets_primary_variables` bundle, which is
+// how Odoo lets a theme override Bootstrap/Odoo SCSS variables *before* the
+// framework's own stylesheets compile. Anything not overridden here falls
+// back to Odoo's defaults.
+//
+// !! PLACEHOLDER PALETTE !!
+// These hex values are an approximation (Saudi-green / gold / near-black,
+// consistent with a national sporting-event LOC site) inferred from the
+// reference site's overall look — the live site's exact hex codes and web
+// fonts could not be read from a static fetch. Swap the six values below for
+// the real brand kit and everything downstream (buttons, links, snippet
+// backgrounds, nav) updates automatically.
+// ============================================================================
+
+// ---- Brand palette --------------------------------------------------------
+$afc-color-primary:    #0B3D2E; // deep committee green
+$afc-color-primary-dk: #072A20; // darker green, used for header/footer bg
+$afc-color-accent:     #C9A227; // gold accent (CTAs, dividers, highlights)
+$afc-color-ink:        #0A0A0A; // near-black, body copy on light bg
+$afc-color-paper:      #F5F3EE; // warm off-white section background
+$afc-color-white:      #FFFFFF;
+
+// ---- Feed Odoo's 5-slot color system --------------------------------------
+// o-color-1..5 are what the website builder's "Colors" panel and most
+// snippets reference (bg-o-color-1, text-o-color-2, etc.).
+$o-color-1: $afc-color-primary;
+$o-color-2: $afc-color-accent;
+$o-color-3: $afc-color-ink;
+$o-color-4: $afc-color-paper;
+$o-color-5: $afc-color-white;
+
+// ---- Bootstrap semantic colors --------------------------------------------
+$primary:   $afc-color-primary;
+$secondary: $afc-color-accent;
+$dark:      $afc-color-ink;
+$light:     $afc-color-paper;
+$body-color: $afc-color-ink;
+
+// ---- Typography -------------------------------------------------------
+// Brand heading font: Barlow Condensed (loaded via the Google Fonts link in
+// __manifest__.py). "Barlow Condensed Fallback" is kept in the stack for
+// parity with the reference site's font naming; 'Arial Narrow' is the
+// closest widely-installed condensed system face while the webfont loads.
+// Body copy stays on Inter.
+$o-theme-font-configs: (
+  'Barlow Condensed': (
+    'family': ('Barlow Condensed', 'Barlow Condensed Fallback', 'Arial Narrow', sans-serif),
+    'url': 'Barlow+Condensed:400,500,600,700,800',
+  ),
+  'Inter': (
+    'family': ('Inter', sans-serif),
+    'url': 'Inter:400,500,600,700',
+  ),
+);
+
+$font-family-headings: 'Barlow Condensed', 'Barlow Condensed Fallback', 'Arial Narrow', sans-serif;
+$font-family-base: 'Inter', sans-serif;
+$headings-font-weight: 700;
+
+// Bootstrap's own headings variable so ALL h1–h6 site-wide pick up the
+// brand font — including pages rendered by other Odoo apps (blog post
+// titles on /blog, etc.), not just this theme's own snippets (which use
+// $font-family-headings directly in theme.scss).
+$headings-font-family: $font-family-headings;
+
+// ---- Structure --------------------------------------------------------
+$o-theme-h1-font-size: 3rem;
+$border-radius: .375rem;
+$border-radius-lg: .75rem;

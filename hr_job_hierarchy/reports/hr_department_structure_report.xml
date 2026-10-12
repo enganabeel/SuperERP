@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        PDF version of the Department Structure report, same visual
+        design as the interactive web page (/department_structure_report):
+        a department typed Committee renders beside its parent in a
+        sideways chain, everything else in a top-down tree that goes
+        vertical (indented) from N-3 down, same PDF-matched colors and
+        N-1..N-4 legend.
+
+        Deliberately NOT the SVG/JS connector version the web page now
+        uses. a PDF is rendered server-side by wkhtmltopdf, which does
+        not execute JavaScript, so that approach cannot work here at all.
+        This reuses the plain CSS connector technique (border tricks on
+        ul/li, a committee's own chain pulled out of flow via
+        position:absolute, a per-item "spine" for the vertical stack)
+        that was already fully verified working for every reported case
+       . gaps, overshoot, only-child stubs. before the web page moved
+        to the SVG approach for an unrelated, still-unresolved rendering
+        issue specific to that live browser environment.
+
+        One real constraint a PDF has that a browser page does not: a
+        page has a FIXED width. A browser can show a horizontal
+        scrollbar, or the user's print dialog can "shrink to fit"; a PDF
+        page cannot auto-shrink wider content the way a browser does, so
+        very wide branches may still run off the page edge. Landscape at
+        A3 plus a CSS zoom factor buys real headroom, but does not
+        guarantee every real department tree fits. there is no way to
+        guarantee that without seeing the live data's actual width.
+    -->
+
+    <record id="paperformat_department_structure" model="report.paperformat">
+        <field name="name">Department Structure (Landscape A3)</field>
+        <field name="default" eval="False"/>
+        <field name="format">A3</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">7</field>
+        <field name="margin_right">7</field>
+        <field name="header_line" eval="False"/>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_report_department_structure" model="ir.actions.report">
+        <field name="name">Department Structure</field>
+        <field name="model">hr.department</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hr_job_hierarchy.report_department_structure</field>
+        <field name="print_report_name">'Department Structure - %s' % (object.env.company.name)</field>
+        <field name="paperformat_id" ref="paperformat_department_structure"/>
+        <field name="binding_model_id" ref="hr.model_hr_department"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_dsr_committee_chain">
+        <div class="dsr_committee_item">
+            <div class="dsr_box dsr_committee">
+                <div class="dsr_box_name" t-esc="node.name"/>
+            </div>
+            <t t-set="sub_committees" t-value="node.child_ids.filtered(lambda c: c.active and c.dept_type == 'committee').sorted(key=lambda c: (c.sequence, c.name or ''))"/>
+            <div t-if="sub_committees" class="dsr_committee_chain">
+                <t t-foreach="sub_committees" t-as="sub_node">
+                    <t t-call="hr_job_hierarchy.report_dsr_committee_chain">
+                        <t t-set="node" t-value="sub_node"/>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <!--
+        Same idea as the Committee chain above, mirrored to the OTHER side
+        of the parent box (left instead of right) for dept_type='ceo_assistant'.
+    -->
+    <template id="report_dsr_ceo_assistant_chain">
+        <div class="dsr_ceo_assistant_item">
+            <div class="dsr_box dsr_ceo_assistant">
+                <div class="dsr_box_name" t-esc="node.name"/>
+            </div>
+            <t t-set="sub_assistants" t-value="node.child_ids.filtered(lambda c: c.active and c.dept_type == 'ceo_assistant').sorted(key=lambda c: (c.sequence, c.name or ''))"/>
+            <div t-if="sub_assistants" class="dsr_ceo_assistant_chain">
+                <t t-foreach="sub_assistants" t-as="sub_node">
+                    <t t-call="hr_job_hierarchy.report_dsr_ceo_assistant_chain">
+                        <t t-set="node" t-value="sub_node"/>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <!--
+        "vertical" means "my own children render as an indented vertical
+        stack, not a horizontal row". Driven by "depth" (0 for a root, +1
+        per normal-child step), not by dept_type. some branches go
+        straight from Sector to Department with no Executive Department
+        in between, so a dept_type-based trigger would miss those.
+        depth &gt;= 2 means "my children are the 3rd row", which starts the
+        vertical stack, and it stays on for every descendant once set.
+    -->
+    <template id="report_dsr_node_content">
+        <div class="dsr_node_row">
+            <t t-set="ceo_assistants" t-value="node.child_ids.filtered(lambda c: c.active and c.dept_type == 'ceo_assistant').sorted(key=lambda c: (c.sequence, c.name or ''))"/>
+            <div t-if="ceo_assistants" class="dsr_ceo_assistant_chain">
+                <t t-foreach="ceo_assistants" t-as="assistant_node">
+                    <t t-call="hr_job_hierarchy.report_dsr_ceo_assistant_chain">
+                        <t t-set="node" t-value="assistant_node"/>
+                    </t>
+                </t>
+            </div>
+            <div t-attf-class="dsr_box #{'dsr_ceo' if node.dept_type == 'ceo' else 'dsr_committee' if node.dept_type == 'committee' else 'dsr_ceo_assistant' if node.dept_type == 'ceo_assistant' else 'dsr_level_1' if node.dept_type == 'sector' else 'dsr_level_2' if node.dept_type == 'executive' else 'dsr_level_3' if node.dept_type == 'department' else 'dsr_level_4'}">
+                <div class="dsr_box_name" t-esc="node.name"/>
+                <div t-if="node.total_employee" class="dsr_box_badge">
+                    <i class="fa fa-users"/> <t t-esc="node.total_employee"/>
+                </div>
+            </div>
+            <t t-set="committees" t-value="node.child_ids.filtered(lambda c: c.active and c.dept_type == 'committee').sorted(key=lambda c: (c.sequence, c.name or ''))"/>
+            <div t-if="committees" class="dsr_committee_chain">
+                <t t-foreach="committees" t-as="committee_node">
+                    <t t-call="hr_job_hierarchy.report_dsr_committee_chain">
+                        <t t-set="node" t-value="committee_node"/>
+                    </t>
+                </t>
+            </div>
+        </div>
+        <t t-set="normal_children" t-value="node.child_ids.filtered(lambda c: c.active and c.dept_type not in ('committee', 'ceo_assistant')).sorted(key=lambda c: (c.sequence, c.name or ''))"/>
+        <t t-set="children_vertical" t-value="1 if (vertical or depth &gt;= 2) else 0"/>
+        <t t-if="normal_children">
+            <ul t-if="not children_vertical" class="dsr_tree">
+                <t t-foreach="normal_children" t-as="child_node">
+                    <t t-call="hr_job_hierarchy.report_dsr_node_horizontal">
+                        <t t-set="node" t-value="child_node"/>
+                        <t t-set="vertical" t-value="children_vertical"/>
+                        <t t-set="depth" t-value="depth + 1"/>
+                    </t>
+                </t>
+            </ul>
+            <div t-if="children_vertical" class="dsr_vlist">
+                <t t-foreach="normal_children" t-as="child_node">
+                    <t t-call="hr_job_hierarchy.report_dsr_node_vertical">
+                        <t t-set="node" t-value="child_node"/>
+                        <t t-set="vertical" t-value="children_vertical"/>
+                        <t t-set="depth" t-value="depth + 1"/>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_dsr_node_horizontal">
+        <li>
+            <t t-call="hr_job_hierarchy.report_dsr_node_content">
+                <t t-set="node" t-value="node"/>
+                <t t-set="vertical" t-value="vertical"/>
+                <t t-set="depth" t-value="depth"/>
+            </t>
+        </li>
+    </template>
+
+    <template id="report_dsr_node_vertical">
+        <div class="dsr_vitem">
+            <t t-call="hr_job_hierarchy.report_dsr_node_content">
+                <t t-set="node" t-value="node"/>
+                <t t-set="vertical" t-value="vertical"/>
+                <t t-set="depth" t-value="depth"/>
+            </t>
+        </div>
+    </template>
+
+    <template id="report_department_structure">
+        <t t-call="web.html_container">
+            <t t-set="company" t-value="env.company"/>
+            <t t-call="web.internal_layout">
+                <div class="page o_dsr_report">
+                    <style>
+                        /* Scaled down from the web page's sizes: a PDF page
+                           has a fixed width (no scrollbar, no browser "fit
+                           to page" to fall back on), so this starts smaller
+                           and relies on the zoom below for the rest. */
+                        .o_dsr_report {
+                            font-family: Arial, Helvetica, sans-serif;
+                            color: #1A1A1A;
+                            zoom: 0.65;
+                        }
+                        .o_dsr_report .dsr_header {
+                            margin-bottom: 14px;
+                            padding-bottom: 8px;
+                            border-bottom: 2px solid #0D3B23;
+                        }
+                        .o_dsr_report .dsr_header h1 {
+                            color: #0D3B23;
+                            margin: 0;
+                            font-size: 20px;
+                        }
+
+                        /* Classic CSS org-chart connectors: each li carries a
+                           horizontal tick to its siblings' shared bus, and a
+                           ul carries the vertical drop from its parent to
+                           that bus. */
+                        .o_dsr_report ul.dsr_tree, .o_dsr_report .dsr_tree ul {
+                            list-style: none;
+                            margin: 0;
+                            padding: 0;
+                            display: flex;
+                            justify-content: center;
+                        }
+                        .o_dsr_report .dsr_tree ul {
+                            padding-top: 20px;
+                            position: relative;
+                        }
+                        .o_dsr_report .dsr_tree li {
+                            position: relative;
+                            padding: 20px 8px 0 8px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        }
+                        .o_dsr_report .dsr_tree_root > li {
+                            padding-top: 0;
+                        }
+                        .o_dsr_report .dsr_tree li::before, .o_dsr_report .dsr_tree li::after {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            right: 50%;
+                            border-top: 2px solid #9AA6A0;
+                            width: 50%;
+                            height: 20px;
+                        }
+                        .o_dsr_report .dsr_tree li::after {
+                            right: auto;
+                            left: 50%;
+                            border-left: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_tree_root > li::before, .o_dsr_report .dsr_tree_root > li::after {
+                            display: none;
+                        }
+                        .o_dsr_report .dsr_tree li:only-child::before, .o_dsr_report .dsr_tree li:only-child::after {
+                            display: none;
+                        }
+                        .o_dsr_report .dsr_tree li:only-child {
+                            padding-top: 0;
+                        }
+                        .o_dsr_report .dsr_tree li:first-child::before, .o_dsr_report .dsr_tree li:last-child::after {
+                            border: none;
+                        }
+                        .o_dsr_report .dsr_tree li:last-child::before {
+                            border-right: 2px solid #9AA6A0;
+                            border-radius: 0 6px 0 0;
+                        }
+                        .o_dsr_report .dsr_tree li:first-child::after {
+                            border-radius: 6px 0 0 0;
+                        }
+                        .o_dsr_report .dsr_tree ul::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 50%;
+                            border-left: 2px solid #9AA6A0;
+                            width: 0;
+                            height: 20px;
+                        }
+
+                        .o_dsr_report ul.dsr_tree {
+                            gap: 0px;
+                            align-items: flex-start;
+                        }
+
+                        /* Node box. Relative positioning is the anchor for
+                           the committee chain below: pulling it out of the
+                           flex flow keeps this row's effective width equal
+                           to the box alone, so the li's own centering (and
+                           the connector lines to its children) lines up
+                           with the box, not with box+chain combined. */
+                        .o_dsr_report .dsr_node_row {
+                            display: flex;
+                            align-items: center;
+                            position: relative;
+                        }
+                        .o_dsr_report .dsr_node_row > .dsr_committee_chain {
+                            position: absolute;
+                            left: 100%;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+                        .o_dsr_report .dsr_node_row > .dsr_ceo_assistant_chain {
+                            position: absolute;
+                            right: 100%;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+                        .o_dsr_report .dsr_box {
+                            width: 160px;
+                            min-height: 50px;
+                            padding: 7px 9px;
+                            border-radius: 4px;
+                            text-align: center;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 4px;
+                        }
+                        .o_dsr_report .dsr_box_name {
+                            font-weight: 700;
+                            font-size: 12px;
+                            line-height: 1.2;
+                        }
+                        .o_dsr_report .dsr_box_badge {
+                            font-size: 10px;
+                            background: rgba(255,255,255,0.5);
+                            border-radius: 10px;
+                            padding: 1px 7px;
+                        }
+
+                        /* PDF-matched colors, same values department_chart_types
+                           documents in its own org_view.scss. */
+                        .o_dsr_report .dsr_ceo {
+                            background-color: #595959; border: 2px solid #404040;
+                            border-top: 6px solid #2b2b2b; color: #ffffff;
+                        }
+                        .o_dsr_report .dsr_committee {
+                            background-color: #FFF7D6; border: 2px solid #E6C947;
+                            border-top: 6px solid #D4AF37; color: #4A3F0A;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant {
+                            background-color: #e0e0e0; border: 2px solid #c2c2c2;
+                            border-top: 6px solid #a3a3a3; color: #212529;
+                        }
+                        .o_dsr_report .dsr_level_1 {
+                            background-color: #14543d; border: 2px solid #0d3b2a;
+                            border-top: 6px solid #0a2e21; color: #ffffff;
+                        }
+                        .o_dsr_report .dsr_level_2 {
+                            background-color: #2e7d5b; border: 2px solid #1d5a40;
+                            border-top: 6px solid #14432f; color: #ffffff;
+                        }
+                        .o_dsr_report .dsr_level_3 {
+                            background-color: #d6e4ef; border: 2px solid #9db8cc;
+                            border-top: 6px solid #6f97b5; color: #16324a;
+                            width: 148px; min-height: 44px;
+                        }
+                        .o_dsr_report .dsr_level_4 {
+                            background-color: #eef3f7; border: 2px solid #c3d3e0;
+                            border-top: 6px solid #9db8cc; color: #16324a;
+                            width: 136px; min-height: 40px;
+                        }
+
+                        /* Committee sideways chain */
+                        .o_dsr_report .dsr_committee_chain {
+                            position: relative;
+                            margin-left: 18px;
+                            padding-left: 18px;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 6px;
+                            justify-content: center;
+                        }
+                        .o_dsr_report .dsr_committee_chain::before {
+                            content: '';
+                            position: absolute;
+                            left: -18px;
+                            top: 50%;
+                            width: 18px;
+                            height: 0;
+                            border-top: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_committee_item {
+                            position: relative;
+                        }
+                        .o_dsr_report .dsr_committee_item > .dsr_committee_chain {
+                            position: absolute;
+                            left: 100%;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+                        .o_dsr_report .dsr_committee_item::before {
+                            content: '';
+                            position: absolute;
+                            left: -18px;
+                            top: 50%;
+                            width: 18px;
+                            height: 0;
+                            border-top: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_committee_item::after {
+                            content: '';
+                            position: absolute;
+                            left: -18px;
+                            top: 0;
+                            width: 0;
+                            height: 50%;
+                            border-left: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_committee_item:not(:last-child)::after {
+                            height: auto;
+                            bottom: -6px;
+                        }
+                        .o_dsr_report .dsr_committee_item:only-child::after {
+                            display: none;
+                        }
+                        .o_dsr_report .dsr_committee_item .dsr_box {
+                            width: 136px;
+                            min-height: 36px;
+                            padding: 5px 7px;
+                        }
+                        .o_dsr_report .dsr_committee_item .dsr_box_name {
+                            font-size: 11px;
+                            font-weight: 600;
+                        }
+
+                        /* CEO Assistant sideways chain: mirror of the
+                           Committee chain above, on the left instead of
+                           the right. */
+                        .o_dsr_report .dsr_ceo_assistant_chain {
+                            position: relative;
+                            margin-right: 18px;
+                            padding-right: 18px;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 6px;
+                            justify-content: center;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_chain::before {
+                            content: '';
+                            position: absolute;
+                            right: -18px;
+                            top: 50%;
+                            width: 18px;
+                            height: 0;
+                            border-top: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_item {
+                            position: relative;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_item > .dsr_ceo_assistant_chain {
+                            position: absolute;
+                            right: 100%;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_item::before {
+                            content: '';
+                            position: absolute;
+                            right: -18px;
+                            top: 50%;
+                            width: 18px;
+                            height: 0;
+                            border-top: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_item::after {
+                            content: '';
+                            position: absolute;
+                            right: -18px;
+                            top: 0;
+                            width: 0;
+                            height: 50%;
+                            border-left: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_item:not(:last-child)::after {
+                            height: auto;
+                            bottom: -6px;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_item:only-child::after {
+                            display: none;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_item .dsr_box {
+                            width: 136px;
+                            min-height: 36px;
+                            padding: 5px 7px;
+                        }
+                        .o_dsr_report .dsr_ceo_assistant_item .dsr_box_name {
+                            font-size: 11px;
+                            font-weight: 600;
+                        }
+
+                        /* Vertical stack, from N-3 (Department) down. */
+                        .o_dsr_report .dsr_vlist {
+                            position: relative;
+                            margin: 14px 0 0 28px;
+                            padding-left: 18px;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 8px;
+                        }
+                        .o_dsr_report .dsr_vlist::before {
+                            content: '';
+                            position: absolute;
+                            top: -14px;
+                            left: -2px;
+                            width: 0;
+                            height: 14px;
+                            border-left: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_vitem {
+                            position: relative;
+                        }
+                        .o_dsr_report .dsr_vitem::before {
+                            content: '';
+                            position: absolute;
+                            left: -18px;
+                            top: 21px;
+                            width: 18px;
+                            height: 0;
+                            border-top: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_vitem::after {
+                            content: '';
+                            position: absolute;
+                            left: -18px;
+                            top: 0;
+                            width: 0;
+                            height: 21px;
+                            border-left: 2px solid #9AA6A0;
+                        }
+                        .o_dsr_report .dsr_vitem:not(:last-child)::after {
+                            height: auto;
+                            bottom: -8px;
+                        }
+                        .o_dsr_report .dsr_vitem:only-child::after {
+                            display: none;
+                        }
+                        .o_dsr_report .dsr_vitem > .dsr_node_row {
+                            justify-content: flex-start;
+                        }
+
+                        /* Legend: normal flow at the end of the page, not
+                           position:fixed -- a fixed element's placement
+                           across paginated PDF output is not something to
+                           rely on. */
+                        .o_dsr_report .dsr_legend {
+                            display: flex;
+                            gap: 6px;
+                            margin-top: 24px;
+                        }
+                        .o_dsr_report .dsr_legend_item {
+                            display: flex;
+                            align-items: center;
+                            gap: 4px;
+                            font-size: 11px;
+                            font-weight: 600;
+                            padding: 3px 8px;
+                            border-radius: 4px;
+                            border: 1px solid #E0E0E0;
+                        }
+                    </style>
+
+                    <div class="dsr_header">
+                        <h1>Department Structure</h1>
+                    </div>
+
+                    <t t-set="roots" t-value="docs.filtered(lambda d: not d.parent_id or d.parent_id not in docs).sorted(key=lambda d: (d.sequence, d.name or ''))"/>
+                    <ul class="dsr_tree dsr_tree_root">
+                        <t t-foreach="roots" t-as="root_node">
+                            <t t-call="hr_job_hierarchy.report_dsr_node_horizontal">
+                                <t t-set="node" t-value="root_node"/>
+                                <t t-set="vertical" t-value="0"/>
+                                <t t-set="depth" t-value="0"/>
+                            </t>
+                        </t>
+                    </ul>
+
+                    <div class="dsr_legend">
+                        <div class="dsr_legend_item dsr_level_1">N-1</div>
+                        <div class="dsr_legend_item dsr_level_2">N-2</div>
+                        <div class="dsr_legend_item dsr_level_3">N-3</div>
+                        <div class="dsr_legend_item dsr_level_4">N-4</div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

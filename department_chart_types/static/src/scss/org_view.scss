@@ -1,0 +1,113 @@
+/*
+ * PDF-matched colors for the web_org org-chart cards.
+ * Scoped with .o_org_dept_card so they only affect the org view (the hierarchy
+ * view is styled in department_hierarchy.scss, scoped under .o_hierarchy_view).
+ *
+ * Palette (from the LOC Positional Structure PDF):
+ *   ceo         -> dark grey   (Board of Directors / CEO / Deputy CEO)
+ *   committee   -> light grey  (Audit, NRC, Cybersecurity, Board Secretary)
+ *   sector      -> dark green  (N-1: Operations, Legal, Shared Services, ...)
+ *   executive   -> medium green(Executive Departments)
+ *   department  -> light blue  (N-2 functions under a sector)
+ *   function    -> pale blue   (N-3 / N-4)
+ */
+
+/* Let the colored card fill the whole Highcharts node box (kill the white gap) */
+.o_org_node_inner {
+    padding: 0 !important;
+    gap: 0 !important;
+}
+
+.o_org_dept_card {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 4px 6px !important;   /* tighter than Bootstrap p-2 for the small boxes */
+    overflow: hidden;
+    line-height: 1.1;
+
+    /* Typography for the node boxes */
+    .o_org_dept_title {
+        color: inherit !important;
+        font-size: 11px;
+        font-weight: 700;
+        /* clamp long names to 3 lines instead of overflowing the box */
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .o_org_dept_manager {
+        color: inherit !important;
+        opacity: 0.8;
+        font-size: 9px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Clickable employee-count badge (mirrors the form's Employees smart button) */
+    .o_org_emp_badge {
+        pointer-events: auto !important;   /* receive clicks even if the label is pass-through */
+        cursor: pointer;
+        font-size: 9px;
+        padding: 2px 6px;
+        background-color: #ffffff;
+        color: #212529 !important;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        &:hover {
+            background-color: #eef2ff;
+            border-color: #6f97b5;
+        }
+        /* make sure inner icon/number don't swallow the click target incorrectly */
+        * { pointer-events: none; }
+    }
+}
+
+/* CEO / Leadership - Board of Directors / CEO / Deputy CEO */
+.o_org_dept_card.o_dept_ceo {
+    background-color: #595959 !important;
+    border: 2px solid #404040 !important;
+    border-top: 6px solid #2b2b2b !important;
+    color: #ffffff !important;
+}
+
+/* Committee */
+.o_org_dept_card.o_dept_committee {
+    background-color: #d9d9d9 !important;
+    border: 2px solid #9e9e9e !important;
+    border-top: 6px solid #7a7a7a !important;
+    color: #212529 !important;
+}
+
+/* Sector (N-1) */
+.o_org_dept_card.o_dept_sector {
+    background-color: #14543d !important;
+    border: 2px solid #0d3b2a !important;
+    border-top: 6px solid #0a2e21 !important;
+    color: #ffffff !important;
+}
+
+/* Executive Department */
+.o_org_dept_card.o_dept_executive {
+    background-color: #2e7d5b !important;
+    border: 2px solid #1d5a40 !important;
+    border-top: 6px solid #14432f !important;
+    color: #ffffff !important;
+}
+
+/* Department (N-2) */
+.o_org_dept_card.o_dept_department {
+    background-color: #d6e4ef !important;
+    border: 2px solid #9db8cc !important;
+    border-top: 6px solid #6f97b5 !important;
+    color: #16324a !important;
+}
+
+/* Function (N-3 / N-4) */
+.o_org_dept_card.o_dept_function {
+    background-color: #eef3f7 !important;
+    border: 2px solid #c3d3e0 !important;
+    border-top: 6px solid #9db8cc !important;
+    color: #16324a !important;
+}

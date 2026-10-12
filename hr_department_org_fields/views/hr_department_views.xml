@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_department_form_inherit_org_fields" model="ir.ui.view">
+        <field name="name">hr.department.form.inherit.org.fields</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_title')]/following-sibling::group[1]" position="after">
+                <group string="Organizational Reference">
+                    <group>
+                        <field name="org_sector"/>
+                        <field name="org_executive_department"/>
+                        <field name="org_department"/>
+                        <field name="org_function"/>
+                    </group>
+                    <group>
+                        <field name="org_source_type"/>
+                        <field name="org_title_high_level"/>
+                        <field name="org_level"/>
+                        <field name="org_role_status"/>
+                        <field name="org_line_manager_role_id"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

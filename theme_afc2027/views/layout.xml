@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        NOTE ON APPROACH
+        =================
+        Odoo's stock header/footer are themselves swappable "template options"
+        (Website > Configuration > Theme > Header/Footer) built from several
+        nested sub-templates whose exact internal ids can change between point
+        releases. To keep this theme robust across 18.x minor updates, we
+        replace the whole <header> and <footer> HTML5 landmarks inside
+        website.layout by tag (xpath "//header" / "//footer") rather than
+        patching individual internal sub-templates.
+
+        Trade-off: the built-in "Edit Header/Footer" quick options in the
+        website builder (transparent/boxed/hamburger toggles, etc.) won't
+        apply to this custom header/footer — instead everything is styled via
+        SCSS (theme.scss) and driven by website.menu data records, which is
+        the standard approach for bespoke corporate themes. The header/footer
+        markup below IS still editable in-place via the normal "Edit" (drag
+        text/image) mode, since it lives on website.layout like any other
+        page content.
+    -->
+
+    <template id="layout_afc2027" inherit_id="website.layout" name="AFC2027 Header &amp; Footer">
+
+        <xpath expr="//header" position="replace">
+            <header class="o_header_afc2027 fixed-top" data-anim="scroll">
+                <nav class="navbar navbar-expand-lg navbar-dark py-3">
+                    <div class="container">
+                        <a href="/" class="navbar-brand d-flex align-items-center">
+                            <img src="/theme_afc2027/static/src/img/logo-light.svg"
+                                 alt="Logo" class="img-fluid"/>
+                        </a>
+
+                        <button class="navbar-toggler border-0 text-white" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#afc2027NavCollapse"
+                                aria-controls="afc2027NavCollapse" aria-label="Toggle navigation">
+                            <i class="fa fa-bars fa-lg"/>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="afc2027NavCollapse">
+                            <ul class="navbar-nav ms-auto align-items-lg-center">
+                                <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                                    <li class="nav-item">
+                                        <a t-att-href="submenu.url"
+                                           t-att-target="'_blank' if submenu.new_window else None"
+                                           class="nav-link">
+                                            <t t-esc="submenu.name"/>
+                                        </a>
+                                    </li>
+                                </t>
+                                <li class="nav-item ms-lg-3 o_afc_lang_switcher">
+                                    <t t-call="website.placeholder_header_language_selector">
+                                        <t t-set="_btn_class" t-valuef="nav-link"/>
+                                        <t t-set="_dropdown_menu_class" t-valuef="dropdown-menu-end"/>
+                                    </t>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+        </xpath>
+
+        <xpath expr="//footer" position="replace">
+            <footer class="o_footer_afc2027">
+                <div class="container">
+                    <div class="row gy-4">
+                        <div class="col-lg-4">
+                            <img src="/theme_afc2027/static/src/img/logo-light.svg"
+                                 alt="Logo" style="max-height:40px" class="mb-3"/>
+                            <p class="pe-lg-4 mb-0">
+                                Working in close coordination with governmental and private
+                                stakeholders to deliver a successful tournament.
+                            </p>
+                        </div>
+                        <div class="col-lg-2 col-6">
+                            <h6 class="text-white mb-3">Navigate</h6>
+                            <ul class="list-unstyled">
+                                <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                                    <li class="mb-2">
+                                        <a t-att-href="submenu.url"><t t-esc="submenu.name"/></a>
+                                    </li>
+                                </t>
+                            </ul>
+                        </div>
+                        <div class="col-lg-2 col-6">
+                            <h6 class="text-white mb-3">Legal</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="/terms-of-use">Terms &amp; Conditions</a></li>
+                                <li class="mb-2"><a href="/privacy-policy">Privacy Policy</a></li>
+                                <li class="mb-2"><a href="/cookie-policy">Cookie Policy</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4">
+                            <h6 class="text-white mb-3">Follow Us</h6>
+                            <div class="o_afc_footer_social">
+                                <a href="#" aria-label="TikTok"><i class="fa fa-music"/></a>
+                                <a href="#" aria-label="YouTube"><i class="fa fa-youtube-play"/></a>
+                                <a href="#" aria-label="X"><i class="fa fa-twitter"/></a>
+                                <a href="#" aria-label="Instagram"><i class="fa fa-instagram"/></a>
+                                <a href="#" aria-label="Facebook"><i class="fa fa-facebook"/></a>
+                                <a href="#" aria-label="LinkedIn"><i class="fa fa-linkedin"/></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o_afc_footer_legal d-flex flex-wrap justify-content-between">
+                        <span>© <t t-esc="datetime.datetime.now().year"/> — All rights reserved.</span>
+                        <span>Riyadh, Kingdom of Saudi Arabia</span>
+                    </div>
+                </div>
+            </footer>
+        </xpath>
+
+    </template>
+
+</odoo>

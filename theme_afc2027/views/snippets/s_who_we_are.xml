@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_who_we_are" name="Who We Are">
+        <section class="s_afc_who_we_are" data-snippet="s_who_we_are" data-name="Who We Are">
+            <div class="container">
+                <div class="row align-items-center gy-4">
+                    <div class="col-lg-6">
+                        <img src="/theme_afc2027/static/src/img/stadium-night.jpg"
+                             class="img-fluid w-100" alt="Stadium"/>
+                    </div>
+                    <div class="col-lg-6 ps-lg-5">
+                        <span class="s_afc_section_label" contenteditable="true">Who We Are</span>
+                        <h2 contenteditable="true">
+                            Delivering a tournament worthy of the Kingdom
+                        </h2>
+                        <div class="s_afc_divider"/>
+                        <p contenteditable="true">
+                            The Local Organizing Committee (LOC) works in close coordination with
+                            governmental and private stakeholders across the Kingdom to plan and
+                            deliver a successful AFC Asian Cup — from stadium operations and
+                            volunteer programs to fan experience and host-city activation.
+                        </p>
+                        <a href="/about-us" class="btn btn-afc-outline mt-2">Learn more</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+</odoo>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        "Media Center" design for the blog pages (/blog), matching the
+        reference site: dark-green patterned page banner, a "Latest News"
+        heading row, and a mosaic grid of image cards with the post title
+        and date overlaid on a bottom gradient.
+
+        All xpath anchors below were checked verbatim against the actual
+        Odoo 18.0 source (addons/website_blog/views/website_blog_templates.xml
+        and website_blog_posts_loop.xml on the 18.0 branch).
+    -->
+
+    <!--
+        Deactivate the stock "Top banner - Name / Latest Post" customize
+        option (it injects the blog's cover + name above the list, which
+        would duplicate the Media Center banner added below).
+    -->
+    <record id="website_blog.opt_blog_cover_post" model="ir.ui.view">
+        <field name="active" eval="False"/>
+    </record>
+
+    <template id="blog_media_center" inherit_id="website_blog.blog_post_short"
+              name="AFC2027 Media Center Page">
+        <!-- Green patterned page banner -->
+        <xpath expr="//div[@id='o_wblog_blog_top']" position="before">
+            <section class="o_afc_blog_hero">
+                <div class="container">
+                    <h1>Media Center</h1>
+                </div>
+            </section>
+        </xpath>
+
+        <!-- "Latest News" heading + Discover More pill above the grid -->
+        <xpath expr="//t[@t-call='website_blog.posts_loop']" position="before">
+            <div class="o_afc_blog_head d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+                <h2 class="mb-0">Latest News</h2>
+                <a t-if="pager and pager.get('page_count', 0) > 1"
+                   t-att-href="pager['page_next']['url']"
+                   class="btn btn-afc-pill">Discover More</a>
+            </div>
+        </xpath>
+    </template>
+
+    <!--
+        Replace the stock post cards (cover + heading + teaser + info,
+        driven by the customize-menu options) with the reference design:
+        a full-image card, title + date on a dark bottom gradient. The
+        first post spans 2/3 width, the second fills the remaining 1/3,
+        the rest alternate at half width. The surrounding filters,
+        "no post yet" message and published/unpublished designer toggle
+        from website_blog.posts_loop are kept as-is.
+    -->
+    <template id="posts_loop_media_center" inherit_id="website_blog.posts_loop"
+              name="AFC2027 Media Center Posts Grid">
+        <xpath expr="//t[@t-foreach='posts']" position="replace">
+            <t t-foreach="posts" t-as="blog_post">
+                <div t-attf-class="col-12 px-2 pb-4 #{'col-lg-8 o_afc_blog_lead' if blog_post_index == 0 else ('col-lg-4' if blog_post_index == 1 else 'col-lg-6')}">
+                    <article class="o_wblog_post position-relative h-100" name="blog_post">
+                        <t t-set="afc_cover" t-value="blog_post.cover_properties and json.loads(blog_post.cover_properties) or {}"/>
+                        <t t-set="afc_cover_img" t-value="afc_cover.get('background-image')"/>
+                        <a t-att-href="blog_post.website_url" class="o_afc_media_card"
+                           t-att-style="not blog_post.website_published and 'opacity:0.6;'">
+                            <div class="o_afc_media_img"
+                                 t-attf-style="background-image:#{afc_cover_img if afc_cover_img and afc_cover_img != 'none' else &quot;url('/theme_afc2027/static/src/img/news-placeholder.jpg')&quot;};"/>
+                            <div class="o_afc_media_overlay">
+                                <h3 class="o_afc_media_title" t-field="blog_post.name"/>
+                                <time class="o_afc_media_date" t-field="blog_post.post_date"
+                                      t-options="{'widget': 'datetime', 'date_only': 'true', 'format': 'dd MMMM yyyy'}"/>
+                            </div>
+                        </a>
+                        <span t-if="not blog_post.website_published"
+                              class="bg-danger small py-1 px-2 position-absolute o_not_editable"
+                              style="top:0; right:0">unpublished</span>
+                    </article>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

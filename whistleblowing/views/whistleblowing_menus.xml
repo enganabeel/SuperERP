@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_whistleblowing_root" name="Whistleblowing"
+              sequence="10" web_icon="whistleblowing,static/description/icon.png"
+              groups="whistleblowing.group_whistleblowing_user"/>
+
+    <menuitem id="menu_whistleblowing_reports" name="Reports"
+              parent="menu_whistleblowing_root" sequence="10"/>
+
+    <menuitem id="menu_whistleblowing_report_all" name="All Reports"
+              parent="menu_whistleblowing_reports"
+              action="whistleblowing_report_action" sequence="10"
+              groups="whistleblowing.group_whistleblowing_officer"/>
+
+    <menuitem id="menu_whistleblowing_report_submit" name="Submit a Report"
+              parent="menu_whistleblowing_reports"
+              action="whistleblowing_report_action_my" sequence="20"/>
+
+    <menuitem id="menu_whistleblowing_configuration" name="Configuration"
+              parent="menu_whistleblowing_root" sequence="100"
+              groups="whistleblowing.group_whistleblowing_manager"/>
+
+    <menuitem id="menu_whistleblowing_category" name="Incident Categories"
+              parent="menu_whistleblowing_configuration"
+              action="whistleblowing_category_action" sequence="10"/>
+
+    <menuitem id="menu_whistleblowing_party_type" name="Party Types"
+              parent="menu_whistleblowing_configuration"
+              action="whistleblowing_party_type_action" sequence="20"/>
+
+</odoo>

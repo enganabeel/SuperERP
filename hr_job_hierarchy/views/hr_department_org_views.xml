@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        "Department Structure": org-chart view of Departments, colored by
+        hierarchy_level (depth in the department tree) via chart_color_class,
+        with an Available override, the department-side equivalent of this
+        module's Positional Structure view for Job Positions. Separate from
+        department_chart_types' own "Departments Org Chart", which colors by
+        dept_type instead.
+
+        Reuses hr.department's existing chart_layout field (from
+        department_chart_types, if installed) as layout_field, rather than
+        adding a second one.
+
+        dept_type (also from department_chart_types) overrides the level
+        color for two specific types: Committee (#D6D6D6) and CEO
+        (#666666), same priority as the Available override (Available
+        wins over both).
+    -->
+    <record id="hr_department_view_org_level" model="ir.ui.view">
+        <field name="name">hr.department.view.org.level</field>
+        <field name="model">hr.department</field>
+        <field name="arch" type="xml">
+            <org title_field="name"
+                 parent_field="parent_id"
+                 icon="fa-sitemap"
+                 node_width="180"
+                 node_height="65"
+                 padding="12"
+                 inverted="1"
+                 layout_field="chart_layout"
+                 link_type="default"
+                 link_radius="0"
+                 link_line_width="1">
+
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="total_employee"/>
+                <field name="chart_layout"/>
+                <field name="chart_color_class"/>
+                <field name="is_available"/>
+                <field name="dept_type"/>
+
+                <templates>
+                    <t t-name="org-box">
+                        <!--
+                            Same record shape as the Positional Structure card:
+                            field values are read as record.data.<field>.
+                            Priority: Available (yellow) overrides everything,
+                            then dept_type Committee/CEO, then the level color.
+                        -->
+                        <div t-att-data-select-node="record.data.id"
+                             t-attf-class="o_org_dept_level_card {{ record.data.is_available and 'o_org_dept_level_available' or (record.data.dept_type == 'committee' and 'o_org_dept_type_committee' or record.data.dept_type == 'ceo' and 'o_org_dept_type_ceo' or (record.data.chart_color_class or 'o_org_dept_level_0')) }} p-2 border rounded text-center shadow-sm h-100 d-flex flex-column justify-content-between">
+                            <div class="o_org_dept_level_head">
+                                <div class="o_org_dept_level_title fw-bold">
+                                    <field name="name"/>
+                                </div>
+                            </div>
+                            <t t-if="record.data.total_employee">
+                                <span class="badge o_org_dept_level_badge align-self-center" title="Employees in this department">
+                                    <i class="fa fa-users me-1"/> <field name="total_employee"/>
+                                </span>
+                            </t>
+                        </div>
+                    </t>
+                </templates>
+            </org>
+        </field>
+    </record>
+
+    <record id="hr_department_action_org_level" model="ir.actions.act_window">
+        <field name="name">Department Structure</field>
+        <field name="res_model">hr.department</field>
+        <field name="view_mode">org,kanban,list,form</field>
+        <field name="view_id" ref="hr_department_view_org_level"/>
+        <!-- Reuses department_chart_types' own branch-aware search (name_branch:
+             typing a department shows it plus everything under it, not just
+             that one box), lets a name search isolate one root's subtree,
+             same as the Filters dropdown's "X & below" options already do. -->
+        <field name="search_view_id" ref="department_chart_types.view_department_filter_org"/>
+    </record>
+
+    <menuitem id="menu_hr_department_org_level"
+              name="Department Structure"
+              parent="hr.hr_menu_hr_reports"
+              action="hr_department_action_org_level"
+              groups="hr.group_hr_user"
+              sequence="62"/>
+
+    <!--
+        "Jobs by Department": org-chart view grouping Job Positions by
+        department instead of Reports To. The org widget's parent_field
+        must be self-referential on the bound model, so a single tree
+        cannot mix hr.department and hr.job nodes: this is bound to
+        hr.department (same tree as Department Structure above), with the
+        card body listing the department's distinct job titles
+        (job_list_text, computed) instead of an employee count. Card is
+        taller/wider than the other org views to fit that list, which
+        scrolls internally past a handful of lines.
+    -->
+    <record id="hr_department_view_org_jobs" model="ir.ui.view">
+        <field name="name">hr.department.view.org.jobs</field>
+        <field name="model">hr.department</field>
+        <field name="arch" type="xml">
+            <org title_field="name"
+                 parent_field="parent_id"
+                 icon="fa-briefcase"
+                 node_width="220"
+                 node_height="220"
+                 padding="14"
+                 inverted="1"
+                 layout_field="chart_layout"
+                 link_type="default"
+                 link_radius="0"
+                 link_line_width="1">
+
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="job_count"/>
+                <field name="job_list_text"/>
+                <field name="chart_layout"/>
+                <field name="chart_color_class"/>
+                <field name="is_available"/>
+
+                <templates>
+                    <t t-name="org-box">
+                        <div t-att-data-select-node="record.data.id"
+                             t-attf-class="o_org_dept_level_card o_org_dept_jobs_card {{ record.data.is_available and 'o_org_dept_level_available' or (record.data.chart_color_class or 'o_org_dept_level_0') }} p-2 border rounded shadow-sm h-100 d-flex flex-column">
+                            <div class="o_org_dept_level_head text-center">
+                                <div class="o_org_dept_level_title fw-bold">
+                                    <field name="name"/>
+                                </div>
+                                <t t-if="record.data.job_count">
+                                    <span class="badge o_org_dept_level_badge" title="Job positions in this department">
+                                        <i class="fa fa-briefcase me-1"/> <field name="job_count"/>
+                                    </span>
+                                </t>
+                            </div>
+                            <t t-if="record.data.job_list_text">
+                                <div class="o_org_dept_job_list">
+                                    <field name="job_list_text"/>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </templates>
+            </org>
+        </field>
+    </record>
+
+    <record id="hr_department_action_org_jobs" model="ir.actions.act_window">
+        <field name="name">Jobs by Department</field>
+        <field name="res_model">hr.department</field>
+        <field name="view_mode">org,kanban,list,form</field>
+        <field name="view_id" ref="hr_department_view_org_jobs"/>
+    </record>
+
+    <menuitem id="menu_hr_department_org_jobs"
+              name="Jobs by Department"
+              parent="hr.hr_menu_hr_reports"
+              action="hr_department_action_org_jobs"
+              groups="hr.group_hr_user"
+              sequence="63"/>
+
+    <record id="view_department_form_inherit_available" model="ir.ui.view">
+        <field name="name">hr.department.form.inherit.available</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="is_available"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" name="action_view_department_jobs" type="object" icon="fa-briefcase">
+                    <field string="Job Positions" name="job_count" widget="statinfo"/>
+                </button>
+            </xpath>
+            <!--
+                Manually triggered, not automatic: parents every
+                dept_type='committee' department under this one and pins
+                each onto its own chart row, so they hang in a column
+                beside the CEO instead of dropping into its normal
+                (horizontal) children row, see
+                action_apply_committee_layout. Only shown on the
+                department typed CEO.
+            -->
+            <xpath expr="//field[@name='chart_column']" position="after">
+                <button name="action_apply_committee_layout" type="object"
+                        string="Apply Committee Layout" class="btn-secondary"
+                        invisible="dept_type != 'ceo'"
+                        confirm="Re-parent every department typed Committee under this one, and pin them onto rows beside it?"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

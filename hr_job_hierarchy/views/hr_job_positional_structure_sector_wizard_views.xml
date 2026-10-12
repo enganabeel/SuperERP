@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Wizard popup asking for one department (a Sector or any other one,
+        its parent included), then opens the same "Positional Structure"
+        org chart (hr_job_view_org) scoped to that department and every
+        department under it, via a domain on hr.job's own department_id.
+        Not a separate view: the same chart, just pre-filtered so the
+        user lands on the branch they asked for instead of the whole
+        company.
+    -->
+    <record id="view_hr_job_positional_structure_sector_wizard_form" model="ir.ui.view">
+        <field name="name">hr.job.positional.structure.sector.wizard.form</field>
+        <field name="model">hr.job.positional.structure.sector.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Positional Structure by Sector">
+                <group>
+                    <field name="department_id"/>
+                </group>
+                <footer>
+                    <button string="Show Chart" type="object" name="action_show_chart" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_job_positional_structure_sector_wizard" model="ir.actions.act_window">
+        <field name="name">Positional Structure by Sector</field>
+        <field name="res_model">hr.job.positional.structure.sector.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_hr_job_positional_structure_sector_wizard"
+              name="Positional Structure by Sector"
+              parent="hr.hr_menu_hr_reports"
+              action="action_hr_job_positional_structure_sector_wizard"
+              groups="hr.group_hr_user"
+              sequence="66"/>
+
+</odoo>

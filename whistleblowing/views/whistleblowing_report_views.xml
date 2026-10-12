@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ===================== LIST VIEW ===================== -->
+    <record id="whistleblowing_report_view_list" model="ir.ui.view">
+        <field name="name">whistleblowing.report.list</field>
+        <field name="model">whistleblowing.report</field>
+        <field name="arch" type="xml">
+            <list string="Whistleblowing Reports" decoration-danger="priority == '3'"
+                  decoration-warning="priority == '2'" decoration-muted="state == 'closed'"
+                  sample="1">
+                <field name="name"/>
+                <field name="submission_date"/>
+                <field name="date_incident"/>
+                <field name="category_id"/>
+                <field name="location"/>
+                <field name="is_anonymous" widget="boolean_toggle" optional="show"/>
+                <field name="party_type_ids" widget="many2many_tags" optional="hide"/>
+                <field name="assigned_to" widget="many2one_avatar_user" optional="show"/>
+                <field name="days_open" optional="hide"/>
+                <field name="priority" widget="priority" optional="show"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'report'"
+                       decoration-warning="state in ('under_review','investigating')"
+                       decoration-success="state == 'closed'"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ===================== FORM VIEW ===================== -->
+    <record id="whistleblowing_report_view_form" model="ir.ui.view">
+        <field name="name">whistleblowing.report.form</field>
+        <field name="model">whistleblowing.report</field>
+        <field name="arch" type="xml">
+            <form string="Whistleblowing Report">
+                <header>
+                    <button name="action_start_review" string="Start Review" type="object"
+                            class="oe_highlight" invisible="state != 'report'"/>
+                    <button name="action_start_investigation" string="Investigate"
+                            type="object" class="oe_highlight" invisible="state != 'under_review'"/>
+                    <button name="action_close" string="Close Report" type="object"
+                            class="oe_highlight" invisible="state != 'investigating'"/>
+                    <button name="action_reset_report" string="Reopen" type="object"
+                            invisible="state == 'report'"
+                            groups="whistleblowing.group_whistleblowing_officer"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="report,under_review,investigating,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_attachments" type="object"
+                                class="oe_stat_button" icon="fa-paperclip"
+                                invisible="attachment_count == 0">
+                            <field name="attachment_count" widget="statinfo" string="Evidence"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Closed" bg_color="text-bg-success"
+                            invisible="state != 'closed'"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Incident Information">
+                            <field name="date_incident"/>
+                            <field name="location"/>
+                            <field name="category_id"/>
+                            <field name="party_type_ids" widget="many2many_tags"/>
+                            <field name="has_other_party_type" invisible="1"/>
+                            <field name="party_type_other_note" invisible="not has_other_party_type"
+                                   required="has_other_party_type"/>
+                            <field name="individuals_present"/>
+                        </group>
+                        <group string="Case Management">
+                            <field name="priority" widget="priority"/>
+                            <field name="submission_date"/>
+                            <field name="assigned_to" widget="many2one_avatar_user"/>
+                            <field name="days_open"/>
+                            <field name="closed_date" invisible="state != 'closed'"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Incident Details" name="details">
+                            <group>
+                                <field name="description" nolabel="1" placeholder="Please provide the details of the incident: Who committed the violation? How, when and where did it occur? How can it be proven?"/>
+                            </group>
+                            <group>
+                                <field name="has_evidence"/>
+                                <field name="attachment_ids" widget="many2many_binary"
+                                       string="Supporting Evidence"
+                                       invisible="not has_evidence"/>
+                            </group>
+                        </page>
+                        <page string="Reporter Information" name="reporter">
+                            <group>
+                                <field name="is_anonymous"/>
+                            </group>
+                            <group string="Contact Details (optional)" invisible="is_anonymous">
+                                <field name="reporter_name"/>
+                                <field name="reporter_phone"/>
+                                <field name="reporter_email"/>
+                            </group>
+                        </page>
+                        <page string="Investigation / Resolution" name="resolution"
+                              groups="whistleblowing.group_whistleblowing_officer">
+                            <field name="resolution" nolabel="1"
+                                   placeholder="Investigation notes, findings and resolution..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ===================== KANBAN VIEW ===================== -->
+    <record id="whistleblowing_report_view_kanban" model="ir.ui.view">
+        <field name="name">whistleblowing.report.kanban</field>
+        <field name="model">whistleblowing.report</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column" sample="1"
+                    quick_create="false" records_draggable="true">
+                <field name="color"/>
+                <field name="priority"/>
+                <field name="state"/>
+                <progressbar field="state" colors='{"report": "info", "under_review": "warning", "investigating": "warning", "closed": "success"}'/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <strong><field name="name"/></strong>
+                                <field name="priority" widget="priority"/>
+                            </div>
+                            <div class="text-muted">
+                                <field name="category_id"/>
+                            </div>
+                            <div>
+                                <field name="location"/>
+                            </div>
+                            <div class="mt-1">
+                                <field name="party_type_ids" widget="many2many_tags"/>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <field name="submission_date" widget="date"/>
+                                <field name="assigned_to" widget="many2one_avatar_user"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ===================== PIVOT VIEW ===================== -->
+    <record id="whistleblowing_report_view_pivot" model="ir.ui.view">
+        <field name="name">whistleblowing.report.pivot</field>
+        <field name="model">whistleblowing.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Whistleblowing Analysis" sample="1" disable_linking="0">
+                <field name="category_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="days_open" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ===================== SEARCH VIEW ===================== -->
+    <record id="whistleblowing_report_view_search" model="ir.ui.view">
+        <field name="name">whistleblowing.report.search</field>
+        <field name="model">whistleblowing.report</field>
+        <field name="arch" type="xml">
+            <search string="Search Whistleblowing Reports">
+                <field name="name" string="Reference"/>
+                <field name="description" string="Incident Details"/>
+                <field name="location"/>
+                <field name="individuals_present"/>
+                <field name="reporter_name"/>
+                <field name="reporter_email"/>
+                <field name="reporter_phone"/>
+                <field name="category_id"/>
+                <field name="party_type_ids"/>
+                <field name="assigned_to"/>
+                <field name="date_incident"/>
+                <field name="submission_date"/>
+                <field name="state"/>
+                <field name="priority"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+
+                <separator/>
+                <filter string="My Reports" name="my_reports" domain="[('create_uid', '=', uid)]"/>
+                <filter string="Assigned to Me" name="assigned_to_me"
+                        domain="[('assigned_to', '=', uid)]"/>
+                <filter string="Anonymous" name="anonymous" domain="[('is_anonymous', '=', True)]"/>
+                <filter string="Identified Reporter" name="not_anonymous"
+                        domain="[('is_anonymous', '=', False)]"/>
+                <filter string="Has Evidence" name="has_evidence" domain="[('has_evidence', '=', True)]"/>
+                <separator/>
+                <filter string="Incident Date" name="filter_date_incident" date="date_incident"/>
+                <filter string="Submission Date" name="filter_submission_date" date="submission_date"/>
+                <separator/>
+                <filter string="Report" name="state_report" domain="[('state', '=', 'report')]"/>
+                <filter string="Under Review" name="state_under_review"
+                        domain="[('state', '=', 'under_review')]"/>
+                <filter string="Investigate" name="state_investigating"
+                        domain="[('state', '=', 'investigating')]"/>
+                <filter string="Closed" name="state_closed" domain="[('state', '=', 'closed')]"/>
+                <filter string="Open Cases" name="open_cases"
+                        domain="[('state', '!=', 'closed')]"/>
+                <separator/>
+                <filter string="Low" name="priority_low" domain="[('priority', '=', '0')]"/>
+                <filter string="Medium" name="priority_medium" domain="[('priority', '=', '1')]"/>
+                <filter string="High" name="priority_high" domain="[('priority', '=', '2')]"/>
+                <filter string="Critical" name="priority_critical" domain="[('priority', '=', '3')]"/>
+                <separator/>
+                <filter string="Unassigned" name="unassigned" domain="[('assigned_to', '=', False)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Category" name="group_category" context="{'group_by': 'category_id'}"/>
+                    <filter string="Priority" name="group_priority" context="{'group_by': 'priority'}"/>
+                    <filter string="Assigned Investigator" name="group_assigned_to"
+                            context="{'group_by': 'assigned_to'}"/>
+                    <filter string="Anonymous" name="group_anonymous"
+                            context="{'group_by': 'is_anonymous'}"/>
+                    <filter string="Location" name="group_location" context="{'group_by': 'location'}"/>
+                    <filter string="Incident Date" name="group_date_incident"
+                            context="{'group_by': 'date_incident'}"/>
+                    <filter string="Submission Date" name="group_submission_date"
+                            context="{'group_by': 'submission_date'}"/>
+                    <filter string="Company" name="group_company" context="{'group_by': 'company_id'}"
+                            groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ===================== ACTION ===================== -->
+    <record id="whistleblowing_report_action" model="ir.actions.act_window">
+        <field name="name">Whistleblowing Reports</field>
+        <field name="res_model">whistleblowing.report</field>
+        <field name="view_mode">list,kanban,form,pivot</field>
+        <field name="search_view_id" ref="whistleblowing_report_view_search"/>
+        <field name="context">{'search_default_open_cases': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No whistleblowing report yet
+            </p>
+            <p>
+                Reports submitted through the Whistleblowing Form will appear here.
+                All reports are treated as strictly confidential.
+            </p>
+        </field>
+    </record>
+
+    <record id="whistleblowing_report_action_my" model="ir.actions.act_window">
+        <field name="name">Submit a Report</field>
+        <field name="res_model">whistleblowing.report</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="context">{'default_is_anonymous': True}</field>
+    </record>
+
+</odoo>

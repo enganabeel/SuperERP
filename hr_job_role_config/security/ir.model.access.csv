@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_job_role_type_user,hr.job.role.type.user,model_hr_job_role_type,base.group_user,1,0,0,0
+access_hr_job_role_type_manager,hr.job.role.type.manager,model_hr_job_role_type,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
+access_hr_job_source_type_user,hr.job.source.type.user,model_hr_job_source_type,base.group_user,1,0,0,0
+access_hr_job_source_type_manager,hr.job.source.type.manager,model_hr_job_source_type,hr_recruitment.group_hr_recruitment_manager,1,1,1,1
+access_hr_job_tournament_time_role_user,hr.job.tournament.time.role.user,model_hr_job_tournament_time_role,base.group_user,1,0,0,0
+access_hr_job_tournament_time_role_manager,hr.job.tournament.time.role.manager,model_hr_job_tournament_time_role,hr_recruitment.group_hr_recruitment_manager,1,1,1,1

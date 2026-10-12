@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="s_vendors" name="Vendors / Partners">
+        <section class="s_afc_vendors" data-snippet="s_vendors" data-name="Vendors / Partners">
+            <div class="container">
+                <h2 contenteditable="true">Strong partnerships, successful delivery</h2>
+                <p class="lead" contenteditable="true">
+                    Strong partnerships are fundamental to the successful delivery of major
+                    sporting events. Explore vendor registration and supplier opportunities
+                    with the LOC.
+                </p>
+                <a href="/vendors" class="btn btn-afc-outline">Become a vendor</a>
+            </div>
+        </section>
+    </template>
+</odoo>

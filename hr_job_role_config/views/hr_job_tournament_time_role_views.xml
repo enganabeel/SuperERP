@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_job_tournament_time_role_list" model="ir.ui.view">
+        <field name="name">hr.job.tournament.time.role.list</field>
+        <field name="model">hr.job.tournament.time.role</field>
+        <field name="arch" type="xml">
+            <list string="Tournament Time Roles" editable="bottom">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_job_tournament_time_role_form" model="ir.ui.view">
+        <field name="name">hr.job.tournament.time.role.form</field>
+        <field name="model">hr.job.tournament.time.role</field>
+        <field name="arch" type="xml">
+            <form string="Tournament Time Role">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_job_tournament_time_role" model="ir.actions.act_window">
+        <field name="name">Tournament Time Roles</field>
+        <field name="res_model">hr.job.tournament.time.role</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_hr_job_tournament_time_role"
+              name="Tournament Time Roles"
+              parent="hr_recruitment.menu_hr_recruitment_config_jobs"
+              action="action_hr_job_tournament_time_role"
+              sequence="30"/>
+
+</odoo>

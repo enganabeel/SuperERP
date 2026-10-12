@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_department_view_org" model="ir.ui.view">
+            <field name="name">hr.department.view.org</field>
+            <field name="model">hr.department</field>
+            <field name="arch" type="xml">
+                <!--
+                    Shaped after page 3 of the LOC Positional Structure PDF:
+                    top-down (inverted), with the leadership levels in
+                    horizontal rows and everything under a sector - plus the
+                    committees beside the Board - as vertical, progressively
+                    indented "hanging" stacks. Which is which comes from
+                    chart_layout, itself derived from dept_type.
+                -->
+                <org title_field="name"
+                     parent_field="parent_id"
+                     icon="fa-sitemap"
+                     node_width="180"
+                     node_height="65"
+                     padding="12"
+                     inverted="1"
+                     layout_field="chart_layout"
+                     column_field="chart_column"
+                     hanging_indent="18"
+                     hanging_indent_translation="shrink"
+                     hanging_side="left"
+                     link_type="default"
+                     link_radius="0"
+                     link_line_width="1">
+
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <!-- Gated: a user outside the group gets neither the node
+                         nor the value, since the chart only fetches the fields
+                         its arch declares. -->
+                    <field name="manager_id" groups="department_chart_types.group_show_department_manager"/>
+                    <field name="total_employee"/>
+                    <field name="dept_type"/>
+                    <field name="dept_color_class"/>
+                    <field name="chart_layout"/>
+                    <field name="chart_column"/>
+
+
+                    <templates>
+                        <t t-name="org-box">
+                            <!--
+                                The org renderer runs this template against a record
+                                shaped like { fields, data }, so field values are read
+                                as record.data.<field>. We bind the server-computed
+                                dept_color_class directly instead of an if/elif chain.
+                            -->
+                            <div t-att-data-select-node="record.data.id"
+                                 t-attf-class="o_org_dept_card {{ record.data.dept_color_class or 'o_dept_department' }} p-2 border rounded text-center shadow-sm h-100 d-flex flex-column justify-content-between">
+                                <div class="o_org_dept_head">
+                                    <div class="o_org_dept_title fw-bold">
+                                        <field name="name"/>
+                                    </div>
+                                    <t t-if="record.data.manager_id" groups="department_chart_types.group_show_department_manager">
+                                        <div class="o_org_dept_manager">
+                                            <i class="fa fa-user me-1"/> <field name="manager_id"/>
+                                        </div>
+                                    </t>
+                                </div>
+                                <t t-if="record.data.total_employee">
+                                    <!-- Clickable employee count: opens the department's
+                                         employees, mirroring the form's smart button. -->
+                                    <span class="badge o_org_emp_badge align-self-center"
+                                          t-att-data-open-employees="record.data.id"
+                                          t-att-data-dept-name="record.data.name"
+                                          title="Open employees">
+                                        <i class="fa fa-users me-1"/> <field name="total_employee"/>
+                                    </span>
+                                </t>
+                            </div>
+                        </t>
+                    </templates>
+                </org>
+            </field>
+        </record>
+    </data>
+</odoo>
