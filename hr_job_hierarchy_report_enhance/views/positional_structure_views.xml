@@ -118,8 +118,8 @@
             <head>
                 <meta charset="utf-8"/>
                 <title>Positional Structure</title>
-                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_base.css?v=18.0.1.0.6"/>
-                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.6"/>
+                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_base.css?v=18.0.1.0.7"/>
+                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.7"/>
             </head>
             <body>
                 <div class="dsr_header">

@@ -20,9 +20,8 @@ Extends `hr_job_hierarchy` by inheritance (the base module is untouched).
 
 ## Install
 1. Copy the folder to your addons path, restart Odoo, Apps > Update Apps List, install.
-2. If views 735/736/737/738/745/748 of `hr_job_hierarchy` were edited by hand, use
-   "Reset View Architecture" on them first (developer mode). Delete any manual duplicate of the
-   "Structure Reports" menu / hierarchy-level form view if one is left over.
+2. The install first restores the report views of `hr_job_hierarchy` to their file version
+   (manual developer-mode edits of those views are replaced by this module's inheritance).
 3. Hard refresh the report (Ctrl+F5).
 
 Tuning: card width = `--dsr-grow` in `static/src/css/dsr_report_enhance.css`; logo =

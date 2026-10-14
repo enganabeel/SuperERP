@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!--
+        Make the install independent of any manual edit made in developer mode:
+        restore the report views of hr_job_hierarchy to their module-file version first.
+        The inheriting templates below then re-apply every change on that clean base.
+    -->
+    <function model="ir.ui.view" name="reset_arch"
+              eval="[[ref('hr_job_hierarchy.department_structure_report_page'),
+                      ref('hr_job_hierarchy.department_structure_node_content'),
+                      ref('hr_job_hierarchy.department_structure_node_horizontal'),
+                      ref('hr_job_hierarchy.department_structure_node_vertical'),
+                      ref('hr_job_hierarchy.department_structure_committee_chain'),
+                      ref('hr_job_hierarchy.report_dsr_node_content'),
+                      ref('hr_job_hierarchy.report_department_structure')], 'hard']"/>
+    <!--
         All changes are applied by inheritance on top of hr_job_hierarchy, so the
         base module stays untouched and upgrades cleanly.
         The specs are idempotent: they also work if the base views were
@@ -13,7 +26,7 @@
               name="Department Structure Report: layout, header and colours">
         <xpath expr="//style" position="after">
             <link rel="stylesheet"
-                  href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.6"/>
+                  href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.7"/>
         </xpath>
         <xpath expr="//title" position="replace">
             <title>Functional Structure</title>

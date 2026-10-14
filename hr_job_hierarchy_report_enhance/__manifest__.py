@@ -17,7 +17,7 @@ Extends ``hr_job_hierarchy`` (by inheritance, the base module is not modified):
 * Branded header: logo + company name + report title.
 """,
     'category': 'Human Resources',
-    'version': '18.0.1.0.6',
+    'version': '18.0.1.0.7',
     'author': 'Ejad Tech',
     'license': 'LGPL-3',
     'depends': ['hr_job_hierarchy'],
