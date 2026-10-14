@@ -1,0 +1,19 @@
+/* Positional Structure (org view): client colour model
+   level_0 = N-0 (grey), level_1 = N-1 (green), level_2 = N-2, level_3 = N-3, level_4 = N-4 */
+.o_org_view .o_org_job_card.o_org_job_level_0 { background-color: #5A5959 !important; border-top: 6px solid #343333 !important; color: #FFFFFF !important; }
+.o_org_view .o_org_job_card.o_org_job_level_1 { background-color: #0E5936 !important; border-top: 6px solid #0A3B24 !important; color: #FFFFFF !important; }
+.o_org_view .o_org_job_card.o_org_job_level_2 { background-color: #DCE5EA !important; border-top: 6px solid #8FA3B0 !important; color: #16324A !important; }
+.o_org_view .o_org_job_card.o_org_job_level_3 { background-color: #CAE0EE !important; border-top: 6px solid #6F97B5 !important; color: #16324A !important; }
+.o_org_view .o_org_job_card.o_org_job_level_4 { background-color: #F2F7FB !important; border-top: 6px solid #A8BDCC !important; color: #16324A !important; }
+
+/* Wrap long titles instead of cutting them */
+.o_org_view .o_org_job_card .o_org_job_head,
+.o_org_view .o_org_job_card .o_org_job_title,
+.o_org_view .o_org_job_card .o_org_job_title * {
+    white-space: normal !important; overflow: visible !important;
+    text-overflow: clip !important; overflow-wrap: anywhere;
+}
+
+/* Narrower cards for N-3 and N-4 (centred inside the 315px node slot) */
+.o_org_view .o_org_job_card.o_org_job_level_3 { width: 260px !important; max-width: 100%; align-self: center; }
+.o_org_view .o_org_job_card.o_org_job_level_4 { width: 220px !important; max-width: 100%; align-self: center; }

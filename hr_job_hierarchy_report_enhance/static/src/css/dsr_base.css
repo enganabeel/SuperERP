@@ -1,0 +1,53 @@
+/* Base styles for the Positional Structure report page.
+   Same look as the Functional Structure report (copied from hr_job_hierarchy's
+   page, minus the committee / CEO-assistant chains which this report does not use).
+   dsr_report_enhance.css is loaded after this file and refines it. */
+* { box-sizing: border-box; }
+body { font-family: Arial, Helvetica, sans-serif; color: #1A1A1A; background: #F8F9F7; margin: 0; padding: 14px; }
+.dsr_tree_scroll { overflow-x: auto; padding: 10px 0 18px 0; }
+
+/* Classic CSS org-chart connectors */
+ul.dsr_tree, .dsr_tree ul { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; }
+.dsr_tree ul { padding-top: 18px; position: relative; }
+.dsr_tree li { position: relative; padding: 18px 8px 0 8px; display: flex; flex-direction: column; align-items: center; }
+.dsr_tree_root > li { padding-top: 0; }
+.dsr_tree li::before, .dsr_tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid #9AA6A0; width: 50%; height: 18px; }
+.dsr_tree li::after { right: auto; left: 50%; border-left: 2px solid #9AA6A0; }
+.dsr_tree_root > li::before, .dsr_tree_root > li::after { display: none; }
+.dsr_tree li:only-child::before, .dsr_tree li:only-child::after { display: none; }
+.dsr_tree li:only-child { padding-top: 0; }
+.dsr_tree li:first-child::before, .dsr_tree li:last-child::after { border: none; }
+.dsr_tree li:last-child::before { border-right: 2px solid #9AA6A0; border-radius: 0 6px 0 0; }
+.dsr_tree li:first-child::after { border-radius: 6px 0 0 0; }
+.dsr_tree ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #9AA6A0; width: 0; height: 18px; }
+ul.dsr_tree { gap: 0; align-items: flex-start; }
+
+.dsr_node_row { display: flex; align-items: center; position: relative; }
+.dsr_box { width: 142px; min-height: 46px; padding: 6px 8px; border-radius: 4px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.dsr_box_name { font-weight: 700; font-size: 11px; line-height: 1.2; }
+.dsr_box_sub { font-size: 9px; font-weight: 400; line-height: 1.2; opacity: .75; }
+
+.dsr_ceo { background-color: #595959; border: 2px solid #404040; border-top: 6px solid #2b2b2b; color: #ffffff; }
+.dsr_level_1, .dsr_level_2, .dsr_level_3, .dsr_level_4 { border: 2px solid; border-top-width: 6px; }
+.dsr_level_3 { min-height: 40px; }
+.dsr_level_4 { min-height: 36px; }
+
+/* Vertical stack, below the first level: an indented list */
+.dsr_vlist { position: relative; margin: 12px 0 0 26px; padding-left: 16px; display: flex; flex-direction: column; gap: 7px; }
+.dsr_vlist::before { content: ''; position: absolute; top: -12px; left: -2px; width: 0; height: 12px; border-left: 2px solid #9AA6A0; }
+.dsr_vitem { position: relative; }
+.dsr_vitem::before { content: ''; position: absolute; left: -16px; top: 19px; width: 16px; height: 0; border-top: 2px solid #9AA6A0; }
+.dsr_vitem::after { content: ''; position: absolute; left: -16px; top: 0; width: 0; height: 19px; border-left: 2px solid #9AA6A0; }
+.dsr_vitem:not(:last-child)::after { height: auto; bottom: -7px; }
+.dsr_vitem:only-child::after { display: none; }
+.dsr_vitem > .dsr_node_row { justify-content: flex-start; }
+
+.dsr_legend { position: fixed; bottom: 12px; right: 12px; display: flex; gap: 5px; background: #ffffff; border: 1px solid #E0E0E0; border-radius: 6px; padding: 6px 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+.dsr_legend_item { display: flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+
+@page { size: landscape; margin: 8mm; }
+@media print {
+    body { background: #ffffff; padding: 0; }
+    .dsr_tree_scroll { overflow: visible; padding: 6px 0; }
+    .dsr_legend { position: static; margin: 14px 0 0 0; box-shadow: none; }
+}

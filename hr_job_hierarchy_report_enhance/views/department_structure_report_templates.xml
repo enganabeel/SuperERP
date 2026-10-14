@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        All changes are applied by inheritance on top of hr_job_hierarchy, so the
+        base module stays untouched and upgrades cleanly.
+        The specs are idempotent: they also work if the base views were
+        previously customised by hand with the same changes.
+    -->
+
+    <!-- Page: stylesheet, branded header, root level counter -->
+    <template id="department_structure_report_page_enhance"
+              inherit_id="hr_job_hierarchy.department_structure_report_page"
+              name="Department Structure Report: layout, header and colours">
+        <xpath expr="//style" position="after">
+            <link rel="stylesheet"
+                  href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.6"/>
+        </xpath>
+        <xpath expr="//title" position="replace">
+            <title>Functional Structure</title>
+        </xpath>
+        <xpath expr="//div[hasclass('dsr_header')]" position="replace">
+            <div class="dsr_header">
+                <img class="dsr_header_logo" alt="Logo"
+                     src="/hr_job_hierarchy_report_enhance/static/src/img/dsr_logo.png"/>
+                <div class="dsr_header_text">
+                    <div class="dsr_header_company" t-esc="env.company.name"/>
+                    <h1 class="dsr_header_title">Functional Structure</h1>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//t[@t-set='depth'][@t-value='0']" position="after">
+            <t t-set="parent_lvl" t-value="0"/>
+        </xpath>
+    </template>
+
+    <!-- Node: colour by real level order (N-1 .. N-4) instead of by department type -->
+    <template id="department_structure_node_content_enhance"
+              inherit_id="hr_job_hierarchy.department_structure_node_content"
+              name="Department Structure Node: level colours">
+        <xpath expr="//div[hasclass('dsr_node_row')]" position="before">
+            <!-- colour from hierarchy_level: 1-2 -> N-1, 3 -> N-2, 4 -> N-3, 5+ -> N-4 (sector = level 2 = N-1) -->
+            <t t-set="hl" t-value="node.hierarchy_level or 0"/>
+            <t t-set="own_lvl"
+               t-value="0 if node.dept_type in ('ceo', 'committee', 'ceo_assistant') else 1 if hl in (0, 1, 2) else 2 if hl == 3 else 3 if hl == 4 else 4"/>
+        </xpath>
+        <!-- headcount removed from the cards -->
+        <xpath expr="//div[hasclass('dsr_box_badge')]" position="replace"/>
+        <!-- Deputy CEO moves from the assistants side to the committees side -->
+        <xpath expr="//t[@t-set='ceo_assistants']" position="attributes">
+            <attribute name="t-value">node.child_ids.filtered(lambda c: c.active and c.dept_type == 'ceo_assistant' and 'deputy' not in (c.name or '').lower()).sorted(key=lambda c: (c.sequence, c.name or ''))</attribute>
+        </xpath>
+        <xpath expr="//div[@t-if='committees']" position="before">
+            <t t-set="deputy_nodes"
+               t-value="node.child_ids.filtered(lambda c: c.active and c.dept_type == 'ceo_assistant' and 'deputy' in (c.name or '').lower()).sorted(key=lambda c: (c.sequence, c.name or ''))"/>
+        </xpath>
+        <xpath expr="//div[@t-if='committees']" position="attributes">
+            <attribute name="t-if">committees or deputy_nodes</attribute>
+        </xpath>
+        <xpath expr="//div[@t-if='committees or deputy_nodes']/t[@t-foreach='committees']" position="before">
+            <t t-foreach="deputy_nodes" t-as="deputy_node">
+                <t t-call="hr_job_hierarchy.department_structure_committee_chain">
+                    <t t-set="node" t-value="deputy_node"/>
+                    <t t-set="box_cls" t-value="'dsr_deputy'"/>
+                </t>
+            </t>
+        </xpath>
+        <xpath expr="//div[hasclass('dsr_node_row')]/div[@t-attf-class]" position="attributes">
+            <attribute name="t-attf-class">dsr_box #{'dsr_ceo' if node.dept_type == 'ceo' else 'dsr_committee' if node.dept_type == 'committee' else 'dsr_ceo_assistant' if node.dept_type == 'ceo_assistant' else 'dsr_level_1' if own_lvl == 1 else 'dsr_level_2' if own_lvl == 2 else 'dsr_level_3' if own_lvl == 3 else 'dsr_level_4'}</attribute>
+        </xpath>
+        <xpath expr="(//t[@t-set='depth'][@t-value='depth + 1'])[1]" position="after">
+            <t t-set="parent_lvl" t-value="own_lvl"/>
+        </xpath>
+        <xpath expr="(//t[@t-set='depth'][@t-value='depth + 1'])[2]" position="after">
+            <t t-set="parent_lvl" t-value="own_lvl"/>
+        </xpath>
+    </template>
+
+    <!-- PDF version: no headcount on the cards, new report title -->
+    <template id="report_dsr_node_content_enhance"
+              inherit_id="hr_job_hierarchy.report_dsr_node_content"
+              name="Department Structure PDF node: no headcount">
+        <xpath expr="//div[hasclass('dsr_box_badge')]" position="replace"/>
+    </template>
+    <template id="report_department_structure_enhance"
+              inherit_id="hr_job_hierarchy.report_department_structure"
+              name="Department Structure PDF: report title">
+        <xpath expr="//div[hasclass('dsr_header')]/h1" position="replace">
+            <h1>Functional Structure</h1>
+        </xpath>
+    </template>
+
+    <!-- Committee chain item: box class can be overridden (used by the Deputy CEO) -->
+    <template id="department_structure_committee_chain_enhance"
+              inherit_id="hr_job_hierarchy.department_structure_committee_chain"
+              name="Department Structure committee item: custom box class">
+        <xpath expr="//div[hasclass('dsr_committee')]" position="attributes">
+            <attribute name="class"></attribute>
+            <attribute name="t-attf-class">dsr_box #{box_cls or 'dsr_committee'}</attribute>
+        </xpath>
+    </template>
+
+    <!-- Wrappers: pass the parent level down -->
+    <template id="department_structure_node_horizontal_enhance"
+              inherit_id="hr_job_hierarchy.department_structure_node_horizontal"
+              name="Department Structure Node (horizontal): pass level">
+        <xpath expr="//t[@t-set='depth']" position="after">
+            <t t-set="parent_lvl" t-value="parent_lvl"/>
+        </xpath>
+    </template>
+
+    <template id="department_structure_node_vertical_enhance"
+              inherit_id="hr_job_hierarchy.department_structure_node_vertical"
+              name="Department Structure Node (vertical): pass level">
+        <xpath expr="//t[@t-set='depth']" position="after">
+            <t t-set="parent_lvl" t-value="parent_lvl"/>
+        </xpath>
+    </template>
+
+    <!-- Positional Structure (org view): card width 315px -->
+    <record id="hr_job_view_org_enhance" model="ir.ui.view">
+        <field name="name">hr.job.view.org.enhance</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr_job_hierarchy.hr_job_view_org"/>
+        <field name="arch" type="xml">
+            <xpath expr="//org" position="attributes">
+                <attribute name="node_width">315</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Department form: make Hierarchy Level editable (drives the report colours) -->
+    <record id="hr_department_form_hierarchy_level" model="ir.ui.view">
+        <field name="name">hr.department.form.hierarchy_level.editable</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form"/>
+        <field name="priority">99</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="hierarchy_level" readonly="0"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

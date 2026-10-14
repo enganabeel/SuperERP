@@ -1,0 +1,62 @@
+/* Department Structure report enhancements (hr_job_hierarchy_report_enhance) */
+
+/* ---- Card width: change --dsr-grow to tune (px added to every card) ---- */
+.dsr_tree_scroll { --dsr-grow: 30px; }
+
+/* ---- Layout fix ---- */
+.dsr_tree_scroll > ul.dsr_tree_root { width: max-content; min-width: 100%; }
+.dsr_node_row > .dsr_committee_chain {
+    position: relative; left: auto; top: auto; transform: none;
+    flex: none; width: 0; margin-left: 16px; margin-right: -32px; align-items: flex-start;
+}
+.dsr_node_row > .dsr_ceo_assistant_chain {
+    position: relative; right: auto; top: auto; transform: none;
+    flex: none; width: 0; margin-left: -32px; margin-right: 16px; align-items: flex-end;
+}
+.dsr_node_row > .dsr_box { position: relative; z-index: 1; }
+.dsr_node_row::before, .dsr_node_row::after {
+    content: ''; position: absolute; z-index: 0; width: 0;
+    left: 50%; border-left: 2px solid #9AA6A0;
+}
+.dsr_node_row::before { top: 0; bottom: 50%; }
+.dsr_node_row::after { top: 50%; bottom: 0; }
+.dsr_tree_root > li > .dsr_node_row::before { display: none; }
+.dsr_tree li > .dsr_vlist { margin-left: 0; align-self: center; }
+.dsr_tree li > .dsr_vlist::before {
+    box-sizing: border-box; top: -8px; left: 0; width: calc(50% + 2px); height: 8px;
+    border-left: 2px solid #9AA6A0; border-top: 2px solid #9AA6A0; border-top-left-radius: 6px;
+}
+.dsr_tree li > .dsr_vlist::after {
+    content: ''; position: absolute; top: -12px; left: 50%;
+    width: 0; height: 4px; border-left: 2px solid #9AA6A0;
+}
+.dsr_vitem > .dsr_vlist::before { left: 0; }
+.dsr_legend { z-index: 50; }
+.dsr_committee_item:first-child::after, .dsr_ceo_assistant_item:first-child::after { top: 50%; }
+.dsr_vitem:only-child::after { display: block; }
+.dsr_vitem:has(> .dsr_node_row > .dsr_level_2)::before { top: 22px; }
+.dsr_vitem:has(> .dsr_node_row > .dsr_level_2):last-child::after { height: 22px; }
+
+/* ---- Widths ---- */
+.dsr_box { width: calc(142px + var(--dsr-grow)); }
+.dsr_box.dsr_level_3 { width: calc(132px + var(--dsr-grow)); }
+.dsr_box.dsr_level_4 { width: calc(122px + var(--dsr-grow)); }
+.dsr_committee_item, .dsr_ceo_assistant_item { width: calc(122px + var(--dsr-grow)); flex: none; }
+.dsr_committee_item .dsr_box, .dsr_ceo_assistant_item .dsr_box { width: calc(122px + var(--dsr-grow)); }
+
+/* ---- Header: logo + company + title ---- */
+.dsr_header { display: flex; align-items: center; gap: 18px; position: relative; margin-bottom: 16px; padding: 6px 0 16px 0; border-bottom: 2px solid #0D3B23; }
+.dsr_header::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 132px; height: 2px; background: #D4AF37; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.dsr_header .dsr_header_logo { display: block; flex: none; height: 62px; width: auto; }
+.dsr_header .dsr_header_text { display: flex; flex-direction: column; justify-content: center; gap: 5px; min-width: 0; padding-left: 18px; border-left: 1px solid #D5DCD7; }
+.dsr_header .dsr_header_company { margin: 0; font-size: 21px; font-weight: 800; line-height: 1.15; letter-spacing: 0.2px; color: #0D3B23; }
+.dsr_header .dsr_header_title { margin: 0; font-size: 11px; font-weight: 700; line-height: 1.2; letter-spacing: 2.4px; text-transform: uppercase; color: #8A6D1D; }
+
+/* ---- Level palette (client colour model) N-1 .. N-4 ---- */
+.dsr_level_1 { background-color: #0E5936; color: #FFFFFF; border-color: #0A3B24 #0B4A2C #0B4A2C; }
+.dsr_level_2 { background-color: #DCE5EA; color: #16324A; border-color: #8FA3B0 #B5C4CD #B5C4CD; }
+.dsr_level_3 { background-color: #CAE0EE; color: #16324A; border-color: #6F97B5 #9DB8CC #9DB8CC; }
+.dsr_level_4 { background-color: #F2F7FB; color: #16324A; border-color: #A8BDCC #D3DFE8 #D3DFE8; }
+
+/* ---- Deputy CEO: shown on the committees side with its own colour ---- */
+.dsr_box.dsr_deputy { background-color: #5B4B8A; border: 2px solid #44376B; border-top: 6px solid #2E2450; color: #FFFFFF; }

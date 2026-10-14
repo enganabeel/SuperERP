@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ===== hr.job: new Level field ===== -->
+    <record id="hr_job_form_level" model="ir.ui.view">
+        <field name="name">hr.job.form.level</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr_job_hierarchy.view_hr_job_form_inherit_hierarchy"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <field name="level"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ===== Wizard: choose a department or a job position ===== -->
+    <record id="view_hr_job_positional_report_wizard_form" model="ir.ui.view">
+        <field name="name">hr.job.positional.report.wizard.form</field>
+        <field name="model">hr.job.positional.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Positional Structure By Sector">
+                <group>
+                    <field name="department_id"/>
+                    <field name="job_id"/>
+                </group>
+                <div class="text-muted">
+                    Choose a department to show all its job positions (and those of its
+                    sub-departments), or a job position to show everyone reporting to it.
+                </div>
+                <footer>
+                    <button string="Show" type="object" name="action_show_report" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_positional_structure_report_wizard" model="ir.actions.act_window">
+        <field name="name">Positional Structure By Sector</field>
+        <field name="res_model">hr.job.positional.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ===== Menus: Employees > Reporting > Structure Reports (kept on top) ===== -->
+    <menuitem id="menu_structure_reports"
+              name="Structure Reports"
+              parent="hr.hr_menu_hr_reports"
+              sequence="1"
+              groups="hr.group_hr_user"/>
+
+    <!-- Functional Structure By Sector = the former "Department Structure by Sector" -->
+    <record id="hr_job_hierarchy.menu_hr_department_structure_report_wizard" model="ir.ui.menu">
+        <field name="name">Functional Structure By Sector</field>
+        <field name="parent_id" ref="menu_structure_reports"/>
+        <field name="sequence">1</field>
+    </record>
+    <record id="hr_job_hierarchy.action_hr_department_structure_report_wizard" model="ir.actions.act_window">
+        <field name="name">Functional Structure By Sector</field>
+    </record>
+    <record id="view_hr_department_structure_report_wizard_form_enhance" model="ir.ui.view">
+        <field name="name">hr.department.structure.report.wizard.form.enhance</field>
+        <field name="model">hr.department.structure.report.wizard</field>
+        <field name="inherit_id" ref="hr_job_hierarchy.view_hr_department_structure_report_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="string">Functional Structure By Sector</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="menu_positional_structure_report_wizard"
+              name="Positional Structure By Sector"
+              parent="menu_structure_reports"
+              action="action_positional_structure_report_wizard"
+              sequence="2"
+              groups="hr.group_hr_user"/>
+
+    <!-- ===== Report page ===== -->
+    <template id="positional_structure_node">
+        <div t-attf-class="dsr_node_row">
+            <div t-attf-class="dsr_box #{node['css']}">
+                <div class="dsr_box_name" t-esc="node['name']"/>
+                <div t-if="node['sub']" class="dsr_box_sub" t-esc="node['sub']"/>
+            </div>
+        </div>
+        <t t-if="node['children']">
+            <t t-if="depth &lt; 1 and not vertical">
+                <ul class="dsr_tree">
+                    <t t-foreach="node['children']" t-as="child_node">
+                        <li>
+                            <t t-call="hr_job_hierarchy_report_enhance.positional_structure_node">
+                                <t t-set="node" t-value="child_node"/>
+                                <t t-set="depth" t-value="depth + 1"/>
+                                <t t-set="vertical" t-value="False"/>
+                            </t>
+                        </li>
+                    </t>
+                </ul>
+            </t>
+            <t t-else="">
+                <div class="dsr_vlist">
+                    <t t-foreach="node['children']" t-as="child_node">
+                        <div class="dsr_vitem">
+                            <t t-call="hr_job_hierarchy_report_enhance.positional_structure_node">
+                                <t t-set="node" t-value="child_node"/>
+                                <t t-set="depth" t-value="depth + 1"/>
+                                <t t-set="vertical" t-value="True"/>
+                            </t>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="positional_structure_report_page">
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <title>Positional Structure</title>
+                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_base.css?v=18.0.1.0.6"/>
+                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.6"/>
+            </head>
+            <body>
+                <div class="dsr_header">
+                    <img class="dsr_header_logo" alt="Logo"
+                         src="/hr_job_hierarchy_report_enhance/static/src/img/dsr_logo.png"/>
+                    <div class="dsr_header_text">
+                        <div class="dsr_header_company" t-esc="env.company.name"/>
+                        <h1 class="dsr_header_title">Positional Structure</h1>
+                    </div>
+                </div>
+                <div class="dsr_tree_scroll">
+                    <ul class="dsr_tree dsr_tree_root">
+                        <t t-foreach="roots" t-as="root_node">
+                            <li>
+                                <t t-call="hr_job_hierarchy_report_enhance.positional_structure_node">
+                                    <t t-set="node" t-value="root_node"/>
+                                    <t t-set="depth" t-value="0"/>
+                                    <t t-set="vertical" t-value="False"/>
+                                </t>
+                            </li>
+                        </t>
+                    </ul>
+                </div>
+                <div class="dsr_legend">
+                    <div class="dsr_legend_item dsr_level_1">N-1</div>
+                    <div class="dsr_legend_item dsr_level_2">N-2</div>
+                    <div class="dsr_legend_item dsr_level_3">N-3</div>
+                    <div class="dsr_legend_item dsr_level_4">N-4</div>
+                </div>
+            </body>
+        </html>
+    </template>
+</odoo>
