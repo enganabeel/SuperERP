@@ -17,3 +17,6 @@
 /* Narrower cards for N-3 and N-4 (centred inside the 315px node slot) */
 .o_org_view .o_org_job_card.o_org_job_level_3 { width: 260px !important; max-width: 100%; align-self: center; }
 .o_org_view .o_org_job_card.o_org_job_level_4 { width: 220px !important; max-width: 100%; align-self: center; }
+
+/* CEO office cards in the Positional Structure org chart: gray, white text */
+.o_org_view .o_org_job_card.o_org_job_ceo_office { background-color: #6E6E6E !important; border-top: 6px solid #3F3F3F !important; color: #FFFFFF !important; }

@@ -60,3 +60,6 @@
 
 /* ---- Deputy CEO: shown on the committees side with its own colour ---- */
 .dsr_box.dsr_deputy { background-color: #5B4B8A; border: 2px solid #44376B; border-top: 6px solid #2E2450; color: #FFFFFF; }
+
+/* ---- N-CEO-Office level: gray card, white text ---- */
+.dsr_ceo_office { background-color: #6E6E6E; border: 2px solid #5A5A5A; border-top: 6px solid #3F3F3F; color: #FFFFFF; }

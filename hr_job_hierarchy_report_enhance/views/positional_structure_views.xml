@@ -76,11 +76,35 @@
               groups="hr.group_hr_user"/>
 
     <!-- ===== Report page ===== -->
-    <template id="positional_structure_node">
-        <div t-attf-class="dsr_node_row">
+    <!-- CEO-office card (and what reports to it) drawn beside its Chief -->
+    <template id="positional_structure_side_item">
+        <div class="dsr_committee_item">
             <div t-attf-class="dsr_box #{node['css']}">
                 <div class="dsr_box_name" t-esc="node['name']"/>
                 <div t-if="node['sub']" class="dsr_box_sub" t-esc="node['sub']"/>
+            </div>
+            <div t-if="node['side']" class="dsr_committee_chain">
+                <t t-foreach="node['side']" t-as="side_node">
+                    <t t-call="hr_job_hierarchy_report_enhance.positional_structure_side_item">
+                        <t t-set="node" t-value="side_node"/>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </template>
+
+    <template id="positional_structure_node">
+        <div class="dsr_node_row">
+            <div t-attf-class="dsr_box #{node['css']}">
+                <div class="dsr_box_name" t-esc="node['name']"/>
+                <div t-if="node['sub']" class="dsr_box_sub" t-esc="node['sub']"/>
+            </div>
+            <div t-if="node['side']" class="dsr_committee_chain">
+                <t t-foreach="node['side']" t-as="side_node">
+                    <t t-call="hr_job_hierarchy_report_enhance.positional_structure_side_item">
+                        <t t-set="node" t-value="side_node"/>
+                    </t>
+                </t>
             </div>
         </div>
         <t t-if="node['children']">
@@ -118,8 +142,8 @@
             <head>
                 <meta charset="utf-8"/>
                 <title>Positional Structure</title>
-                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_base.css?v=18.0.1.0.7"/>
-                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.7"/>
+                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_base.css?v=18.0.1.0.8"/>
+                <link rel="stylesheet" href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.8"/>
             </head>
             <body>
                 <div class="dsr_header">
@@ -148,6 +172,7 @@
                     <div class="dsr_legend_item dsr_level_2">N-2</div>
                     <div class="dsr_legend_item dsr_level_3">N-3</div>
                     <div class="dsr_legend_item dsr_level_4">N-4</div>
+                    <div class="dsr_legend_item dsr_ceo_office">CEO Office</div>
                 </div>
             </body>
         </html>

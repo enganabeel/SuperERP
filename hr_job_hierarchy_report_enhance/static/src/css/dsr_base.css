@@ -32,6 +32,18 @@ ul.dsr_tree { gap: 0; align-items: flex-start; }
 .dsr_level_3 { min-height: 40px; }
 .dsr_level_4 { min-height: 36px; }
 
+/* Side chain (CEO office beside its Chief) */
+.dsr_committee_chain { position: relative; margin-left: 16px; padding-left: 16px; display: flex; flex-direction: column; gap: 5px; justify-content: center; }
+.dsr_committee_chain::before { content: ''; position: absolute; left: -16px; top: 50%; width: 16px; height: 0; border-top: 2px solid #9AA6A0; }
+.dsr_committee_item { position: relative; }
+.dsr_committee_item > .dsr_committee_chain { position: absolute; left: 100%; top: 25%; transform: translateY(-50%); }
+.dsr_committee_item::before { content: ''; position: absolute; left: -16px; top: 50%; width: 16px; height: 0; border-top: 2px solid #9AA6A0; }
+.dsr_committee_item::after { content: ''; position: absolute; left: -16px; top: 0; width: 0; height: 50%; border-left: 2px solid #9AA6A0; }
+.dsr_committee_item:not(:last-child)::after { height: auto; bottom: -5px; }
+.dsr_committee_item:only-child::after { display: none; }
+.dsr_committee_item .dsr_box { width: 122px; min-height: 32px; padding: 4px 6px; }
+.dsr_committee_item .dsr_box_name { font-size: 10px; font-weight: 600; }
+
 /* Vertical stack, below the first level: an indented list */
 .dsr_vlist { position: relative; margin: 12px 0 0 26px; padding-left: 16px; display: flex; flex-direction: column; gap: 7px; }
 .dsr_vlist::before { content: ''; position: absolute; top: -12px; left: -2px; width: 0; height: 12px; border-left: 2px solid #9AA6A0; }

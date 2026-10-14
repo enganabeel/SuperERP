@@ -26,7 +26,7 @@
               name="Department Structure Report: layout, header and colours">
         <xpath expr="//style" position="after">
             <link rel="stylesheet"
-                  href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.7"/>
+                  href="/hr_job_hierarchy_report_enhance/static/src/css/dsr_report_enhance.css?v=18.0.1.0.8"/>
         </xpath>
         <xpath expr="//title" position="replace">
             <title>Functional Structure</title>

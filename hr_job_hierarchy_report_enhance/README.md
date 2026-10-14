@@ -26,3 +26,8 @@ Extends `hr_job_hierarchy` by inheritance (the base module is untouched).
 
 Tuning: card width = `--dsr-grow` in `static/src/css/dsr_report_enhance.css`; logo =
 `static/src/img/dsr_logo.png`; company name = Settings > Companies.
+
+## Level N-CEO-Office
+Level value for CEO-office jobs (jobs flagged *CEO Office* get it automatically in the report).
+Gray card, white text, drawn **beside** its Chief (its *Reports To* job) instead of below it;
+anything reporting to a CEO-office job follows it into that side chain.
